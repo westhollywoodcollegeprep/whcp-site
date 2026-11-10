@@ -64,13 +64,21 @@ html,body{height:100%;background:var(--ink);color:var(--ink);overflow:hidden;fon
 @keyframes bob{50%{transform:translateY(-10px)}}
 
 /* 2 sky */
-.p-sky{display:grid;grid-template-columns:1fr 520px;grid-template-rows:1fr auto;column-gap:70px;row-gap:26px}
+.p-sky{display:grid;grid-template-columns:1fr 900px;grid-template-rows:1fr auto;column-gap:70px;row-gap:26px}
 .sky-now{align-self:center}
 .sky-temp{font-family:var(--display);font-weight:700;font-size:240px;line-height:.86;letter-spacing:-.02em}
 .sky-cond{font-family:var(--display);font-weight:600;font-size:60px;line-height:1.05;margin:26px 0 18px;color:var(--blue)}
 .sky-note{font-size:22px;color:var(--ink-soft);margin-top:14px}
-.big-g{width:400px;height:400px;align-self:center;justify-self:center}
-.sky-now .say{max-width:900px}
+.sky-row{display:flex;align-items:center;gap:44px}
+.big-g{width:220px;height:220px;flex:none}
+.hours{align-self:center}
+.hours-lab{font-family:var(--display);font-weight:600;font-size:32px;color:var(--blue);margin-bottom:18px}
+.hours-row{display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:24px 0}
+.hr{text-align:center}
+.hr .n{font-family:var(--display);font-weight:600;font-size:32px}
+.hr .g{width:100px;height:100px;margin:10px auto}
+.hr .t{font-family:var(--display);font-weight:700;font-size:66px;line-height:1.1;font-variant-numeric:tabular-nums}
+.hr.past{opacity:.45}
 .ahead{grid-column:1 / -1;display:grid;grid-template-columns:repeat(5,1fr);border-top:1px solid var(--rule);padding-top:22px}
 .ahead .d{padding-right:20px}
 .ahead .n{font-family:var(--mark);font-weight:600;font-size:27px}
@@ -252,11 +260,13 @@ html,body{height:100%;background:var(--ink);color:var(--ink);overflow:hidden;fon
 
     <section class="page p-sky" data-name="The Sky">
       <div class="sky-now">
-        <div class="sky-temp in" style="--i:0" id="skyT">--°</div>
+        <div class="sky-row in" style="--i:0"><div class="sky-temp" id="skyT">--°</div><div class="big-g" id="skyG"></div></div>
         <div class="it sky-cond in" style="--i:1" id="skyC">&nbsp;</div>
-        <p class="say in" style="--i:2" id="skySay">&nbsp;</p>
       </div>
-      <div class="big-g in" style="--i:1" id="skyG"></div>
+      <div class="hours">
+        <div class="hours-lab in" style="--i:1">Today, hour by hour</div>
+        <div class="hours-row" id="hours"></div>
+      </div>
       <div class="ahead" id="ahead"></div>
     </section>
 
@@ -506,7 +516,6 @@ function tick(){
   $('lkT').textContent = (t.h % 12 || 12) + ':' + String(t.mi).padStart(2, '0');
   $('hello').textContent = (t.h < 12 ? 'Good morning' : t.h < 17 ? 'Good afternoon' : 'Good evening') + ', and welcome.';
   if (t.n !== lastDay){ lastDay = t.n; renderToday(t.n, t.d); renderYear(t.n); renderWeek(t.n); renderWord(t.n); renderOwl(); }
-  if (WX && t.s === 0) renderSky();
 }
 
 function renderToday(today, d){
@@ -602,26 +611,31 @@ function describe(code, isDay){
 let WX = null;
 const WX_URL = 'https://api.open-meteo.com/v1/forecast?latitude=' + CONFIG.place.lat + '&longitude=' + CONFIG.place.lon +
   '&current=temperature_2m,apparent_temperature,weather_code,is_day,wind_speed_10m' +
+  '&hourly=temperature_2m,weather_code' +
   '&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,precipitation_probability_max' +
   '&temperature_unit=fahrenheit&wind_speed_unit=mph&forecast_days=6&timezone=' + encodeURIComponent(TZ);
 // On the school's own site the board shows live West Hollywood weather or nothing.
 // Anywhere else (a preview), it shows placeholder numbers so the layout can be judged.
+const HOURS = [8, 10, 12, 14, 16];   // the school day, shown hour by hour on the weather page
 const HOSTED = /(^|\.)westhollywoodschool\.com$|\.github\.io$/.test(location.hostname);
 function blankWeather(){
   return { live: false, temp: NaN, code: 3, isDay: true, wind: NaN, sunrise: '06:00', sunset: '18:00', uv: NaN, rain: 0,
+    hours: HOURS.map(h => ({ h: h, temp: NaN, code: 3 })),
     days: [0, 1, 2, 3, 4, 5].map(() => ({ code: 3, hi: NaN, lo: NaN })) };
 }
 function sampleWeather(){
   const codes = [1, 0, 2, 3, 61, 1], hi = [74, 76, 73, 68, 64, 70], lo = [56, 57, 55, 54, 52, 53], h = laNow().h;
   return { live: false, temp: 72, code: 1, isDay: h >= 7 && h < 17, wind: 6, sunrise: '06:19', sunset: '16:53', uv: 4, rain: 5,
+    hours: HOURS.map((hh, i) => ({ h: hh, temp: [61, 66, 72, 74, 70][i], code: [2, 1, 1, 1, 2][i] })),
     days: codes.map((c, i) => ({ code: c, hi: hi[i], lo: lo[i] })) };
 }
 async function loadWeather(){
   try {
     const r = await fetch(WX_URL, { cache: 'no-store' });
     if (!r.ok) throw new Error('weather ' + r.status);
-    const j = await r.json(), c = j.current, d = j.daily;
+    const j = await r.json(), c = j.current, d = j.daily, hr = j.hourly, day0 = d.time[0];
     WX = { live: true, temp: c.temperature_2m, code: c.weather_code, isDay: !!c.is_day, wind: c.wind_speed_10m,
+      hours: HOURS.map(h => { const k = hr.time.indexOf(day0 + 'T' + String(h).padStart(2, '0') + ':00'); return { h: h, temp: k < 0 ? NaN : hr.temperature_2m[k], code: k < 0 ? 3 : hr.weather_code[k] }; }),
       sunrise: d.sunrise[0].slice(11, 16), sunset: d.sunset[0].slice(11, 16), uv: d.uv_index_max[0], rain: d.precipitation_probability_max[0],
       days: d.time.map((t, i) => ({ code: d.weather_code[i], hi: d.temperature_2m_max[i], lo: d.temperature_2m_min[i], rain: d.precipitation_probability_max[i] })) };
   } catch (err) { if (!WX || !WX.live) WX = HOSTED ? blankWeather() : sampleWeather(); }
@@ -636,14 +650,18 @@ function renderSky(){
   const w = WX, [words, kind] = describe(w.code, w.isDay), t0 = w.days[0], now = laNow();
   $('miniG').innerHTML = glyph(kind); $('miniT').textContent = deg(w.temp);
   $('skyT').textContent = deg(w.temp); $('skyC').textContent = isFinite(w.temp) ? words + '.' : 'Weather unavailable.';
-  $('skySay').textContent = isFinite(t0.hi) ? 'A high of ' + deg(t0.hi) + ' today and ' + deg(t0.lo) + ' overnight.' : 'The forecast will be back shortly.';
 
 $('skyG').innerHTML = glyph(kind);
 
   renderOwl();
+  $('hours').innerHTML = w.hours.map((x, i) => {
+    const [xw, xk] = describe(x.code, true);
+    return '<div class="hr in' + (now.h > x.h + 1 ? ' past' : '') + '" style="--i:' + (i + 2) + '"><div class="n">' + (x.h % 12 || 12) + (x.h < 12 ? ' AM' : ' PM') +
+      '</div><div class="g">' + glyph(xk) + '</div><div class="t">' + deg(x.temp) + '</div></div>';
+  }).join('');
   $('ahead').innerHTML = w.days.slice(1, 6).map((dd, i) => {
     const [dw, dk] = describe(dd.code, true);
-    return '<div class="d in" style="--i:' + (i + 3) + '"><div class="n">' + fmt(now.n + (i + 1) * DAY, { weekday: 'long' }) + '</div><div class="t">' + deg(dd.hi) + '<small>' + deg(dd.lo) +
+    return '<div class="d in" style="--i:' + (i + 5) + '"><div class="n">' + fmt(now.n + (i + 1) * DAY, { weekday: 'long' }) + '</div><div class="t">' + deg(dd.hi) + '<small>' + deg(dd.lo) +
       '</small></div><div class="it c"><span class="g">' + glyph(dk) + '</span>' + dw + '</div></div>';
   }).join('');
 }
