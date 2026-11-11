@@ -1,0 +1,22 @@
+{
+ "name": "WHCP Front Desk",
+ "short_name": "WHCP Desk",
+ "start_url": "./",
+ "scope": "./",
+ "display": "standalone",
+ "orientation": "any",
+ "background_color": "#F4F2ED",
+ "theme_color": "#F4F2ED",
+ "icons": [
+  {
+   "src": "icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  }
+ ]
+}
