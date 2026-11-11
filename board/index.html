@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>WHCP Lobby Board</title>
 <meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -522,8 +522,25 @@ const ORD = ['', 'first','second','third','fourth','fifth','sixth','seventh','ei
 const NICE = { 'Short Day': 'a short day', 'First Day of School': 'the first day of school', 'Last Day of School': 'the last day of school', 'Unassigned Day': 'an unassigned day' };
 const WORDS = ['Zero','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten','Eleven','Twelve'];
 
-function fit(){ $('stage').style.setProperty('--k', Math.min(innerWidth / 1920, innerHeight / 1080) || 1); }
-addEventListener('resize', fit); fit();
+/* Fit the 1920x1080 stage to what is actually visible. Some TV browsers (Fully on Fire TV) report a
+   window bigger than the visible area, so take the smallest size any API reports.
+   Manual override: add ?scale=0.5 (or any number) to the address. Add ?sizes to show the numbers. */
+const QS = new URLSearchParams(location.search);
+function fit(){
+  const vv = window.visualViewport, de = document.documentElement;
+  const ws = [innerWidth, de.clientWidth, vv && vv.width, screen.width, screen.availWidth].filter(n => n > 0);
+  const hs = [innerHeight, de.clientHeight, vv && vv.height, screen.height, screen.availHeight].filter(n => n > 0);
+  const w = Math.min.apply(null, ws), h = Math.min.apply(null, hs);
+  const force = parseFloat(QS.get('scale'));
+  const k = force > 0 ? force : (Math.min(w / 1920, h / 1080) || 1);
+  $('stage').style.setProperty('--k', k);
+  if (QS.has('sizes')){
+    let d = document.getElementById('sizes');
+    if (!d){ d = document.createElement('div'); d.id = 'sizes'; d.style.cssText = 'position:fixed;left:8px;top:8px;z-index:99;background:#000;color:#fff;font:16px monospace;padding:6px 10px'; document.body.appendChild(d); }
+    d.textContent = 'inner ' + innerWidth + 'x' + innerHeight + ' | client ' + de.clientWidth + 'x' + de.clientHeight + ' | visual ' + (vv ? Math.round(vv.width) + 'x' + Math.round(vv.height) + ' @' + vv.scale : '-') + ' | screen ' + screen.width + 'x' + screen.height + ' | dpr ' + devicePixelRatio + ' | k ' + k.toFixed(3);
+  }
+}
+addEventListener('resize', fit); if (window.visualViewport) visualViewport.addEventListener('resize', fit); fit(); setTimeout(fit, 500); setTimeout(fit, 2000);
 
 /* ---------- time, always in school-local time ---------- */
 function laNow(){
