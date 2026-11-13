@@ -52,7 +52,7 @@ PAGES = {
     'tutoring': ('Tutoring in West Hollywood: All Subjects & SAT/ACT Prep | WHCP',
                  'Professional tutors for math through calculus, sciences, English, history, languages and SAT/ACT prep. One-on-one or small groups, after school and weekends.'),
     'international': ('International Students, F-1 & I-20 Admissions | WHCP Los Angeles',
-                      'SEVP-certified private school in West Hollywood, Los Angeles welcoming international students in Grades K–12, with ESL, I-20 support and a dedicated coordinator.'),
+                      'SEVP-certified private school in West Hollywood, Los Angeles welcoming international students from any country, with ESL, I-20 support and a dedicated coordinator.'),
     'admissions': ('Admissions & Tuition | Private School West Hollywood | WHCP',
                    'Year-round admissions, 2026–2027 tuition and fees, FAQs and the online inquiry form for West Hollywood College Preparatory School, Pre-K through Grade 12.'),
     'calendar': ('2026–2027 School Calendar | West Hollywood College Prep',
