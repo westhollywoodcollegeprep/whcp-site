@@ -89,11 +89,15 @@ LEGACY = {  # old Wix URLs still in Google's index -> new page
     'international-students': 'international', 'individual-programs': 'individual',
     'testimonials': 'about', 'contact-us': 'contact',
 }
+# Google Apps Script web app URL that records form submissions in the inquiries Sheet.
+# Paste the .../exec URL here after deploying _build/inquiries-sheet.gs. Empty string = off.
+SHEET_URL = ''
+
 SOCIAL = ['https://www.facebook.com/whcprep', 'https://www.instagram.com/westhollywoodcollegeprep/',
           'https://x.com/WHCollegePrep', 'https://studyinthestates.dhs.gov/certified-school/108902']
 
 CSP = ("default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; "
-       "img-src 'self' data:; font-src 'self'; connect-src 'self' https://formspree.io; "
+       "img-src 'self' data:; font-src 'self'; connect-src 'self' https://formspree.io https://script.google.com https://script.googleusercontent.com; "
        "form-action https://formspree.io; frame-src https://maps.google.com https://www.google.com; "
        "base-uri 'self'; object-src 'none'; upgrade-insecure-requests")
 
@@ -271,7 +275,7 @@ def main():
 
     # ---- shared JS
     js = (BUILD / 'site.js').read_text(encoding='utf-8')
-    js = js.replace('__ROUTES__', json.dumps(sorted(PAGES)))
+    js = js.replace('__ROUTES__', json.dumps(sorted(PAGES))).replace('__SHEET_URL__', json.dumps(SHEET_URL))
     js_v = hashlib.sha1(js.encode()).hexdigest()[:8]
     (ROOT / 'assets' / 'site.js').write_text(js, encoding='utf-8')
 

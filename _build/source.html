@@ -271,6 +271,9 @@ table.tuition{width:100%;border-collapse:collapse;min-width:640px}
 .fgrid{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-bottom:26px}
 .fgroup{display:flex;flex-direction:column;gap:8px}
 .fgroup.full{grid-column:1/-1}
+.fgroup[hidden]{display:none}
+.fgroup.fcheck label{display:flex;gap:12px;align-items:flex-start;text-transform:none;letter-spacing:0;font-size:14px;font-weight:300;line-height:1.6;color:var(--body);cursor:pointer}
+.fgroup.fcheck input{-webkit-appearance:checkbox;appearance:auto;width:18px;height:18px;padding:0;margin:2px 0 0;flex:none;accent-color:var(--navy);border-radius:0}
 .fgroup label{font-size:10.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--navy)}
 .fgroup input,.fgroup select,.fgroup textarea{font-family:'Jost',sans-serif;font-weight:300;font-size:15px;color:var(--body);padding:13px 16px;border:1px solid var(--line);background:#fff;outline:none;transition:border-color .2s;border-radius:0;-webkit-appearance:none;appearance:none}
 .fgroup select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%2310233F' stroke-width='1.2'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center}
@@ -1677,7 +1680,20 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
                   <option>International Student Program</option>
                 </select>
               </div>
-              <div class="fgroup full"><label for="af-ms">Questions or Comments</label><textarea id="af-ms" name="message" placeholder="Tell us about your student and any questions you have."></textarea></div>
+              <div class="fgroup full"><label for="af-hh">How Did You Hear About Us?</label>
+                  <select id="af-hh" name="heard_about" data-more="af-hm-wrap">
+                    <option value="">Select one&hellip;</option>
+                    <option>Google search or Maps</option>
+                    <option>AI assistant (ChatGPT, Gemini, etc.)</option>
+                    <option>Friend or family referral</option>
+                    <option>Social media</option>
+                    <option>Drove or walked by</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div class="fgroup full" id="af-hm-wrap" hidden><label for="af-hm">Tell Us More</label><input id="af-hm" type="text" name="heard_about_details" autocomplete="off" placeholder="Who referred you, or where you heard about us"></div>
+                <div class="fgroup full"><label for="af-ms">Questions or Comments</label><textarea id="af-ms" name="message" placeholder="Tell us about your student and any questions you have."></textarea></div>
+              <div class="fgroup full fcheck"><label for="af-nl"><input id="af-nl" type="checkbox" name="newsletter_opt_in" value="Yes"><span>Send me updates about open houses, events and enrollment. You can unsubscribe anytime.</span></label></div>
             </div>
             <div id="admissions-status" class="form-status" role="status"></div>
             <button type="submit" class="btn" style="width:100%">Submit Inquiry</button>
@@ -1798,7 +1814,20 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
                     <option>Other</option>
                   </select>
                 </div>
+                <div class="fgroup full"><label for="cf-hh">How Did You Hear About Us?</label>
+                  <select id="cf-hh" name="heard_about" data-more="cf-hm-wrap">
+                    <option value="">Select one&hellip;</option>
+                    <option>Google search or Maps</option>
+                    <option>AI assistant (ChatGPT, Gemini, etc.)</option>
+                    <option>Friend or family referral</option>
+                    <option>Social media</option>
+                    <option>Drove or walked by</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div class="fgroup full" id="cf-hm-wrap" hidden><label for="cf-hm">Tell Us More</label><input id="cf-hm" type="text" name="heard_about_details" autocomplete="off" placeholder="Who referred you, or where you heard about us"></div>
                 <div class="fgroup full"><label for="cf-ms">Message</label><textarea id="cf-ms" name="message" placeholder="How can we help you?" required></textarea></div>
+                <div class="fgroup full fcheck"><label for="cf-nl"><input id="cf-nl" type="checkbox" name="newsletter_opt_in" value="Yes"><span>Send me updates about open houses, events and enrollment. You can unsubscribe anytime.</span></label></div>
               </div>
               <div id="contact-status" class="form-status" role="status"></div>
               <button type="submit" class="btn" style="width:100%">Send Message</button>
@@ -1962,10 +1991,10 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
         <p>We do not knowingly collect payment card numbers, government identification numbers, or sensitive personal information through this website.</p>
 
         <h3>How We Use Your Information</h3>
-        <p>We use the information you provide to respond to your inquiry, process admissions interest, schedule tours, communicate with you about our programs, and improve our services. We do not sell your personal information, and we do not share it with third parties for their own marketing purposes.</p>
+        <p>We use the information you provide to respond to your inquiry, process admissions interest, schedule tours, communicate with you about our programs, and improve our services. If you check the box to receive updates, we will also email you news about open houses, events and enrollment; every email includes a link to unsubscribe, and we will not send updates to families who do not check the box. We do not sell your personal information, and we do not share it with third parties for their own marketing purposes.</p>
 
         <h3>Categories of Third Parties</h3>
-        <p>We may share information with service providers who help us operate this website and respond to inquiries &mdash; for example, our form-processing and email-delivery provider (Formspree, which receives the information you submit through our forms), and our website hosting provider (GitHub Pages). These providers act on our behalf and are not authorized to use your information for unrelated purposes. We may also disclose information when required by law or to protect the rights and safety of our community.</p>
+        <p>We may share information with service providers who help us operate this website and respond to inquiries &mdash; for example, our form-processing and email-delivery provider (Formspree, which receives the information you submit through our forms), Google (which stores a record of inquiries in Google Sheets in the school&rsquo;s account), and our website hosting provider (GitHub Pages). These providers act on our behalf and are not authorized to use your information for unrelated purposes. We may also disclose information when required by law or to protect the rights and safety of our community.</p>
 
         <h3>Cookies &amp; Do Not Track</h3>
         <p>This website does not use advertising or cross-site tracking cookies, and we do not track visitors across other websites over time. Because we do not track you across third-party websites, we do not respond differently to &ldquo;Do Not Track&rdquo; (DNT) signals sent by your browser. We are not aware of third parties collecting personally identifiable information about your online activities across different websites when you visit this site.</p>
