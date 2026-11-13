@@ -893,8 +893,22 @@ async function loadWeather(){
       hours: HOURS.map(h => { const k = hr.time.indexOf(day0 + 'T' + String(h).padStart(2, '0') + ':00'); return { h: h, temp: k < 0 ? NaN : hr.temperature_2m[k], code: k < 0 ? 3 : hr.weather_code[k] }; }),
       sunrise: d.sunrise[0].slice(11, 16), sunset: d.sunset[0].slice(11, 16), uv: d.uv_index_max[0], rain: d.precipitation_probability_max[0],
       days: d.time.map((t, i) => ({ code: d.weather_code[i], hi: d.temperature_2m_max[i], lo: d.temperature_2m_min[i], rain: d.precipitation_probability_max[i] })) };
-  } catch (err) { if (!WX || !WX.live) WX = HOSTED ? blankWeather() : sampleWeather(); }
+    try { localStorage.setItem('whcp-wx', JSON.stringify({ at: Date.now(), wx: WX })); } catch (e) {}
+    wxFails = 0;
+  } catch (err) {
+    wxFails++;
+    if (!WX || !WX.live) WX = cachedWeather() || (HOSTED ? blankWeather() : sampleWeather());
+    // a failed check retries in 1, 2, 4… minutes (at most 15) instead of waiting the full 15
+    clearTimeout(wxRetry); wxRetry = setTimeout(loadWeather, Math.min(15, 2 ** (wxFails - 1)) * 60 * 1000);
+  }
   renderSky();
+}
+// The last good forecast (up to 6 hours old) stands in when a check fails, so a blip never blanks the board.
+let wxFails = 0, wxRetry = null;
+function cachedWeather(){
+  try { const c = JSON.parse(localStorage.getItem('whcp-wx') || 'null');
+    if (c && c.wx && Date.now() - c.at < 6 * 3600 * 1000) return c.wx; } catch (e) {}
+  return null;
 }
 const mins = hm => { const [h, m] = hm.split(':').map(Number); return h * 60 + m; };
 const clock12 = hm => { const [h, m] = hm.split(':').map(Number); return (h % 12 || 12) + ':' + String(m).padStart(2, '0') + (h < 12 ? ' AM' : ' PM'); };
@@ -1015,7 +1029,7 @@ setInterval(stayAwake, 30 * 1000);
 stayAwake();
 
 /* ---------- go ---------- */
-WX = HOSTED ? blankWeather() : sampleWeather();
+WX = cachedWeather() || (HOSTED ? blankWeather() : sampleWeather());
 tick(); renderSky(); show(0);
 setInterval(tick, 1000);
 loadWeather(); setInterval(loadWeather, 15 * 60 * 1000);
