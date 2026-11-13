@@ -1,0 +1,6 @@
+# West Hollywood College Preparatory School
+User-agent: *
+Allow: /
+Disallow: /_build/
+
+Sitemap: https://www.westhollywoodschool.com/sitemap.xml
