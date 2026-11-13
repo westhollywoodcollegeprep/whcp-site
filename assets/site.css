@@ -404,6 +404,18 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
 .faq[open] summary::after{content:'\2212'}
 .faq p{padding:0 0 22px;font-size:15.5px;line-height:1.85;max-width:720px}
 @media(max-width:860px){.info-cols{grid-template-columns:1fr;gap:48px}}
+.fact-wasc{display:flex!important;align-items:center;justify-content:center;gap:10px}
+.fact-wasc span{font-size:19px}
+.factbar--glance{background:var(--paper)}
+.factbar--glance .wrap{position:relative}
+.glance-label{position:absolute;left:48px;top:-13px;background:var(--navy);color:#fff;font-family:'Jost',sans-serif;font-size:10px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;padding:6px 12px;line-height:1}
+.factbar--glance .fact b{font-size:20px}
+.more-programs .pillar-grid{row-gap:44px}
+.quote-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+.quote-card{background:var(--paper);border:1px solid var(--line);padding:34px 32px;margin:0}
+.quote-card blockquote{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:21px;line-height:1.45;color:var(--navy);margin-bottom:20px}
+.quote-card figcaption{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--mute)}
+@media(max-width:860px){.quote-grid{grid-template-columns:1fr}.glance-label{left:28px}}
 .page{display:none}
 .page.active{display:block;animation:fadeUp .35s ease both}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
