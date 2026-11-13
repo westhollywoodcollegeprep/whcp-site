@@ -89,8 +89,9 @@ button{font-family:inherit}
 .wordmark{line-height:1.2}
 .wordmark strong{display:block;font-family:'Chakra Petch',sans-serif;font-size:15px;font-weight:700;letter-spacing:.01em;white-space:nowrap;color:#16181C}
 .wordmark span{display:block;font-family:'Chakra Petch',sans-serif;font-size:13px;font-weight:700;letter-spacing:.01em;text-transform:none;white-space:nowrap;color:#16181C}
-.wordmark span.accred-line{font-size:10px;font-weight:500;letter-spacing:.01em;line-height:1.35;text-transform:none;color:var(--body);margin-top:4px;white-space:normal;max-width:215px}
+.wordmark span.accred-line{font-size:8.5px;font-weight:500;letter-spacing:.02em;text-transform:none;color:var(--mute);margin-top:4px;white-space:nowrap}
 @media(max-width:1320px){.mast-actions .btn--line{display:none}}
+@media(max-width:1200px){.masthead .mainnav>li>a{padding:10px 12px}}
 .mainnav{display:flex;align-items:center;gap:2px;list-style:none}
 .mainnav>li{position:relative}
 .mainnav>li>a{display:flex;align-items:center;gap:6px;padding:10px 15px;font-size:13.5px;font-weight:400;color:var(--navy);text-decoration:none;letter-spacing:.03em;border-bottom:2px solid transparent;transition:color .2s;cursor:pointer;white-space:nowrap}
@@ -368,7 +369,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
 .foot-brand .brand{margin-bottom:26px}
 .foot-brand .wordmark strong{color:#fff}
 .foot-brand .wordmark span{color:#fff}
-.foot-brand .wordmark span.accred-line{color:rgba(255,255,255,.72);margin-top:6px}
+.foot-brand .wordmark span.accred-line{color:rgba(255,255,255,.5);margin-top:6px}
 .foot-brand address{font-style:normal;font-size:14px;line-height:1.9}
 .foot-brand address a{color:rgba(255,255,255,.55);text-decoration:none}
 .foot-brand address a:hover{color:#fff}
@@ -397,10 +398,6 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
 .socials a:hover{background:var(--brass-bright);border-color:var(--brass-bright);color:var(--navy-deep)}
 
 /* ----- Router ----- */
-.info-cols{display:grid;grid-template-columns:1fr 1fr;gap:64px}
-.cred-list{list-style:none;display:grid;gap:18px}
-.cred-list li{font-size:15.5px;line-height:1.8;padding-left:18px;border-left:2px solid var(--brass-line)}
-.cred-list b{font-weight:500;color:var(--navy)}
 .faq-list{border-top:1px solid var(--line)}
 .faq{border-bottom:1px solid var(--line)}
 .faq summary{cursor:pointer;list-style:none;padding:22px 40px 22px 0;position:relative;font-family:'Cormorant Garamond',serif;font-weight:600;font-size:21px;color:var(--navy)}
@@ -408,7 +405,6 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
 .faq summary::after{content:'+';position:absolute;right:4px;top:18px;font-family:'Jost',sans-serif;font-weight:300;font-size:26px;color:var(--brass)}
 .faq[open] summary::after{content:'\2212'}
 .faq p{padding:0 0 22px;font-size:15.5px;line-height:1.85;max-width:720px}
-@media(max-width:860px){.info-cols{grid-template-columns:1fr;gap:48px}}
 .fact-wasc{display:flex!important;align-items:center;justify-content:center;gap:10px}
 .fact-wasc span{font-size:19px}
 .factbar--glance{background:var(--paper)}
@@ -416,11 +412,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
 .glance-label{position:absolute;left:48px;top:-13px;background:var(--navy);color:#fff;font-family:'Jost',sans-serif;font-size:10px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;padding:6px 12px;line-height:1}
 .factbar--glance .fact b{font-size:20px}
 .more-programs .pillar-grid{row-gap:44px}
-.quote-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
-.quote-card{background:var(--paper);border:1px solid var(--line);padding:34px 32px;margin:0}
-.quote-card blockquote{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:21px;line-height:1.45;color:var(--navy);margin-bottom:20px}
-.quote-card figcaption{font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--mute)}
-@media(max-width:860px){.quote-grid{grid-template-columns:1fr}.glance-label{left:28px}}
+@media(max-width:860px){.glance-label{left:28px}}
 .page{display:none}
 .page.active{display:block;animation:fadeUp .35s ease both}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -801,7 +793,6 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
     </div>
   </section>
 
-  <!--PARENT_QUOTES-->
   <section class="sec">
     <div class="wrap">
       <div class="visit-grid">
@@ -855,28 +846,6 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
             <div class="row" style="grid-template-columns:1fr auto"><p style="font-weight:400;color:var(--navy)">International Student Program</p><a class="tlink" href="/international">View</a></div>
             <div class="row" style="grid-template-columns:1fr auto"><p style="font-weight:400;color:var(--navy)">One-on-One Learning Programs</p><a class="tlink" href="/individual">View</a></div>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-  <section class="sec" id="accreditation" style="padding-top:0">
-    <div class="wrap">
-      <div class="info-cols">
-        <div>
-          <span class="eyebrow">Our History</span>
-          <h2 class="h2" style="margin-bottom:22px">Founded on Small Classes</h2>
-          <p style="margin-bottom:18px;font-size:16.5px;line-height:1.9">WHCP was founded by Dr. Elina Dvorskaya, an educator who set out to create a school with a supportive, family-like environment, small classes, and exceptional teachers. The school was originally known as Dvorsky College Preparatory School and adopted its current name, West Hollywood College Preparatory School, in 2010.</p>
-          <p style="font-size:16.5px;line-height:1.9">Today WHCP serves children from Pre&#8209;school (ages 2&ndash;4) and Kindergarten through Grade 12 on one campus at 1317 N. Crescent Heights Blvd. in West Hollywood.</p>
-        </div>
-        <div>
-          <span class="eyebrow">Accreditation &amp; Licensing</span>
-          <h2 class="h2" style="margin-bottom:22px">Recognized &amp; Licensed</h2>
-          <ul class="cred-list">
-            <li><b>Accredited by WASC.</b> West Hollywood College Preparatory School is accredited by the Accrediting Commission for Schools, Western Association of Schools and Colleges (ACS WASC).</li>
-            <li><b>Licensed Childcare Center.</b> Our early childhood program operates as a childcare center licensed by the California Department of Social Services, Community Care Licensing Division.</li>
-            <li><b>California private school.</b> WHCP is listed in the California Department of Education private school directory as an active K&ndash;12 private school.</li>
-            <li><b>SEVP-certified.</b> WHCP is certified by the U.S. Student and Exchange Visitor Program to enroll F-1 international students.</li>
-          </ul>
         </div>
       </div>
     </div>

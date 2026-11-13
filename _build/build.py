@@ -89,10 +89,6 @@ LEGACY = {  # old Wix URLs still in Google's index -> new page
     'international-students': 'international', 'individual-programs': 'individual',
     'testimonials': 'about', 'contact-us': 'contact',
 }
-# Parent quotes for the home page. Only add real quotes, used with the family's permission.
-# Format: ('Quote text.', 'Parent of a 2nd grader')   Leave empty to hide the section.
-QUOTES = []
-
 SOCIAL = ['https://www.facebook.com/whcprep', 'https://www.instagram.com/westhollywoodcollegeprep/',
           'https://x.com/WHCollegePrep', 'https://studyinthestates.dhs.gov/certified-school/108902']
 
@@ -348,7 +344,6 @@ def main():
     # ---- write pages
     for pid, chunk in pages.items():
         chunk = fix_imgs(chunk, pid).replace('<div class="page"', '<div class="page active"', 1)
-        chunk = chunk.replace('<!--PARENT_QUOTES-->', quotes_html())
         if 'data:image' in chunk:
             sys.exit(f'unextracted image left in {pid}')
         title, desc = PAGES[pid]
@@ -418,16 +413,6 @@ Sitemap: {SITE}/sitemap.xml
 
     total = sum(f.stat().st_size for f in (ROOT / 'img').iterdir())
     print(f'built {len(pages)} pages, {len(LEGACY)} redirects, {len(list((ROOT / "img").iterdir()))} images ({total // 1024} KB)')
-
-
-def quotes_html():
-    if not QUOTES:
-        return '<!-- parent quotes: add real quotes to QUOTES in _build/build.py -->'
-    cards = ''.join(f'<figure class="quote-card"><blockquote>&ldquo;{q}&rdquo;</blockquote><figcaption>{w}</figcaption></figure>'
-                    for q, w in QUOTES)
-    return ('<section class="sec sec--stone" id="parents-say"><div class="wrap">'
-            '<span class="eyebrow">Our Families</span><h2 class="h2" style="margin-bottom:44px">What Parents Say</h2>'
-            f'<div class="quote-grid">{cards}</div></div></section>')
 
 
 def school_schema(key_url):
