@@ -218,6 +218,7 @@ tr.today td{color:var(--blue);font-weight:500}
 <body>
 <div id="app" aria-live="polite"></div>
 <div id="toast" class="toast" hidden></div>
+<script src="qrcode.js"></script>
 <script>
 'use strict';
 /* =========================================================================
@@ -789,7 +790,23 @@ function oSettings(){
     '<div class="err" id="cperr"></div><button class="btn small" type="submit" style="align-self:flex-start">Change passcode</button></form>' +
     '<div class="card"><h2 style="font-size:24px">How this works</h2><p class="hint">Sign-ins, signatures and timesheets are saved as rows in the school’s sign-in Google Sheet. The Daily hours tab there adds up each person’s day. The office locks itself after ' + (OFFICE_IDLE / 60) + ' minutes without a tap, and the family and staff screens return to the start after a minute.</p>' +
     '<p class="hint">Export timesheets each pay period from Timesheets, Export CSV, and keep a copy of the family log as your records require.</p>' +
-    '<button class="btn small danger" type="button" data-act="disconnect">Disconnect this device</button></div></div>';
+    '<button class="btn small danger" type="button" data-act="disconnect">Disconnect this device</button></div>' +
+    '<div class="card" style="display:flex;flex-direction:column;gap:12px"><h2 style="font-size:24px">Connect another tablet</h2>' +
+    '<p class="hint" style="margin:0">Show a QR code here, then scan it with the new tablet\u2019s camera and open the link in its browser. The new tablet joins the same records. The code holds this device\u2019s access key, so close it when you\u2019re done.</p>' +
+    (S.office.qr ? '<div style="background:#fff;padding:12px;align-self:flex-start;border:1px solid var(--line)">' + connectQR() + '</div><button class="btn small ghost" type="button" data-act="qrhide" style="align-self:flex-start">Hide QR code</button>'
+                 : '<button class="btn small" type="button" data-act="qrshow" style="align-self:flex-start">Show QR code</button>') +
+    '</div></div>';
+}
+
+/* ---------- connect another tablet: a QR code of this device's own connection link ---------- */
+function connectLink(){
+  const code = btoa(JSON.stringify({ u: S.conn.u, k: S.conn.k })).replace(/\+/g, '-').replace(/\//g, '_');
+  return location.origin + location.pathname + '#connect=' + code;
+}
+function connectQR(){
+  if (!S.conn || typeof qrcode !== 'function') return '<p class="hint">The QR code couldn\u2019t be made on this device.</p>';
+  const q = qrcode(0, 'M'); q.addData(connectLink()); q.make();
+  return q.createSvgTag({ cellSize: 5, margin: 4, scalable: false, alt: 'QR code to connect another tablet' });
 }
 
 /* ---------- CSV ---------- */
@@ -851,7 +868,9 @@ document.addEventListener('click', async e => {
   }
   if (a === 'staffout') return goneHome();
   if (a === 'otab'){ o.tab = b.dataset.v; o.detail = null; return render(); }
-  if (a === 'lock'){ o.unlocked = false; return goneHome(); }
+  if (a === 'lock'){ o.unlocked = false; o.qr = false; return goneHome(); }
+  if (a === 'qrshow'){ o.qr = true; return render(); }
+  if (a === 'qrhide'){ o.qr = false; return render(); }
   if (a === 'wk'){ o.week = shiftKey(o.week, +b.dataset.v); o.weekData = undefined; o.detail = null; return render(); }
   if (a === 'tdetail'){ o.detail = b.dataset.id || null; return render(); }
   if (a === 'voidpunch'){
@@ -899,7 +918,7 @@ document.addEventListener('submit', async e => {
     S.office.unlocked = true; S.office.tab = 'roster'; toast('Passcode saved. Start by adding children and staff.'); return render();
   }
   if (f === 'unlock'){
-    if ((await hash(val('pc'))) === S.settings.pass){ S.office.unlocked = true; S.office.tab = 'today'; S.office.detail = null; return render(); }
+    if ((await hash(val('pc'))) === S.settings.pass){ S.office.unlocked = true; S.office.tab = 'today'; S.office.detail = null; S.office.qr = false; return render(); }
     $('#pc').value = ''; return fail('oerr', 'That passcode isn’t right.');
   }
   if (f === 'chpass'){
@@ -950,7 +969,7 @@ setInterval(() => {
   if (p.mi !== lastMinute){ lastMinute = p.mi; const c = $('#clk'); if (c){ const t = document.createElement('div'); t.innerHTML = clockHTML(); c.replaceWith(t.firstChild); } }
   const idle = (now - S.lastAct) / 1000;
   if (S.justConnected){ S.justConnected = false; toast('This device is connected to the school\u2019s records.'); }
-  if (S.view === 'office' && S.office.unlocked && idle > OFFICE_IDLE){ S.office.unlocked = false; goneHome(); }
+  if (S.view === 'office' && S.office.unlocked && idle > OFFICE_IDLE){ S.office.unlocked = false; S.office.qr = false; goneHome(); }
   else if ((S.view === 'family' || S.view === 'staff') && idle > KIOSK_IDLE && !S.v.signing) goneHome();
   else if (S.view === 'office' && !S.office.unlocked && idle > KIOSK_IDLE) goneHome();
 }, 1000);
