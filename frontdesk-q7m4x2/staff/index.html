@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>WHCP Staff Clock</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<script>/* never run inside another site's frame */ if (window.top !== window.self) { try { window.top.location = window.self.location; } catch (e) { document.documentElement.innerHTML = ""; } }</script>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="WHCP Clock">
+<meta name="theme-color" content="#F4F2ED">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="../icon-180.png">
+<link rel="icon" type="image/png" href="../icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* The staff phone version of the front desk time clock: same paper, navy ink and seal blue, one job per screen. */
+:root{
+  color-scheme:light;
+  --paper:#F4F2ED; --card:#FFFFFF; --ink:#10233F; --soft:#5A6478; --blue:#0757A7; --sky:#E3EEFB;
+  --line:rgba(16,35,63,.18); --warn:#9A3412; --warnbg:#FDEBDD; --ok:#1E6B3A; --okbg:#E1F2E6; --tut:#5B3A8C;
+  --display:'Chakra Petch','Eurostile','Arial Narrow',Arial,sans-serif;
+  --body:'Jost','Avenir Next','Segoe UI',Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%;margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:18px;-webkit-tap-highlight-color:transparent}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+#app{min-height:100vh;display:flex;flex-direction:column;max-width:560px;margin:0 auto;padding:calc(18px + env(safe-area-inset-top)) 18px calc(20px + env(safe-area-inset-bottom))}
+h1,h2{font-family:var(--display);margin:0;line-height:1.1;text-wrap:balance}
+.top{display:flex;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--ink)}
+.top img{width:52px;height:52px;flex:none}
+.top b{display:block;font-family:var(--display);font-size:19px;line-height:1.1}
+.top span{display:block;font-family:var(--display);font-weight:600;font-size:15px}
+.top small{display:block;font-size:10px;color:var(--soft);margin-top:2px;white-space:nowrap}
+main{flex:1;display:flex;flex-direction:column;gap:18px;padding-top:22px}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:18px;padding:20px}
+.hint{color:var(--soft);font-size:16px;line-height:1.45;margin:0}
+.st{display:inline-block;padding:6px 14px;border-radius:999px;background:var(--sky);color:var(--blue);font-weight:500;font-size:16px}
+.st.in{background:var(--okbg);color:var(--ok)} .st.brk{background:var(--warnbg);color:var(--warn)}
+.btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:64px;border-radius:16px;border:2px solid var(--blue);background:var(--blue);color:#fff;font-family:var(--display);font-weight:600;font-size:22px;padding:0 18px}
+.btn.ghost{background:transparent;color:var(--blue)}
+.btn.tut{background:var(--tut);border-color:var(--tut)}
+.btn:disabled{opacity:.55;cursor:default}
+.acts{display:flex;flex-direction:column;gap:12px}
+.input{width:100%;min-height:60px;border:1.5px solid var(--ink);border-radius:14px;background:#fff;padding:0 16px;font-size:30px;letter-spacing:8px;font-family:var(--display)}
+label{display:block;font-weight:500;margin-bottom:8px}
+.err{color:var(--warn);font-size:16px;min-height:1px}
+.err:empty{display:none}
+.banner{background:var(--warnbg);color:var(--warn);border-radius:14px;padding:14px 16px;font-size:16px;line-height:1.45;margin:0}
+.ok{background:var(--okbg);color:var(--ok)}
+.list{display:flex;flex-direction:column}
+.list div{display:flex;justify-content:space-between;padding:10px 0;border-top:1px solid var(--line);font-size:17px}
+.list div:first-child{border-top:0}
+.sigwrap{position:relative;height:170px;border:1.5px solid var(--ink);border-radius:14px;background:#fff;touch-action:none;margin-top:12px}
+.sigwrap canvas{position:absolute;inset:0;width:100%;height:100%}
+.sigwrap .line{position:absolute;left:16px;right:16px;bottom:40px;border-top:1.5px dashed var(--line);pointer-events:none}
+.sigwrap .ph{position:absolute;left:16px;bottom:12px;font-size:14px;color:var(--soft);pointer-events:none}
+.linkbtn{background:none;border:0;padding:8px 4px;min-height:44px;color:var(--soft);text-decoration:underline;font-size:16px}
+.big{font-family:var(--display);font-weight:700;font-size:44px;line-height:1}
+.foot{display:flex;justify-content:center;padding-top:14px;margin-top:18px;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+'use strict';
+/* Settings. The Sheet address is public; what a phone can do is limited by its own token,
+   which only clocks one staff member in and out, and only near the school. */
+const API = 'https://script.google.com/macros/s/AKfycbyqYlaG9LblA-dlDcelsfRxu2WI11phFCj4oH0-gLRr2wUQg4GOr-ScglgRuPGzyyUl7w/exec';
+const SCHOOL = { lat: 34.0952, lng: -118.3671 };   // 1317 N. Crescent Heights Blvd.
+const RADIUS_M = 483;                               // 0.3 miles
+const TZ = 'America/Los_Angeles';
+const SEAL = '/img/email/seal.png';
+const KEY = 'whcp-staff-phone';
+
+const $ = s => document.querySelector(s);
+const esc = v => String(v == null ? '' : v).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const timeOf = ms => new Intl.DateTimeFormat('en-US', { timeZone: TZ, hour: 'numeric', minute: '2-digit' }).format(new Date(ms));
+const hourNow = () => +new Intl.DateTimeFormat('en-US', { timeZone: TZ, hour: 'numeric', hour12: false }).format(new Date()) % 24;
+const miles = m => (m / 1609.34).toFixed(m < 1609 ? 2 : 1);
+
+const S = { me: null, view: 'loading', status: null, pend: null, strokes: [], err: '', busy: false, done: null };
+function load(){ try { S.me = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { S.me = null; } }
+function save(me){ try { localStorage.setItem(KEY, JSON.stringify(me)); } catch (e) {} S.me = me; }
+function forget(){ try { localStorage.removeItem(KEY); } catch (e) {} S.me = null; }
+
+async function call(body){
+  let r;
+  try { r = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body), redirect: 'follow' }); }
+  catch (e) { const er = new Error('offline'); er.code = 'offline'; throw er; }
+  let j = null; try { j = await r.json(); } catch (e) {}
+  if (!j) { const er = new Error('server'); er.code = 'server'; throw er; }
+  if (!j.ok) { const er = new Error(j.error || 'server'); Object.assign(er, j, { code: j.error || 'server' }); throw er; }
+  return j;
+}
+
+/* ---------- state of the day ---------- */
+function dayState(evs){
+  let st = 'out', since = 0, job = 'reg', first = 0, lastOut = 0;
+  (evs || []).forEach(e => {
+    if (e.k === 'in' && st === 'out'){ st = 'in'; since = e.t; job = e.j === 'tut' ? 'tut' : 'reg'; if (!first) first = e.t; }
+    else if (e.k === 'bs' && st === 'in'){ st = 'break'; since = e.t; }
+    else if (e.k === 'be' && st === 'break'){ st = 'in'; since = e.t; }
+    else if (e.k === 'out'){ st = 'out'; lastOut = e.t; }
+  });
+  return { st, since, job, first, lastOut };
+}
+const LABEL = { in: 'Clock in', bs: 'Break start', be: 'Break end', out: 'Clock out' };
+const VERB = { in: 'clock in', tut: 'clock in for tutoring', bs: 'start your break', be: 'end your break', out: 'clock out' };
+const BTN = { in: 'Clock in', tut: 'Clock in for tutoring', bs: 'Start break', be: 'End break', out: 'Clock out' };
+
+/* ---------- screens ---------- */
+function header(){
+  return '<header class="top"><img src="' + SEAL + '" alt=""><div><b>West Hollywood</b><span>College Preparatory School</span><small>Accredited by the Western Association of Schools and Colleges</small></div></header>';
+}
+function vSetup(){
+  return '<main><h1 style="font-size:32px">Staff clock-in</h1>' +
+    '<p class="hint">Ask the office for your phone setup code. They get it from Office › Roster › your name › Phone clock-in. You only do this once on this phone.</p>' +
+    '<form class="card" id="setup" style="display:flex;flex-direction:column;gap:14px"><div><label for="code">Setup code</label><input id="code" class="input" inputmode="numeric" maxlength="6" autocomplete="one-time-code"></div>' +
+    '<div class="err" id="err">' + esc(S.err) + '</div><button class="btn" type="submit"' + (S.busy ? ' disabled' : '') + '>Set up this phone</button></form>' +
+    '<p class="hint">Clocking in from your phone only works at school, within 0.3 miles, so your phone will ask to use your location.</p></main>';
+}
+function vMain(){
+  const s = S.status;
+  if (!s) return '<main><p class="hint">Loading…</p></main>';
+  const d = dayState(s.punches), first = (s.name || '').split(' ')[0];
+  const hello = hourNow() < 12 ? 'Good morning' : hourNow() < 17 ? 'Good afternoon' : 'Good evening';
+  const stTxt = d.st === 'in' ? (d.job === 'tut' ? 'Tutoring since ' : 'Clocked in since ') + timeOf(d.since) : d.st === 'break' ? 'On break since ' + timeOf(d.since) : d.lastOut ? 'Clocked out at ' + timeOf(d.lastOut) : 'Not clocked in today';
+  const cls = d.st === 'in' ? 'in' : d.st === 'break' ? 'brk' : '';
+  const acts = d.st === 'out' ? ['in', 'tut'] : d.st === 'in' ? ['bs', 'out'] : ['be', 'out'];
+  let body;
+  if (S.pend){
+    body = '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h2 style="font-size:24px">Sign to ' + VERB[S.pend] + '</h2><button class="linkbtn" data-act="clear" style="color:var(--blue)">Clear</button></div>' +
+      '<div class="sigwrap" id="sigwrap"><canvas id="sig" aria-label="Signature pad: sign with your finger"></canvas><div class="line"></div><div class="ph">Sign above the line</div></div>' +
+      '<div class="err" id="err" style="margin-top:10px">' + esc(S.err) + '</div>' +
+      '<div class="acts" style="margin-top:14px"><button class="btn" data-act="go"' + (S.busy ? ' disabled' : '') + '>' + (S.busy ? 'Checking your location…' : BTN[S.pend]) + '</button><button class="btn ghost" data-act="cancel"' + (S.busy ? ' disabled' : '') + '>Cancel</button></div></div>';
+  } else {
+    body = '<div class="err" id="err">' + esc(S.err) + '</div><div class="acts">' +
+      acts.map(k => '<button class="btn' + ({ tut: ' tut', bs: ' ghost' }[k] || (k === 'out' && d.st === 'break' ? ' ghost' : '')) + '" data-act="punch" data-k="' + k + '">' + BTN[k] + '</button>').join('') + '</div>';
+  }
+  const list = (s.punches || []).map(e => '<div><span>' + esc(e.k === 'in' && e.j === 'tut' ? 'Clock in for tutoring' : LABEL[e.k]) + '</span><b>' + esc(timeOf(e.t)) + '</b></div>').join('');
+  return '<main><div><h1 style="font-size:32px">' + hello + ', ' + esc(first) + '.</h1><p class="hint" style="margin-top:6px">' + esc(s.role || '') + '</p></div>' +
+    '<div><span class="st ' + cls + '">' + esc(stTxt) + '</span></div>' + body +
+    '<div class="card"><h2 style="font-size:20px;margin-bottom:6px">Today</h2>' + (list ? '<div class="list">' + list + '</div>' : '<p class="hint">Nothing yet today.</p>') + '<p class="hint" style="margin-top:10px">Something wrong? Tell the office.</p></div></main>' +
+    '<footer class="foot"><button class="linkbtn" data-act="forget">Not your phone? Remove setup</button></footer>';
+}
+function vDone(){
+  return '<main style="justify-content:center;text-align:center;gap:14px"><div class="big">' + esc(S.done.title) + '</div><p class="hint" style="font-size:19px">' + esc(S.done.sub) + '</p>' +
+    '<button class="btn" data-act="back" style="margin-top:18px">Done</button></main>';
+}
+function vBad(){
+  return '<main><p class="banner">This phone isn’t set up for clock-in anymore. The office may have turned it off. Ask them for a new setup code.</p><button class="btn" data-act="reset">Enter a new code</button></main>';
+}
+function render(){
+  const V = { setup: vSetup, main: vMain, done: vDone, bad: vBad, loading: () => '<main><p class="hint">Loading…</p></main>' }[S.view];
+  $('#app').innerHTML = header() + V();
+  setupSig();
+}
+
+/* ---------- signature pad (same format as the front desk: a small SVG path in a 300 x 100 box) ---------- */
+function setupSig(){
+  const cv = $('#sig'); if (!cv) return;
+  const r = $('#sigwrap').getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
+  cv.width = r.width * dpr; cv.height = r.height * dpr;
+  const ctx = cv.getContext('2d'); ctx.scale(dpr, dpr);
+  const draw = () => {
+    ctx.clearRect(0, 0, r.width, r.height); ctx.lineWidth = 2.6; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = '#10233F';
+    S.strokes.forEach(st => { ctx.beginPath(); st.forEach((p, i) => { const x = p[0] / 1000 * r.width, y = p[1] / 1000 * r.height; i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }); if (st.length === 1) ctx.lineTo(st[0][0] / 1000 * r.width + .1, st[0][1] / 1000 * r.height); ctx.stroke(); });
+  };
+  draw();
+  let cur = null;
+  const pt = e => { const b = cv.getBoundingClientRect(); return [Math.round((e.clientX - b.left) / b.width * 1000), Math.round((e.clientY - b.top) / b.height * 1000)]; };
+  cv.onpointerdown = e => { e.preventDefault(); cv.setPointerCapture(e.pointerId); cur = [pt(e)]; S.strokes.push(cur); draw(); };
+  cv.onpointermove = e => { if (!cur) return; const p = pt(e), l = cur[cur.length - 1]; if (Math.abs(p[0] - l[0]) + Math.abs(p[1] - l[1]) > 6){ cur.push(p); draw(); } };
+  cv.onpointerup = cv.onpointercancel = () => { cur = null; };
+}
+const sigPath = strokes => strokes.filter(s => s.length).map(s => s.map((p, i) => (i ? 'L' : 'M') + Math.round(p[0] * .3) + ' ' + Math.round(p[1] * .1)).join('')).join('');
+const sigLen = strokes => strokes.reduce((n, s) => n + s.length, 0);
+
+/* ---------- location ---------- */
+function metersBetween(a, b){
+  const R = 6371000, r = Math.PI / 180, dLat = (b.lat - a.lat) * r, dLng = (b.lng - a.lng) * r;
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(dLng / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+function where(){
+  return new Promise((res, rej) => {
+    if (!navigator.geolocation) return rej(Object.assign(new Error('x'), { code: 'nogeo' }));
+    navigator.geolocation.getCurrentPosition(p => res({ lat: p.coords.latitude, lng: p.coords.longitude, acc: p.coords.accuracy }),
+      e => rej(Object.assign(new Error('x'), { code: e.code === 1 ? 'denied' : 'nofix' })), { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 });
+  });
+}
+function whereMsg(e){
+  if (e.code === 'denied') return 'Location is turned off for this site. Allow location for this page in your phone’s browser settings, then try again.';
+  if (e.code === 'nogeo') return 'This browser can’t share your location. Try Chrome or Safari.';
+  if (e.code === 'too_far') return 'You’re about ' + miles(e.dist) + ' miles from school. Clock-in from your phone works within 0.3 miles of school.';
+  if (e.code === 'vague_location') return 'Your phone couldn’t pin down your location (it’s off by about ' + Math.round((e.acc || 0) * 3.28084) + ' ft). Step outside or near a window, turn on precise location, and try again.';
+  if (e.code === 'wrong_state') return 'Your status changed (maybe on the front desk tablet). The screen has been updated, so check it and try again.';
+  if (e.code === 'offline') return 'Couldn’t reach the school’s records. Check your connection and try again.';
+  return 'Your phone couldn’t find your location. Try again in a moment.';
+}
+
+/* ---------- actions ---------- */
+async function refresh(){
+  try { const j = await call({ action: 'phoneStatus', token: S.me.token }); S.status = j; if (S.view === 'loading') S.view = 'main'; }
+  catch (e){ if (e.code === 'bad_token'){ S.view = 'bad'; } else if (S.view === 'loading'){ S.view = 'main'; S.status = S.status || { name: S.me.name, punches: [] }; S.err = whereMsg(e); } }
+  render();
+}
+async function punch(){
+  const k = S.pend;
+  if (sigLen(S.strokes) < 8){ S.err = 'Please sign above the line first.'; return render(); }
+  S.busy = true; S.err = ''; render();
+  let loc;
+  try {
+    loc = await where();
+    if (loc.acc > 150) throw Object.assign(new Error('x'), { code: 'vague_location', acc: loc.acc });
+    const dist = metersBetween(loc, SCHOOL);
+    if (dist > RADIUS_M) throw Object.assign(new Error('x'), { code: 'too_far', dist });
+    const job = k === 'tut' ? { k: 'in', j: 'tut' } : { k };
+    const j = await call(Object.assign({ action: 'phonePunch', token: S.me.token, lat: loc.lat, lng: loc.lng, acc: loc.acc, sig: sigPath(S.strokes) }, job));
+    S.status.punches = j.punches; S.pend = null; S.strokes = []; S.busy = false;
+    const first = (S.status.name || '').split(' ')[0];
+    const msg = { tut: ['Clocked in for tutoring', 'These hours count as tutoring.'], in: ['Clocked in', 'Have a great day, ' + first + '.'], bs: ['Enjoy your break', 'Tap End break when you’re back.'], be: ['Welcome back', 'Break ended.'], out: ['Clocked out', 'See you next time, ' + first + '.'] }[k];
+    S.done = { title: msg[0], sub: timeOf(j.t) + '. ' + msg[1] }; S.view = 'done'; render();
+  } catch (e){
+    S.busy = false;
+    if (e.code === 'bad_token'){ S.view = 'bad'; return render(); }
+    if (e.code === 'wrong_state'){ S.pend = null; S.strokes = []; await refresh(); }
+    S.err = whereMsg(e); render();
+  }
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-act]'); if (!b || b.disabled) return;
+  const a = b.dataset.act;
+  if (a === 'punch'){ S.pend = b.dataset.k; S.strokes = []; S.err = ''; render(); }
+  else if (a === 'cancel'){ S.pend = null; S.strokes = []; S.err = ''; render(); }
+  else if (a === 'clear'){ S.strokes = []; S.err = ''; render(); }
+  else if (a === 'go') punch();
+  else if (a === 'back'){ S.view = 'main'; S.done = null; render(); refresh(); }
+  else if (a === 'forget' || a === 'reset'){ if (a === 'forget' && !confirm('Remove clock-in from this phone? You’ll need a new setup code from the office.')) return; forget(); S.view = 'setup'; S.err = ''; render(); }
+});
+document.addEventListener('submit', async e => {
+  if (e.target.id !== 'setup') return;
+  e.preventDefault();
+  const code = ($('#code').value || '').replace(/\D/g, '');
+  if (code.length !== 6){ S.err = 'Type the 6-digit code.'; return render(); }
+  S.busy = true; S.err = ''; render();
+  try {
+    const j = await call({ action: 'phoneRedeem', code });
+    save({ token: j.token, name: j.name }); S.busy = false; S.view = 'loading'; render(); refresh();
+  } catch (er){
+    S.busy = false;
+    S.err = er.code === 'paused' ? 'Too many wrong codes. Wait 10 minutes and ask the office for a new one.' : er.code === 'offline' ? 'Couldn’t reach the school’s records. Check your connection.' : 'That code didn’t work. Codes expire after 10 minutes, so ask the office for a new one.';
+    render();
+  }
+});
+// keep the status fresh when the app comes back to the screen
+document.addEventListener('visibilitychange', () => { if (!document.hidden && S.me && S.view === 'main' && !S.pend) refresh(); });
+
+load();
+if (S.me){ S.view = 'loading'; render(); refresh(); } else { S.view = 'setup'; render(); }
+</script>
+</body>
+</html>
