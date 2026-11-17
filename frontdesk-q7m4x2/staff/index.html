@@ -148,7 +148,7 @@ function vMain(){
   const hello = hourNow() < 12 ? 'Good morning' : hourNow() < 17 ? 'Good afternoon' : 'Good evening';
   const stTxt = d.st === 'in' ? (d.job === 'tut' ? 'Tutoring since ' : 'Clocked in since ') + timeOf(d.since) : d.st === 'break' ? 'At lunch since ' + timeOf(d.since) : d.lastOut ? 'Clocked out at ' + timeOf(d.lastOut) : 'Not clocked in today';
   const cls = d.st === 'in' ? 'in' : d.st === 'break' ? 'brk' : '';
-  const acts = d.st === 'out' ? ['in'] : d.st === 'in' ? ['bs', 'out'] : ['be', 'out'];
+  const acts = d.st === 'out' ? ['in'] : ['out'];
   let body;
   if (S.pend){
     body = '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h2 style="font-size:24px">Sign to ' + VERB[S.pend] + '</h2><button class="linkbtn" data-act="clear" style="color:var(--blue)">Clear</button></div>' +
@@ -157,7 +157,7 @@ function vMain(){
       '<div class="acts" style="margin-top:14px"><button class="btn" data-act="go"' + (S.busy ? ' disabled' : '') + '>' + (S.busy ? 'Checking your location…' : BTN[S.pend]) + '</button><button class="btn ghost" data-act="cancel"' + (S.busy ? ' disabled' : '') + '>Cancel</button></div></div>';
   } else {
     body = '<div class="err" id="err">' + esc(S.err) + '</div><div class="acts">' +
-      acts.map(k => '<button class="btn' + ({ tut: ' tut', bs: ' ghost' }[k] || (k === 'out' && d.st === 'break' ? ' ghost' : '')) + '" data-act="punch" data-k="' + k + '">' + BTN[k] + '</button>').join('') + '</div>';
+      acts.map(k => '<button class="btn' + ({ tut: ' tut' }[k] || '') + '" data-act="punch" data-k="' + k + '">' + BTN[k] + '</button>').join('') + '</div>';
   }
   const list = (s.punches || []).map(e => '<div><span>' + esc(e.k === 'in' && e.j === 'tut' ? 'Clock in for tutoring' : LABEL[e.k]) + '</span><b>' + esc(timeOf(e.t)) + '</b></div>').join('');
   const today = new Intl.DateTimeFormat('en-US', { timeZone: TZ, weekday: 'long', month: 'long', day: 'numeric' }).format(new Date());
@@ -172,7 +172,7 @@ function vDone(){
     '<button class="btn" data-act="back" style="margin-top:18px">Done</button></main>';
 }
 function vBad(){
-  return '<main><p class="banner">This phone isn’t set up for clock-in anymore. The office may have turned it off. Ask them for a new setup code.</p><button class="btn" data-act="reset">Enter a new code</button></main>';
+  return '<main><p class="banner">This phone isn’t set up for clock-in anymore. Ask us for a new setup code.</p><button class="btn" data-act="reset">Enter a new code</button></main>';
 }
 function render(){
   const V = { setup: vSetup, main: vMain, done: vDone, bad: vBad, loading: () => '<main><p class="hint">Loading…</p></main>' }[S.view];
@@ -260,7 +260,7 @@ document.addEventListener('click', e => {
   else if (a === 'clear'){ S.strokes = []; S.err = ''; render(); }
   else if (a === 'go') punch();
   else if (a === 'back'){ S.view = 'main'; S.done = null; render(); refresh(); }
-  else if (a === 'forget' || a === 'reset'){ if (a === 'forget' && !confirm('Remove clock-in from this phone? You’ll need a new setup code from the office.')) return; forget(); S.view = 'setup'; S.err = ''; render(); }
+  else if (a === 'forget' || a === 'reset'){ if (a === 'forget' && !confirm('Remove clock-in from this phone? You’ll need a new setup code from us.')) return; forget(); S.view = 'setup'; S.err = ''; render(); }
 });
 document.addEventListener('submit', async e => {
   if (e.target.id !== 'setup') return;
@@ -273,7 +273,7 @@ document.addEventListener('submit', async e => {
     save({ token: j.token, name: j.name }); S.busy = false; S.view = 'loading'; render(); refresh();
   } catch (er){
     S.busy = false;
-    S.err = er.code === 'paused' ? 'Too many wrong codes. Wait 10 minutes and ask the office for a new one.' : er.code === 'offline' ? 'Couldn’t reach the school’s records. Check your connection.' : 'That code didn’t work. Codes expire after 10 minutes, so ask the office for a new one.';
+    S.err = er.code === 'paused' ? 'Too many wrong codes. Wait 10 minutes and ask us for a new one.' : er.code === 'offline' ? 'Couldn’t reach the school’s records. Check your connection.' : 'That code didn’t work. Codes expire after 10 minutes, so ask the office for a new one.';
     render();
   }
 });
