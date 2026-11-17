@@ -419,9 +419,15 @@ function render(){
 }
 // Re-render for data changes, but never while someone is typing or signing.
 let pendingSoft = false;
+// a form someone has started filling in (anything differs from what the screen drew)
+function formDirty(){
+  return [...document.querySelectorAll('form input, form textarea')].some(el => el.type !== 'hidden' && el.value !== el.defaultValue);
+}
 function softRender(){
   const a = document.activeElement;
   if (a && /INPUT|TEXTAREA|SELECT/.test(a.tagName)){ pendingSoft = true; return; }
+  // never wipe a half-filled form (e.g. adding a child) just because new data arrived
+  if (formDirty()){ pendingSoft = true; return; }
   if (S.v.signing){ pendingSoft = true; return; }
   render();
 }
