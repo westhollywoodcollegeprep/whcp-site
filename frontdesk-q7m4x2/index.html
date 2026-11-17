@@ -570,7 +570,7 @@ function vStaff(){
     const p = parts(Date.now());
     const hello = p.h < 12 ? 'Good morning, staff.' : p.h < 17 ? 'Good afternoon, staff.' : 'Good evening, staff.';
     return header('', 's') + '<main>' + dbBanner() + '<div class="pinbox" style="max-width:420px;margin:0 auto;width:100%;display:flex;flex-direction:column;gap:16px">' +
-      '<h1 style="font-size:34px">' + hello + '</h1><p class="hint" style="margin:-8px 0 0;font-size:19px">Enter your PIN to clock in, clock out, or take a break.</p>' +
+      '<h1 style="font-size:34px">' + hello + '</h1><p class="hint" style="margin:-8px 0 0;font-size:19px">Enter your PIN to clock in, clock out, or go to lunch.</p>' +
       (n ? '' : '<p class="banner" style="margin:0">No staff are set up yet. The office adds staff and their PINs under Office, Roster.</p>') +
       '<div class="dots' + (v.shake ? ' shake' : '') + '" role="img" aria-label="' + v.pin.length + ' of 4 digits entered">' + [0, 1, 2, 3].map(i => '<i class="' + (i < v.pin.length ? 'on' : '') + '"></i>').join('') + '</div>' +
       '<div class="err" id="perr">' + esc(v.err || '') + '</div>' +
@@ -579,10 +579,10 @@ function vStaff(){
       '<footer class="foot"><span></span><button class="linkbtn" data-act="office">Office</button></footer>';
   }
   const s = S.staff[v.id] || { name: 'Unknown' }, d = staffToday(v.id);
-  const stTxt = d.st === 'in' ? (d.job === 'tut' ? 'Tutoring since ' : 'Clocked in since ') + timeOf(d.since) : d.st === 'break' ? 'On break since ' + timeOf(d.since) : d.lastOut ? 'Clocked out at ' + timeOf(d.lastOut) : 'Not clocked in today';
+  const stTxt = d.st === 'in' ? (d.job === 'tut' ? 'Tutoring since ' : 'Clocked in since ') + timeOf(d.since) : d.st === 'break' ? 'At lunch since ' + timeOf(d.since) : d.lastOut ? 'Clocked out at ' + timeOf(d.lastOut) : 'Not clocked in today';
   const acts = d.st === 'out' ? '<button class="btn" data-act="clk" data-k="in">Clock in</button><button class="btn tutbtn" data-act="clk" data-k="tut">Clock in for tutoring</button>'
-    : d.st === 'in' ? '<button class="btn ghost" data-act="clk" data-k="bs">Start break</button><button class="btn" data-act="clk" data-k="out">Clock out</button>'
-    : '<button class="btn" data-act="clk" data-k="be">End break</button><button class="btn ghost" data-act="clk" data-k="out">Clock out</button>';
+    : d.st === 'in' ? '<button class="btn ghost" data-act="clk" data-k="bs">Start lunch</button><button class="btn" data-act="clk" data-k="out">Clock out</button>'
+    : '<button class="btn" data-act="clk" data-k="be">End lunch</button><button class="btn ghost" data-act="clk" data-k="out">Clock out</button>';
   const wk = v.week || [];
   const mon = mondayOf(S.today);
   let total = 0, tutTotal = 0;
@@ -598,7 +598,7 @@ function vStaff(){
     '<div class="err" id="serr">' + esc(v.err || '') + '</div>' +
     (v.pend ? staffSignCard(v.pend) : '<div class="acts">' + acts + '</div>') +
     '<div class="card"><div class="row" style="justify-content:space-between;margin-bottom:6px"><h2 style="font-size:24px">This week</h2><span class="hint">' + esc(fmtKey(mon, { month: 'short', day: 'numeric' })) + ' – ' + esc(fmtKey(shiftKey(mon, 4), { month: 'short', day: 'numeric' })) + '</span></div>' +
-    '<table><thead><tr><th scope="col">Day</th><th scope="col">In</th><th scope="col">Out</th><th scope="col">Break</th><th scope="col" class="num">Hours</th></tr></thead><tbody>' + rows + '</tbody></table>' +
+    '<table><thead><tr><th scope="col">Day</th><th scope="col">In</th><th scope="col">Out</th><th scope="col">Lunch</th><th scope="col" class="num">Hours</th></tr></thead><tbody>' + rows + '</tbody></table>' +
     '<div class="row" style="justify-content:space-between;margin-top:12px"><span class="hint">Something wrong? Tell the office.</span><b style="font-family:var(--display);font-size:24px">' + hm(total) + ' hrs' + (tutTotal >= 1 ? '<span class="tutnote" style="display:block;text-align:right">' + hm(tutTotal) + ' tutoring</span>' : '') + '</b></div></div>' +
     '<div class="row" style="justify-content:center"><button class="linkbtn" data-act="staffout">Not you? Done</button></div>' +
     '</section></div></main>';
@@ -620,8 +620,8 @@ async function pinEntered(){
     if (S.view === 'staff' && S.v.id === hit.id){ S.v.week = wk; softRender(); }
   } catch (e){ console.warn(e); }
 }
-const PUNCH_VERB = { in: 'clock in', tut: 'clock in for tutoring', bs: 'start your break', be: 'end your break', out: 'clock out' };
-const PUNCH_BTN = { in: 'Clock in', tut: 'Clock in for tutoring', bs: 'Start break', be: 'End break', out: 'Clock out' };
+const PUNCH_VERB = { in: 'clock in', tut: 'clock in for tutoring', bs: 'start your lunch', be: 'end your lunch', out: 'clock out' };
+const PUNCH_BTN = { in: 'Clock in', tut: 'Clock in for tutoring', bs: 'Start lunch', be: 'End lunch', out: 'Clock out' };
 function staffSignCard(k){
   const v = S.v;
   return '<div class="card signcard"><div class="row" style="justify-content:space-between"><h2 style="font-size:26px">Sign to ' + PUNCH_VERB[k] + '</h2><button class="linkbtn" data-act="clearsig" style="color:var(--blue)">Clear</button></div>' +
@@ -643,7 +643,7 @@ async function clockAction(k){
     punches.forEach(p => localAdd(S.clock, p.id, p));
   } catch (e){ console.warn(e); v.err = failMsg(e); render(); return; }
   const first = s.name.split(' ')[0];
-  const msg = { tut: ['Clocked in for tutoring, ' + first + '.', 'These hours count as tutoring.'], in: ['Clocked in, ' + first + '.', 'Have a great day.'], bs: ['Enjoy your break, ' + first + '.', 'Tap End break when you’re back.'], be: ['Welcome back, ' + first + '.', 'Break ended.'], out: ['Clocked out, ' + first + '.', 'See you next time.'] }[kind];
+  const msg = { tut: ['Clocked in for tutoring, ' + first + '.', 'These hours count as tutoring.'], in: ['Clocked in, ' + first + '.', 'Have a great day.'], bs: ['Enjoy your lunch, ' + first + '.', 'Tap End lunch when you’re back.'], be: ['Welcome back, ' + first + '.', 'Lunch is over.'], out: ['Clocked out, ' + first + '.', 'See you next time.'] }[kind];
   go('done', { title: msg[0], sub: timeOf(t) + '. ' + msg[1] });
 }
 function jobOf(k){ return k === 'tut' ? { k: 'in', j: 'tut' } : { k };
@@ -697,7 +697,7 @@ function oToday(){
     const pill = s.state === 'here' ? '<span class="pill here">Here</span>' : s.state === 'gone' ? '<span class="pill gone">Gone home</span>' : '<span class="pill none">Absent?</span>';
     return '<div class="it"><div><b>' + esc(c.name) + '</b> <span class="sub">' + esc(c.grade || '') + '</span><div class="sub">' + info + '</div></div>' + pill + '</div>'; };
   const stRow = s => { const d = staffToday(s.id);
-    const pill = d.st === 'in' ? '<span class="pill ok">' + (d.job === 'tut' ? 'Tutoring since ' : 'In since ') + timeOf(d.since) + '</span>' : d.st === 'break' ? '<span class="pill warn">On break</span>' : d.lastOut ? '<span class="pill gone">Out ' + timeOf(d.lastOut) + '</span>' : '<span class="pill none">Not in</span>';
+    const pill = d.st === 'in' ? '<span class="pill ok">' + (d.job === 'tut' ? 'Tutoring since ' : 'In since ') + timeOf(d.since) + '</span>' : d.st === 'break' ? '<span class="pill warn">At lunch</span>' : d.lastOut ? '<span class="pill gone">Out ' + timeOf(d.lastOut) + '</span>' : '<span class="pill none">Not in</span>';
     return '<div class="it"><div><b>' + esc(s.name) + '</b><div class="sub">' + esc(s.role || '') + (d.work ? ' · ' + hm(d.work) + ' today' : '') + '</div></div>' + pill + '</div>'; };
   return '<div class="stats"><div><b>' + here.length + '</b><span>children here now</span></div><div><b>' + gone.length + '</b><span>gone home</span></div><div><b>' + (kids.length - here.length - gone.length) + '</b><span>not signed in</span></div><div><b>' + staffIn.length + '</b><span>staff in</span></div></div>' +
     (flagged.length ? '<p class="banner">' + flagged.length + ' pick-up' + (flagged.length > 1 ? 's' : '') + ' today by someone not on the approved list: ' + esc(flagged.map(e => e.n + ' (by ' + e.a + ')').join(', ')) + '.</p>' : '') +
@@ -725,17 +725,17 @@ function oTimes(){
     '<h2 style="font-size:24px">Week of ' + esc(fmtKey(mon, { month: 'long', day: 'numeric', year: 'numeric' })) + '</h2><button class="btn small ghost" data-act="wk" data-v="7" aria-label="Next week">→</button></div>' +
     '<button class="btn small" data-act="csvtimes">Export CSV</button></div>' +
     '<div class="card scroll"><table><thead><tr><th scope="col">Staff</th>' + show.map(k => '<th scope="col" class="num">' + esc(fmtKey(k, { weekday: 'short', month: 'numeric', day: 'numeric' })) + '</th>').join('') + '<th scope="col" class="num">Total</th><th scope="col" class="num">Tutoring</th></tr></thead><tbody>' +
-    (rows || '<tr><td colspan="9" class="hint">No staff yet.</td></tr>') + '</tbody></table><p class="hint" style="margin:10px 0 0">Hours exclude breaks. Total includes tutoring; the Tutoring column is the part billed at the tutoring rate. Tap a name to see every punch and fix a missed one.</p></div>' + detail;
+    (rows || '<tr><td colspan="9" class="hint">No staff yet.</td></tr>') + '</tbody></table><p class="hint" style="margin:10px 0 0">Hours exclude lunch. Total includes tutoring; the Tutoring column is the part billed at the tutoring rate. Tap a name to see every punch and fix a missed one.</p></div>' + detail;
 }
 function timesDetail(id, show, wd){
-  const p = S.staff[id] || { name: 'Staff member' }, KN = { in: 'Clock in', bs: 'Break start', be: 'Break end', out: 'Clock out' };
+  const p = S.staff[id] || { name: 'Staff member' }, KN = { in: 'Clock in', bs: 'Lunch start', be: 'Lunch end', out: 'Clock out' };
   const items = show.map(k => { const evs = (wd[k] || []).filter(e => e.s === id).sort((a, b) => a.t - b.t); if (!evs.length) return '';
     return '<div class="it" style="align-items:flex-start"><b style="min-width:120px">' + esc(fmtKey(k, { weekday: 'short', month: 'short', day: 'numeric' })) + '</b><div style="flex:1;display:flex;flex-direction:column;gap:6px">' +
       evs.map(e => '<div class="row" style="justify-content:space-between"><span>' + KN[e.k] + (e.j === 'tut' ? ' for tutoring' : '') + ' · ' + timeOf(e.t) + (e.m ? ' <span class="pill gone">added by office</span>' : '') + '</span><button class="linkbtn" data-act="voidpunch" data-day="' + k + '" data-id="' + esc(e.id) + '">Remove</button></div>').join('') + '</div></div>'; }).join('');
   return '<div class="card" style="margin-top:18px"><div class="row" style="justify-content:space-between"><h2 style="font-size:24px">' + esc(p.name) + '</h2><button class="linkbtn" data-act="tdetail" data-id="">Close</button></div>' +
     '<div class="list">' + (items || '<p class="hint">No punches this week.</p>') + '</div>' +
     '<form class="row" data-form="addpunch" style="margin-top:14px;align-items:flex-end"><div class="field"><label for="apd">Day</label><select id="apd" class="input">' + show.map(k => '<option value="' + k + '">' + esc(fmtKey(k, { weekday: 'short', month: 'short', day: 'numeric' })) + '</option>').join('') + '</select></div>' +
-    '<div class="field"><label for="apk">Punch</label><select id="apk" class="input"><option value="in">Clock in</option><option value="tut">Clock in for tutoring</option><option value="bs">Break start</option><option value="be">Break end</option><option value="out" selected>Clock out</option></select></div>' +
+    '<div class="field"><label for="apk">Punch</label><select id="apk" class="input"><option value="in">Clock in</option><option value="tut">Clock in for tutoring</option><option value="bs">Lunch start</option><option value="be">Lunch end</option><option value="out" selected>Clock out</option></select></div>' +
     '<div class="field"><label for="apt">Time</label><input id="apt" class="input" type="time" value="15:30"></div><button class="btn small" type="submit">Add punch</button></form></div>';
 }
 async function loadWeek(mon){
@@ -829,9 +829,9 @@ function saveCSV(name, rows){
   } catch (e){ toast('Couldn\u2019t make the file.', true); }
 }
 function csvTimes(){
-  const o = S.office, mon = o.week, KN = { in: 'Clock in', bs: 'Break start', be: 'Break end', out: 'Clock out' };
+  const o = S.office, mon = o.week, KN = { in: 'Clock in', bs: 'Lunch start', be: 'Lunch end', out: 'Clock out' };
   const wd = Object.assign({}, o.weekData || {}); const days = [0, 1, 2, 3, 4, 5, 6].map(i => shiftKey(mon, i)); if (days.includes(S.today)) wd[S.today] = live(S.clock);
-  const rows = [['Staff', 'Role', 'Date', 'First in', 'Last out', 'Break minutes', 'Hours worked', 'Hours (decimal)', 'Regular hours (decimal)', 'Tutoring hours (decimal)', 'Note']];
+  const rows = [['Staff', 'Role', 'Date', 'First in', 'Last out', 'Lunch minutes', 'Hours worked', 'Hours (decimal)', 'Regular hours (decimal)', 'Tutoring hours (decimal)', 'Note']];
   const names = {}; Object.values(wd).flat().forEach(e => { names[e.s] = e.n; });
   Object.keys(names).sort((a, b) => names[a].localeCompare(names[b])).forEach(id => days.forEach(k => {
     const evs = (wd[k] || []).filter(e => e.s === id); if (!evs.length) return; const h = dayHours(evs, k);

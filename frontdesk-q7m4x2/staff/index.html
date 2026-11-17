@@ -126,9 +126,9 @@ function todayMins(evs){
   return work / 6e4;
 }
 const weekMins = s => (+s.weekPrev || 0) + todayMins(s.punches);
-const LABEL = { in: 'Clock in', bs: 'Break start', be: 'Break end', out: 'Clock out' };
-const VERB = { in: 'clock in', tut: 'clock in for tutoring', bs: 'start your break', be: 'end your break', out: 'clock out' };
-const BTN = { in: 'Clock in', tut: 'Clock in for tutoring', bs: 'Start break', be: 'End break', out: 'Clock out' };
+const LABEL = { in: 'Clock in', bs: 'Lunch start', be: 'Lunch end', out: 'Clock out' };
+const VERB = { in: 'clock in', tut: 'clock in for tutoring', bs: 'start your lunch', be: 'end your lunch', out: 'clock out' };
+const BTN = { in: 'Clock in', tut: 'Clock in for tutoring', bs: 'Start lunch', be: 'End lunch', out: 'Clock out' };
 
 /* ---------- screens ---------- */
 function header(){
@@ -146,7 +146,7 @@ function vMain(){
   if (!s) return '<main><p class="hint">Loading…</p></main>';
   const d = dayState(s.punches), first = (s.name || '').split(' ')[0];
   const hello = hourNow() < 12 ? 'Good morning' : hourNow() < 17 ? 'Good afternoon' : 'Good evening';
-  const stTxt = d.st === 'in' ? (d.job === 'tut' ? 'Tutoring since ' : 'Clocked in since ') + timeOf(d.since) : d.st === 'break' ? 'On break since ' + timeOf(d.since) : d.lastOut ? 'Clocked out at ' + timeOf(d.lastOut) : 'Not clocked in today';
+  const stTxt = d.st === 'in' ? (d.job === 'tut' ? 'Tutoring since ' : 'Clocked in since ') + timeOf(d.since) : d.st === 'break' ? 'At lunch since ' + timeOf(d.since) : d.lastOut ? 'Clocked out at ' + timeOf(d.lastOut) : 'Not clocked in today';
   const cls = d.st === 'in' ? 'in' : d.st === 'break' ? 'brk' : '';
   const acts = d.st === 'out' ? ['in'] : d.st === 'in' ? ['bs', 'out'] : ['be', 'out'];
   let body;
@@ -243,7 +243,7 @@ async function punch(){
     const j = await call(Object.assign({ action: 'phonePunch', token: S.me.token, lat: loc.lat, lng: loc.lng, acc: loc.acc, sig: sigPath(S.strokes) }, job));
     S.status.punches = j.punches; if (j.weekPrev != null) S.status.weekPrev = j.weekPrev; S.pend = null; S.strokes = []; S.busy = false;
     const first = (S.status.name || '').split(' ')[0];
-    const msg = { tut: ['Clocked in for tutoring', 'These hours count as tutoring.'], in: ['Clocked in', 'Have a great day, ' + first + '.'], bs: ['Enjoy your break', 'Tap End break when you’re back.'], be: ['Welcome back', 'Break ended.'], out: ['Clocked out', 'See you next time, ' + first + '.'] }[k];
+    const msg = { tut: ['Clocked in for tutoring', 'These hours count as tutoring.'], in: ['Clocked in', 'Have a great day, ' + first + '.'], bs: ['Enjoy your lunch', 'Tap End lunch when you’re back.'], be: ['Welcome back', 'Lunch is over.'], out: ['Clocked out', 'See you next time, ' + first + '.'] }[k];
     S.done = { title: msg[0], sub: timeOf(j.t) + '. ' + msg[1] }; S.view = 'done'; render();
   } catch (e){
     S.busy = false;
