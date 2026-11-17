@@ -5,7 +5,7 @@
 
   /* Old bookmarks like /#calendar or /?p=... from the single-page version: send to the real page. */
   var ROUTES = ["about", "accessibility", "admissions", "after-school", "calendar", "careers", "contact", "early-childhood", "elementary", "giving", "home", "individual", "international", "middle-high", "mission", "parents", "principals-message", "privacy", "programs", "students", "terms", "tutoring"];
-  var SHEET_URL = "";  // Google Apps Script web app (set in build.py); empty = off
+  var SHEET_URL = "https://script.google.com/macros/s/AKfycbxJmwCwu1NM00LCD87KhHaC608bkLGOoXIZK-ZNzmGt0DYXbrO9MFa7IINx9oaTvTSHiw/exec";  // Google Apps Script web app (set in build.py); empty = off
   var h = location.hash.replace(/^#\/?/, '');
   if (h === 'k-elementary') h = 'elementary';  // route was renamed
   if (h && h !== 'app' && ROUTES.indexOf(h) !== -1) {

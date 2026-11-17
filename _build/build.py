@@ -93,7 +93,7 @@ LEGACY = {  # old Wix URLs still in Google's index -> new page
 }
 # Google Apps Script web app URL that records form submissions in the inquiries Sheet.
 # Paste the .../exec URL here after deploying _build/inquiries-sheet.gs. Empty string = off.
-SHEET_URL = ''
+SHEET_URL = 'https://script.google.com/macros/s/AKfycbxJmwCwu1NM00LCD87KhHaC608bkLGOoXIZK-ZNzmGt0DYXbrO9MFa7IINx9oaTvTSHiw/exec'
 
 SOCIAL = ['https://www.facebook.com/whcprep', 'https://www.instagram.com/westhollywoodcollegeprep/',
           'https://x.com/WHCollegePrep', 'https://studyinthestates.dhs.gov/certified-school/108902']
