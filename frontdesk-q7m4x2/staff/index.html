@@ -72,7 +72,7 @@ label{display:block;font-weight:500;margin-bottom:8px}
 <script>
 'use strict';
 /* Settings. The Sheet address is public; what a phone can do is limited by its own token,
-   which only clocks one staff member in and out, and only near the school. */
+   which only clocks one staff member in and out, and only at school. */
 const API = 'https://script.google.com/macros/s/AKfycbyqYlaG9LblA-dlDcelsfRxu2WI11phFCj4oH0-gLRr2wUQg4GOr-ScglgRuPGzyyUl7w/exec';
 const SCHOOL = { lat: 34.0952, lng: -118.3671 };   // 1317 N. Crescent Heights Blvd.
 const RADIUS_M = 483;                               // 0.3 miles
@@ -125,7 +125,7 @@ function vSetup(){
     '<p class="hint">Ask the office for your phone setup code. They get it from Office › Roster › your name › Phone clock-in. You only do this once on this phone.</p>' +
     '<form class="card" id="setup" style="display:flex;flex-direction:column;gap:14px"><div><label for="code">Setup code</label><input id="code" class="input" inputmode="numeric" maxlength="6" autocomplete="one-time-code"></div>' +
     '<div class="err" id="err">' + esc(S.err) + '</div><button class="btn" type="submit"' + (S.busy ? ' disabled' : '') + '>Set up this phone</button></form>' +
-    '<p class="hint">Clocking in from your phone only works at school, within 0.3 miles, so your phone will ask to use your location.</p></main>';
+    '<p class="hint">Clocking in from your phone only works when you’re at school, so your phone will ask to use your location.</p></main>';
 }
 function vMain(){
   const s = S.status;
@@ -202,7 +202,7 @@ function where(){
 function whereMsg(e){
   if (e.code === 'denied') return 'Location is turned off for this site. Allow location for this page in your phone’s browser settings, then try again.';
   if (e.code === 'nogeo') return 'This browser can’t share your location. Try Chrome or Safari.';
-  if (e.code === 'too_far') return 'You’re about ' + miles(e.dist) + ' miles from school. Clock-in from your phone works within 0.3 miles of school.';
+  if (e.code === 'too_far') return 'It doesn’t look like you’re at school right now. You can clock in from your phone once you’re here.';
   if (e.code === 'vague_location') return 'Your phone couldn’t pin down your location (it’s off by about ' + Math.round((e.acc || 0) * 3.28084) + ' ft). Step outside or near a window, turn on precise location, and try again.';
   if (e.code === 'wrong_state') return 'Your status changed (maybe on the front desk tablet). The screen has been updated, so check it and try again.';
   if (e.code === 'offline') return 'Couldn’t reach the school’s records. Check your connection and try again.';
