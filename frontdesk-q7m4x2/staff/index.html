@@ -282,6 +282,22 @@ setInterval(() => { const n = $('#now'); if (n) n.textContent = timeOf(Date.now(
 // keep the status fresh when the app comes back to the screen
 document.addEventListener('visibilitychange', () => { if (!document.hidden && S.me && S.view === 'main' && !S.pend) refresh(); });
 
+let lastTouch = Date.now();
+['pointerdown', 'keydown'].forEach(ev => document.addEventListener(ev, () => { lastTouch = Date.now(); }, { passive: true }));
+/* ---------- self-update: when a new version of this page is published, reload while nobody's using it ---------- */
+(function(){
+  let mine = null, waiting = false;
+  const sig = t => { let h = 0; for (let i = 0; i < t.length; i++) h = (h * 31 + t.charCodeAt(i)) | 0; return t.length + ':' + h; };
+  const fetchSig = () => fetch(location.pathname + '?check=' + Date.now(), { cache: 'no-store' }).then(r => r.ok ? r.text() : null).then(t => t ? sig(t) : null).catch(() => null);
+  fetchSig().then(s => { mine = s; });
+  setInterval(async () => {
+    if (!mine){ mine = await fetchSig(); return; }
+    if (!waiting){ const s = await fetchSig(); if (s && s !== mine) waiting = true; }
+  }, 5 * 60 * 1000);
+  setInterval(() => {
+    if (waiting && ((S.view === 'main' || S.view === 'setup') && !S.pend && !S.busy && !($('#code') && $('#code').value) && (Date.now() - lastTouch) > 30000)) location.replace(location.pathname + '?v=' + Date.now());
+  }, 5000);
+})();
 load();
 if (S.me){ S.view = 'loading'; render(); refresh(); } else { S.view = 'setup'; render(); }
 </script>
