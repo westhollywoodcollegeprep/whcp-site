@@ -134,7 +134,7 @@ function vMain(){
   const hello = hourNow() < 12 ? 'Good morning' : hourNow() < 17 ? 'Good afternoon' : 'Good evening';
   const stTxt = d.st === 'in' ? (d.job === 'tut' ? 'Tutoring since ' : 'Clocked in since ') + timeOf(d.since) : d.st === 'break' ? 'On break since ' + timeOf(d.since) : d.lastOut ? 'Clocked out at ' + timeOf(d.lastOut) : 'Not clocked in today';
   const cls = d.st === 'in' ? 'in' : d.st === 'break' ? 'brk' : '';
-  const acts = d.st === 'out' ? ['in', 'tut'] : d.st === 'in' ? ['bs', 'out'] : ['be', 'out'];
+  const acts = d.st === 'out' ? ['in'] : d.st === 'in' ? ['bs', 'out'] : ['be', 'out'];
   let body;
   if (S.pend){
     body = '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h2 style="font-size:24px">Sign to ' + VERB[S.pend] + '</h2><button class="linkbtn" data-act="clear" style="color:var(--blue)">Clear</button></div>' +
