@@ -88,6 +88,8 @@ LEGACY = {  # old Wix URLs still in Google's index -> new page
     'middle-and-high-school': 'middle-high', 'mission-and-goals': 'mission',
     'international-students': 'international', 'individual-programs': 'individual',
     'testimonials': 'about', 'contact-us': 'contact',
+    'early-childhood-education': 'early-childhood', 'after-school-programs': 'after-school',
+    'leadership': 'about', 'alumni': 'about', 'past-events': 'calendar',
 }
 # Google Apps Script web app URL that records form submissions in the inquiries Sheet.
 # Paste the .../exec URL here after deploying _build/inquiries-sheet.gs. Empty string = off.
@@ -194,6 +196,8 @@ def main():
     for d in ('img', 'assets'):
         shutil.rmtree(ROOT / d, ignore_errors=True)
     (ROOT / 'img').mkdir()
+    # newsletter images (JPG/PNG copies email apps can show) are kept in _build/email and copied in as-is
+    shutil.copytree(ROOT / '_build' / 'email', ROOT / 'img' / 'email')
     (ROOT / 'assets' / 'fonts').mkdir(parents=True)
     imgs = Images(ROOT / 'img')
 
