@@ -219,6 +219,7 @@ tr.today td{color:var(--blue);font-weight:500}
 <div id="app" aria-live="polite"></div>
 <div id="toast" class="toast" hidden></div>
 <script src="qrcode.js"></script>
+<script src="jsqr.js"></script>
 <script>
 'use strict';
 /* =========================================================================
@@ -373,7 +374,7 @@ function toast(msg, bad){ const t = $('#toast'); t.textContent = msg; t.classNam
 
 /* ---------- navigation ---------- */
 let doneTimer = 0;
-function go(view, v){ clearTimeout(doneTimer); S.view = view; S.v = v || {}; render(); const m = $('main'); if (m) window.scrollTo(0, 0); }
+function go(view, v){ clearTimeout(doneTimer); if (S.scan) stopScan(); S.view = view; S.v = v || {}; render(); const m = $('main'); if (m) window.scrollTo(0, 0); }
 function goneHome(){ go('home'); }
 
 /* ---------- rendering ---------- */
@@ -644,7 +645,7 @@ function jobOf(k){ return k === 'tut' ? { k: 'in', j: 'tut' } : { k };
 /* ---------- office ---------- */
 function vOffice(){
   const o = S.office;
-  if (!S.conn || S.dbState === 'badkey') return header('Office') + '<main>' + connectForm() + '</main>';
+  if (!S.conn || S.dbState === 'badkey') return header('Office') + '<main>' + scanBox() + connectForm() + '</main>';
   if (!S.settingsLoaded) return header('Office') + '<main>' + dbBanner() + '<p class="hint">Loading…</p></main>';
   if (!S.settings || !S.settings.pass){
     return header('Office') + '<main><form class="lockbox card" data-form="setup"><h1 style="font-size:30px">Set up the office passcode</h1>' +
@@ -671,6 +672,53 @@ function connectForm(){
     '<div class="field"><label for="cu">Web app address</label><input id="cu" class="input" autocomplete="off" placeholder="https://script.google.com/macros/s/\u2026/exec"></div>' +
     '<div class="field"><label for="ck">Access key</label><input id="ck" class="input" autocomplete="off"></div>' +
     '<div class="err" id="oerr"></div><button class="btn" type="submit">Connect</button></form>';
+}
+function scanBox(){
+  return '<div class="lockbox card" style="margin-bottom:18px;display:flex;flex-direction:column;gap:12px">' +
+    '<h1 style="font-size:30px">Scan to connect</h1>' +
+    '<p class="hint" style="margin:0">On a tablet that\u2019s already connected, open Office \u203a Settings \u203a Show QR code, then point this camera at it.</p>' +
+    (S.scan ? '<video id="qrv" playsinline muted autoplay style="width:100%;max-width:420px;background:#000;align-self:center"></video><div class="err" id="qerr">' + esc(S.scanErr || '') + '</div><button class="btn small ghost" type="button" data-act="scanstop" style="align-self:flex-start">Cancel</button>'
+            : (S.scanErr ? '<div class="err">' + esc(S.scanErr) + '</div>' : '') + '<button class="btn" type="button" data-act="scanqr">Scan QR code</button>') +
+    '</div>';
+}
+/* ---------- scan a connect QR code with this tablet's camera ---------- */
+let scanStream = null, scanRaf = 0;
+function stopScan(){
+  cancelAnimationFrame(scanRaf); scanRaf = 0;
+  if (scanStream){ scanStream.getTracks().forEach(t => t.stop()); scanStream = null; }
+  S.scan = false;
+}
+async function startScan(){
+  S.scanErr = '';
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || typeof jsQR !== 'function'){ S.scanErr = 'This browser can\u2019t use the camera. Paste the two values below instead.'; return render(); }
+  try { scanStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' }, audio: false }); }
+  catch (e){ S.scanErr = 'The camera didn\u2019t open. Allow camera access for this site, or paste the two values below.'; return render(); }
+  S.scan = true; render();
+  const cv = document.createElement('canvas'), cx = cv.getContext('2d', { willReadFrequently: true });
+  const tick = async () => {
+    const vid = $('#qrv');
+    if (!S.scan || !vid){ stopScan(); return; }
+    if (vid.srcObject !== scanStream){ vid.srcObject = scanStream; try { await vid.play(); } catch (e) {} }
+    if (vid.readyState >= 2 && vid.videoWidth){
+      const w = Math.min(640, vid.videoWidth), h = Math.round(vid.videoHeight * w / vid.videoWidth);
+      cv.width = w; cv.height = h; cx.drawImage(vid, 0, 0, w, h);
+      const hit = jsQR(cx.getImageData(0, 0, w, h).data, w, h, { inversionAttempts: 'dontInvert' });
+      if (hit && hit.data){
+        const m = hit.data.match(/#connect=([A-Za-z0-9_\-=]+)/);
+        if (!m){ const qe = $('#qerr'); if (qe) qe.textContent = 'That QR code isn\u2019t a WHCP connection code.'; }
+        else {
+          let c = null; try { c = JSON.parse(atob(m[1].replace(/-/g, '+').replace(/_/g, '/'))); } catch (e) {}
+          if (c && c.u && c.k && /^https:\/\/script\.google(usercontent)?\.com\//.test(c.u)){
+            stopScan();
+            try { await api('today', {}, { u: c.u, k: c.k }); } catch (err){ S.scanErr = err.code === 'bad_key' ? 'That code\u2019s access key isn\u2019t right.' : 'Couldn\u2019t reach the school\u2019s records. Check the Wi-Fi and scan again.'; return render(); }
+            saveConn({ u: c.u, k: c.k }); S.connErr = ''; S.scanErr = ''; S.dbState = 'loading'; startDb(); toast('Connected.'); return render();
+          }
+        }
+      }
+    }
+    scanRaf = requestAnimationFrame(tick);
+  };
+  scanRaf = requestAnimationFrame(tick);
 }
 function oToday(){
   const kids = activeChildren(), st = activeStaff();
@@ -869,6 +917,8 @@ document.addEventListener('click', async e => {
   if (a === 'staffout') return goneHome();
   if (a === 'otab'){ o.tab = b.dataset.v; o.detail = null; return render(); }
   if (a === 'lock'){ o.unlocked = false; o.qr = false; return goneHome(); }
+  if (a === 'scanqr') return startScan();
+  if (a === 'scanstop'){ stopScan(); S.scanErr = ''; return render(); }
   if (a === 'qrshow'){ o.qr = true; return render(); }
   if (a === 'qrhide'){ o.qr = false; return render(); }
   if (a === 'wk'){ o.week = shiftKey(o.week, +b.dataset.v); o.weekData = undefined; o.detail = null; return render(); }
