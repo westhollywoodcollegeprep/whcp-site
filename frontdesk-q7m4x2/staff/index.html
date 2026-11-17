@@ -165,7 +165,7 @@ function vMain(){
     '<div class="big" id="now" style="font-size:56px">' + esc(timeOf(Date.now())) + '</div>' +
     '<div><span class="st ' + cls + '">' + esc(stTxt) + '</span></div>' + body +
     '<div class="card"><h2 style="font-size:20px;margin-bottom:6px">Today</h2>' + (list ? '<div class="list">' + list + '</div>' : '<p class="hint">Nothing yet today.</p>') + '<p class="hint" style="margin-top:10px">Something wrong? Let us know.</p></div></main>' +
-    '<footer class="foot"><span class="hint">This week: <b id="wk" style="color:var(--ink);font-family:var(--display);font-size:20px">' + hm(weekMins(s)) + ' hrs</b></span></footer>';
+    '<footer class="foot"><a class="hint" href="tel:+13238227900" style="color:var(--ink);text-decoration:none;font-family:var(--display);font-size:20px;font-weight:600">(323) 822-7900</a></footer>';
 }
 function vDone(){
   return '<main style="justify-content:center;text-align:center;gap:14px"><div class="big">' + esc(S.done.title) + '</div><p class="hint" style="font-size:19px">' + esc(S.done.sub) + '</p>' +
