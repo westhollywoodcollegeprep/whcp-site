@@ -854,7 +854,8 @@ function connectLink(){
 function connectQR(){
   if (!S.conn || typeof qrcode !== 'function') return '<p class="hint">The QR code couldn\u2019t be made on this device.</p>';
   const q = qrcode(0, 'M'); q.addData(connectLink()); q.make();
-  return q.createSvgTag({ cellSize: 5, margin: 4, scalable: false, alt: 'QR code to connect another tablet' });
+  // a plain GIF image: renders on every tablet browser (some older ones drew the SVG version blank)
+  return q.createImgTag(6, 24, 'QR code to connect another tablet');
 }
 
 /* ---------- CSV ---------- */
