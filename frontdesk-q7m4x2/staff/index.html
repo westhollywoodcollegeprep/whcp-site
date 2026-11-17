@@ -122,7 +122,7 @@ function header(){
 }
 function vSetup(){
   return '<main><h1 style="font-size:32px">Staff clock-in</h1>' +
-    '<p class="hint">Ask the office for your phone setup code. They get it from Office › Roster › your name › Phone clock-in. You only do this once on this phone.</p>' +
+    '<p class="hint">Ask us for your phone setup code. You only do this once on this phone.</p>' +
     '<form class="card" id="setup" style="display:flex;flex-direction:column;gap:14px"><div><label for="code">Setup code</label><input id="code" class="input" inputmode="numeric" maxlength="6" autocomplete="one-time-code"></div>' +
     '<div class="err" id="err">' + esc(S.err) + '</div><button class="btn" type="submit"' + (S.busy ? ' disabled' : '') + '>Set up this phone</button></form>' +
     '<p class="hint">Clocking in from your phone only works when you’re at school, so your phone will ask to use your location.</p></main>';
