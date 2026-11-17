@@ -147,7 +147,7 @@ function vMain(){
   }
   const list = (s.punches || []).map(e => '<div><span>' + esc(e.k === 'in' && e.j === 'tut' ? 'Clock in for tutoring' : LABEL[e.k]) + '</span><b>' + esc(timeOf(e.t)) + '</b></div>').join('');
   const today = new Intl.DateTimeFormat('en-US', { timeZone: TZ, weekday: 'long', month: 'long', day: 'numeric' }).format(new Date());
-  return '<main><div><h1 style="font-size:32px">' + hello + ', ' + esc(first) + '.</h1><p class="hint" style="margin-top:6px">' + esc(today) + (s.role ? ' · ' + esc(s.role) : '') + '</p></div>' +
+  return '<main><div><h1 style="font-size:32px">' + hello + ', ' + esc(first) + '.</h1><p class="hint" style="margin-top:6px">' + esc(today) + '</p></div>' +
     '<div class="big" id="now" style="font-size:56px">' + esc(timeOf(Date.now())) + '</div>' +
     '<div><span class="st ' + cls + '">' + esc(stTxt) + '</span></div>' + body +
     '<div class="card"><h2 style="font-size:20px;margin-bottom:6px">Today</h2>' + (list ? '<div class="list">' + list + '</div>' : '<p class="hint">Nothing yet today.</p>') + '<p class="hint" style="margin-top:10px">Something wrong? Tell the office.</p></div></main>' +
