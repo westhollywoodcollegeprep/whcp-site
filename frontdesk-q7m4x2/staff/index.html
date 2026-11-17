@@ -112,6 +112,20 @@ function dayState(evs){
   });
   return { st, since, job, first, lastOut };
 }
+// hours as H:MM; this week = earlier days (from the Sheet) + today, counting an open shift up to now
+const hm = mins => { mins = Math.max(0, Math.round(mins)); return Math.floor(mins / 60) + ':' + String(mins % 60).padStart(2, '0'); };
+function todayMins(evs){
+  let st = 'out', start = 0, work = 0;
+  (evs || []).forEach(e => {
+    if (e.k === 'in' && st === 'out'){ st = 'in'; start = e.t; }
+    else if (e.k === 'bs' && st === 'in'){ work += e.t - start; st = 'break'; }
+    else if (e.k === 'be' && st === 'break'){ st = 'in'; start = e.t; }
+    else if (e.k === 'out'){ if (st === 'in') work += e.t - start; st = 'out'; }
+  });
+  if (st === 'in') work += Date.now() - start;
+  return work / 6e4;
+}
+const weekMins = s => (+s.weekPrev || 0) + todayMins(s.punches);
 const LABEL = { in: 'Clock in', bs: 'Break start', be: 'Break end', out: 'Clock out' };
 const VERB = { in: 'clock in', tut: 'clock in for tutoring', bs: 'start your break', be: 'end your break', out: 'clock out' };
 const BTN = { in: 'Clock in', tut: 'Clock in for tutoring', bs: 'Start break', be: 'End break', out: 'Clock out' };
@@ -151,7 +165,7 @@ function vMain(){
     '<div class="big" id="now" style="font-size:56px">' + esc(timeOf(Date.now())) + '</div>' +
     '<div><span class="st ' + cls + '">' + esc(stTxt) + '</span></div>' + body +
     '<div class="card"><h2 style="font-size:20px;margin-bottom:6px">Today</h2>' + (list ? '<div class="list">' + list + '</div>' : '<p class="hint">Nothing yet today.</p>') + '<p class="hint" style="margin-top:10px">Something wrong? Let us know.</p></div></main>' +
-    '<footer class="foot"><button class="linkbtn" data-act="forget">Not your phone? Remove setup</button></footer>';
+    '<footer class="foot"><span class="hint">This week: <b id="wk" style="color:var(--ink);font-family:var(--display);font-size:20px">' + hm(weekMins(s)) + ' hrs</b></span></footer>';
 }
 function vDone(){
   return '<main style="justify-content:center;text-align:center;gap:14px"><div class="big">' + esc(S.done.title) + '</div><p class="hint" style="font-size:19px">' + esc(S.done.sub) + '</p>' +
@@ -227,7 +241,7 @@ async function punch(){
     if (dist > RADIUS_M) throw Object.assign(new Error('x'), { code: 'too_far', dist });
     const job = k === 'tut' ? { k: 'in', j: 'tut' } : { k };
     const j = await call(Object.assign({ action: 'phonePunch', token: S.me.token, lat: loc.lat, lng: loc.lng, acc: loc.acc, sig: sigPath(S.strokes) }, job));
-    S.status.punches = j.punches; S.pend = null; S.strokes = []; S.busy = false;
+    S.status.punches = j.punches; if (j.weekPrev != null) S.status.weekPrev = j.weekPrev; S.pend = null; S.strokes = []; S.busy = false;
     const first = (S.status.name || '').split(' ')[0];
     const msg = { tut: ['Clocked in for tutoring', 'These hours count as tutoring.'], in: ['Clocked in', 'Have a great day, ' + first + '.'], bs: ['Enjoy your break', 'Tap End break when you’re back.'], be: ['Welcome back', 'Break ended.'], out: ['Clocked out', 'See you next time, ' + first + '.'] }[k];
     S.done = { title: msg[0], sub: timeOf(j.t) + '. ' + msg[1] }; S.view = 'done'; render();
@@ -264,7 +278,7 @@ document.addEventListener('submit', async e => {
   }
 });
 // the big clock on the main screen
-setInterval(() => { const n = $('#now'); if (n) n.textContent = timeOf(Date.now()); }, 15000);
+setInterval(() => { const n = $('#now'); if (n) n.textContent = timeOf(Date.now()); const w = $('#wk'); if (w && S.status) w.textContent = hm(weekMins(S.status)) + ' hrs'; }, 15000);
 // keep the status fresh when the app comes back to the screen
 document.addEventListener('visibilitychange', () => { if (!document.hidden && S.me && S.view === 'main' && !S.pend) refresh(); });
 
