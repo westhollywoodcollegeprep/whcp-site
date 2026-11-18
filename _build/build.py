@@ -440,6 +440,9 @@ Sitemap: {SITE}/sitemap.xml
         b = f.read_text(encoding='utf-8').split('<main', 1)[1].split('</main>')[0]
         b = b.split('>', 1)[1]
         b = re.sub(r'<script.*?</script>|<style.*?</style>|<form.*?</form>|<nav[^>]*class="crumbs.*?</nav>', '', b, flags=re.S)
+        # keep outside links (maps, social, payment pages) as "text (url)" so the assistant can share them
+        b = re.sub(r'<a [^>]*href="(https?://(?!www\.westhollywoodschool\.com)[^"]+)"[^>]*>(.*?)</a>', lambda m: m.group(2) + ' (' + html.unescape(m.group(1)) + ')', b, flags=re.S)
+        b = re.sub(r'<iframe[^>]*src="https://maps\.google\.com[^"]*"[^>]*>.*?</iframe>', '\nGoogle Maps: https://www.google.com/maps/search/?api=1&query=West+Hollywood+College+Preparatory+School\n', b, flags=re.S)
         b = re.sub(r'<h([1-4])[^>]*>', lambda m: '\n' + '#' * (int(m.group(1)) + 1) + ' ', b)
         b = re.sub(r'</h[1-4]>', '\n', b)
         b = re.sub(r'<(li)[^>]*>', '\n- ', b)
