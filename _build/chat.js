@@ -33,7 +33,50 @@
   btn.type = 'button';
   btn.setAttribute('aria-expanded', 'false');
   btn.setAttribute('aria-controls', 'wc-panel');
-  btn.innerHTML = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M4 4h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H9l-5 4v-4H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/></svg><span>Ask us</span>';
+  btn.setAttribute('aria-label', 'Ask WHCP a question');
+  btn.innerHTML = '<span class="wc-lbl" aria-hidden="true">Ask us</span><span class="wc-owl" aria-hidden="true"><span class="wc-dot"></span></span>';
+
+  // Welcome bubble: the owl "says hi" once per visit, with tap-to-ask topics.
+  var TOPICS = [['Tuition', 'How much is tuition?'], ['Grades', 'What grades do you have?'], ['Book a tour', 'How do I schedule a tour?']];
+  var peek = el('div', 'wc-peek');
+  peek.hidden = true;
+  var say = el('button', 'wc-say');
+  say.type = 'button';
+  say.innerHTML = '<b>Hi, welcome to WHCP!</b> Wondering about tuition, grades or a tour? Ask me anything.';
+  var px = el('button', 'wc-px');
+  px.type = 'button';
+  px.setAttribute('aria-label', 'Dismiss');
+  px.innerHTML = '&times;';
+  var ptop = el('div', 'wc-saywrap');
+  ptop.appendChild(say);
+  ptop.appendChild(px);
+  var pchips = el('div', 'wc-pchips');
+  TOPICS.forEach(function (t) {
+    var c = el('button', 'wc-pchip', t[0]);
+    c.type = 'button';
+    c.addEventListener('click', function () { setOpen(true); send(t[1]); });
+    pchips.appendChild(c);
+  });
+  peek.appendChild(ptop);
+  peek.appendChild(pchips);
+  var peekTimer;
+  function hidePeek(remember) {
+    clearTimeout(peekTimer);
+    peek.classList.remove('wc-in');
+    setTimeout(function () { peek.hidden = true; document.documentElement.classList.remove('wc-peeking'); }, 250);
+    if (remember) { try { sessionStorage.setItem('wc-peeked', '1'); } catch (e) {} }
+  }
+  function showPeek() {
+    if (open) return;
+    peek.hidden = false;
+    document.documentElement.classList.add('wc-peeking');
+    requestAnimationFrame(function () { peek.classList.add('wc-in'); });
+    try { sessionStorage.setItem('wc-peeked', '1'); } catch (e) {}
+    // On small screens it tucks itself away after a while so it doesn't cover the page.
+    if (window.innerWidth < 600) peekTimer = setTimeout(function () { hidePeek(false); }, 12000);
+  }
+  say.addEventListener('click', function () { setOpen(true); });
+  px.addEventListener('click', function () { hidePeek(true); });
 
   var panel = el('section', 'wc-panel');
   panel.id = 'wc-panel';
@@ -42,6 +85,8 @@
   panel.hidden = true;
 
   var head = el('div', 'wc-head');
+  var hav = el('span', 'wc-hav');
+  hav.setAttribute('aria-hidden', 'true');
   var title = el('div', 'wc-title');
   title.appendChild(el('b', null, 'Ask WHCP'));
   title.appendChild(el('small', null, 'Automated answers about our school'));
@@ -49,6 +94,7 @@
   close.type = 'button';
   close.setAttribute('aria-label', 'Close chat');
   close.innerHTML = '&times;';
+  head.appendChild(hav);
   head.appendChild(title);
   head.appendChild(close);
 
@@ -102,6 +148,7 @@
     btn.setAttribute('aria-expanded', String(v));
     document.documentElement.classList.toggle('wc-open', v);
     if (v) {
+      if (!peek.hidden) hidePeek(true);
       if (!log.childNodes.length) bubble('bot', 'Hi! I can answer questions about WHCP: programs, grades, tuition, hours and how to visit. What would you like to know?');
       setTimeout(function () { input.focus(); }, 30);
     } else {
@@ -153,6 +200,11 @@
   form.addEventListener('submit', function (e) { e.preventDefault(); send(input.value); });
   document.addEventListener('keydown', function (e) { if (open && e.key === 'Escape') setOpen(false); });
 
+  document.body.appendChild(peek);
   document.body.appendChild(panel);
   document.body.appendChild(btn);
+
+  var seen = false;
+  try { seen = sessionStorage.getItem('wc-peeked') === '1'; } catch (e) {}
+  if (!seen) setTimeout(showPeek, 4000);
 })();

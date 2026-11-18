@@ -483,9 +483,26 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
   .fact:nth-child(2){border-top:1px solid var(--line)}
 }
 /* Website assistant chat bubble (assets/chat.js) */
-.wc-launch{position:fixed;right:20px;bottom:20px;z-index:380;display:flex;align-items:center;gap:8px;padding:13px 18px;border:none;border-radius:999px;background:var(--navy);color:#fff;font:500 15px/1 'Jost',sans-serif;letter-spacing:.02em;cursor:pointer;box-shadow:0 8px 24px rgba(10,23,41,.28)}
-.wc-launch:hover{background:var(--navy-deep)}
-.wc-launch:focus-visible,.wc-panel button:focus-visible,.wc-panel input:focus-visible{outline:3px solid var(--brass-bright);outline-offset:2px}
+.wc-launch{position:fixed;right:20px;bottom:20px;z-index:380;display:flex;align-items:center;gap:10px;padding:0;border:none;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .25s,transform .25s}
+.wc-peeking .wc-launch{opacity:0;transform:scale(.85);pointer-events:none}
+.wc-owl{position:relative;display:block;width:60px;height:60px;border-radius:50%;background:#fff url(/img/seal.webp) center/90% no-repeat;box-shadow:0 8px 24px rgba(10,23,41,.35),0 0 0 3px var(--navy),0 0 0 6px var(--brass-bright);transition:transform .2s}
+.wc-launch:hover .wc-owl{transform:scale(1.06)}
+.wc-dot{position:absolute;right:0;top:1px;width:14px;height:14px;border-radius:50%;background:#2BB673;border:2px solid #fff}
+.wc-lbl{background:#fff;color:var(--navy);font:500 13px/1 'Jost',sans-serif;padding:9px 14px;border-radius:999px;box-shadow:0 6px 18px rgba(10,23,41,.3)}
+.wc-peek{position:fixed;right:20px;bottom:20px;z-index:381;width:300px;max-width:calc(100vw - 24px);display:flex;flex-direction:column;align-items:flex-end;gap:8px;opacity:0;transform:translateY(10px);transition:opacity .25s,transform .25s}
+.wc-peek.wc-in{opacity:1;transform:none}
+.wc-peek[hidden]{display:none}
+.wc-saywrap{position:relative}
+.wc-say{display:block;text-align:left;background:#fff;border:none;border-radius:16px 16px 4px 16px;padding:12px 16px;font:400 14.5px/1.45 'Jost',sans-serif;color:var(--body);box-shadow:0 10px 30px rgba(10,23,41,.28);cursor:pointer}
+.wc-say b{color:var(--navy);font-weight:600}
+.wc-px{position:absolute;right:-8px;top:-8px;width:26px;height:26px;border-radius:50%;border:none;background:#fff;color:var(--navy);font-size:17px;line-height:1;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.22);cursor:pointer}
+.wc-pchips{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:6px}
+.wc-pchip{border:none;background:#fff;color:var(--navy);border-radius:999px;padding:7px 13px;font:500 13px/1.2 'Jost',sans-serif;box-shadow:0 4px 14px rgba(10,23,41,.22);cursor:pointer}
+.wc-pchip:hover,.wc-say:hover{background:#F3F4F7}
+.wc-launch:focus-visible .wc-owl,.wc-peek button:focus-visible{outline:3px solid var(--brass-bright);outline-offset:3px}
+.wc-panel button:focus-visible,.wc-panel input:focus-visible{outline:3px solid var(--brass-bright);outline-offset:2px}
+.wc-hav{flex:none;width:36px;height:36px;border-radius:50%;background:#fff url(/img/seal.webp) center/90% no-repeat;box-shadow:0 0 0 2px var(--brass-bright)}
+.wc-head .wc-title{flex:1}
 .wc-open .wc-launch{display:none}
 .wc-panel{position:fixed;right:20px;bottom:20px;z-index:1000;width:min(380px,calc(100vw - 24px));height:min(560px,calc(100vh - 40px));height:min(560px,calc(100dvh - 40px));display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:16px;box-shadow:0 18px 50px rgba(10,23,41,.3);overflow:hidden;font-family:'Jost',sans-serif}
 .wc-panel[hidden]{display:none}
@@ -510,10 +527,12 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
 .wc-note{margin:0;padding:0 12px 10px;font-size:11.5px;line-height:1.4;color:#6B7180;background:#fff}
 .wc-note a{color:var(--navy)}
 @media(max-width:480px){
-  .wc-launch{right:14px;bottom:14px;padding:12px 15px}
+  .wc-launch{right:14px;bottom:14px}
+  .wc-peek{right:12px;bottom:14px}
   .wc-panel{right:0;bottom:0;width:100vw;height:100vh;height:100dvh;border-radius:0;border:none}
 }
-@media print{.wc-launch,.wc-panel{display:none!important}}
+@media print{.wc-launch,.wc-panel,.wc-peek{display:none!important}}
+@media(prefers-reduced-motion:reduce){.wc-peek,.wc-owl,.wc-launch{transition:none}}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 }

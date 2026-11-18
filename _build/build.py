@@ -94,7 +94,7 @@ LEGACY = {  # old Wix URLs still in Google's index -> new page
 # Google Apps Script web app URL that records form submissions in the inquiries Sheet.
 # Paste the .../exec URL here after deploying _build/inquiries-sheet.gs. Empty string = off.
 # Website assistant: the Cloudflare Worker URL (empty = chat bubble off)
-CHAT_URL = ''
+CHAT_URL = 'https://whcp-chat.westhollywoodcollegeprep.workers.dev/'
 SHEET_URL = 'https://script.google.com/macros/s/AKfycbxJmwCwu1NM00LCD87KhHaC608bkLGOoXIZK-ZNzmGt0DYXbrO9MFa7IINx9oaTvTSHiw/exec'
 
 SOCIAL = ['https://www.facebook.com/whcprep', 'https://www.instagram.com/westhollywoodcollegeprep/',
@@ -420,7 +420,8 @@ Sitemap: {SITE}/sitemap.xml
     lm = json.loads(lm_file.read_text()) if lm_file.exists() else {}
     for p in PAGES:
         f = ROOT / ('index.html' if p == 'home' else f'{p}.html')
-        body = re.sub(r'\?v=[0-9a-f]+', '', f.read_text(encoding='utf-8'))
+        page = f.read_text(encoding='utf-8')
+        body = page.split('<main', 1)[-1].split('</main>')[0] + (re.search(r'<title>.*?</title>|$', page).group(0)) + (re.search(r'<meta name="description"[^>]*>|$', page).group(0))
         h = hashlib.sha1(body.encode()).hexdigest()
         if lm.get(p, {}).get('hash') != h:
             lm[p] = {'hash': h, 'date': TODAY}
