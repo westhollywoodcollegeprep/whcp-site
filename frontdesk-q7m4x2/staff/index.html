@@ -216,7 +216,7 @@ function where(){
 function whereMsg(e){
   if (e.code === 'denied') return 'Location is turned off for this site. Allow location for this page in your phone’s browser settings, then try again.';
   if (e.code === 'nogeo') return 'This browser can’t share your location. Try Chrome or Safari.';
-  if (e.code === 'too_far') return 'It doesn’t look like you’re at school right now. You can clock in from your phone once you’re here.';
+  if (e.code === 'too_far') return 'It doesn’t look like you’re at school right now. You can ' + (VERB[S.pend] || 'clock in or out') + ' from your phone once you’re here.';
   if (e.code === 'vague_location') return 'Your phone couldn’t pin down your location (it’s off by about ' + Math.round((e.acc || 0) * 3.28084) + ' ft). Step outside or near a window, turn on precise location, and try again.';
   if (e.code === 'wrong_state') return 'Your status changed (maybe on the front desk tablet). The screen has been updated, so check it and try again.';
   if (e.code === 'offline') return 'Couldn’t reach the school’s records. Check your connection and try again.';

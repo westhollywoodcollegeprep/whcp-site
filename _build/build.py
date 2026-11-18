@@ -62,7 +62,7 @@ PAGES = {
     'students': ('Student Life | West Hollywood College Preparatory School',
                  'Clubs, activities, community service and school-break programs for students at West Hollywood College Preparatory School.'),
     'parents': ('Parent Resources | West Hollywood College Preparatory School',
-                'Calendars, policies, forms and resources for current WHCP families.'),
+                'How parents get involved at West Hollywood College Preparatory School: monthly PTO meetings, field trips, progress meetings, school events and Career Day.'),
     'giving': ('Support WHCP | West Hollywood College Preparatory School',
                'Ways to support West Hollywood College Preparatory School, a private, nonprofit Pre-K–12 school in West Hollywood.'),
     'privacy': ('Privacy Policy | West Hollywood College Preparatory School',
@@ -260,7 +260,7 @@ def main():
         # <img src="data:..."> (WASC seal, principal portrait, classroom photo)
         def inline_img(m):
             alt = re.search(r'alt="([^"]*)"', m.group(0))
-            slug = re.sub(r'[^a-z0-9]+', '-', (alt.group(1) if alt else page_id).lower()).strip('-')[:40]
+            slug = re.sub(r'[^a-z0-9]+', '-', (alt.group(1) if alt else page_id).lower()).strip('-')[:40] or f'{page_id}-figure'
             url = imgs.save(m.group(1), slug, max_w=1600, variants=(800,))
             fn = url.rsplit('/', 1)[1]
             small = url.replace('.webp', '-800.webp')
@@ -404,8 +404,18 @@ Disallow: /_build/
 
 Sitemap: {SITE}/sitemap.xml
 ''')
+    # lastmod only moves when a page's content actually changes (Google ignores a sitemap that says "today" for every page)
+    lm_file = BUILD / 'lastmod.json'
+    lm = json.loads(lm_file.read_text()) if lm_file.exists() else {}
+    for p in PAGES:
+        f = ROOT / ('index.html' if p == 'home' else f'{p}.html')
+        body = re.sub(r'\?v=[0-9a-f]+', '', f.read_text(encoding='utf-8'))
+        h = hashlib.sha1(body.encode()).hexdigest()
+        if lm.get(p, {}).get('hash') != h:
+            lm[p] = {'hash': h, 'date': TODAY}
+    lm_file.write_text(json.dumps(lm, indent=1, sort_keys=True))
     urls = ''.join(
-        f'  <url><loc>{SITE}{"/" if p == "home" else "/" + p}</loc><lastmod>{TODAY}</lastmod>'
+        f'  <url><loc>{SITE}{"/" if p == "home" else "/" + p}</loc><lastmod>{lm[p]["date"]}</lastmod>'
         f'<priority>{SITEMAP_PRIORITY.get(p, "0.6" if p not in ("privacy", "terms", "accessibility") else "0.3")}</priority></url>\n'
         for p in PAGES)
     (ROOT / 'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n'

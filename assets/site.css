@@ -64,7 +64,7 @@ button{font-family:inherit}
 .btn--sm{padding:12px 24px;font-size:11px}
 .tlink{display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--navy);text-decoration:none;padding-bottom:6px;border-bottom:1px solid var(--brass-line);transition:color .2s,border-color .2s;cursor:pointer}
 .tlink:hover{color:var(--brass);border-color:var(--navy)}
-.sec--navy .tlink,.sec--deep .tlink{color:#fff;border-color:rgba(200,168,103,.6)}
+.sec--navy .tlink,.sec--deep .tlink{color:#fff;border-color:rgba(201,207,218,.6)}
 .sec--navy .tlink:hover,.sec--deep .tlink:hover{color:var(--brass-bright);border-color:#fff}
 
 /* ----- Top bar ----- */
