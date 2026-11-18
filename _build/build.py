@@ -93,6 +93,8 @@ LEGACY = {  # old Wix URLs still in Google's index -> new page
 }
 # Google Apps Script web app URL that records form submissions in the inquiries Sheet.
 # Paste the .../exec URL here after deploying _build/inquiries-sheet.gs. Empty string = off.
+# Website assistant: the Cloudflare Worker URL (empty = chat bubble off)
+CHAT_URL = ''
 SHEET_URL = 'https://script.google.com/macros/s/AKfycbxJmwCwu1NM00LCD87KhHaC608bkLGOoXIZK-ZNzmGt0DYXbrO9MFa7IINx9oaTvTSHiw/exec'
 
 SOCIAL = ['https://www.facebook.com/whcprep', 'https://www.instagram.com/westhollywoodcollegeprep/',
@@ -102,6 +104,9 @@ CSP = ("default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline';
        "img-src 'self' data:; font-src 'self'; connect-src 'self' https://formspree.io https://script.google.com https://script.googleusercontent.com; "
        "form-action https://formspree.io; frame-src https://maps.google.com https://www.google.com; "
        "base-uri 'self'; object-src 'none'; upgrade-insecure-requests")
+if CHAT_URL:
+    _chat_origin = '/'.join(CHAT_URL.split('/')[:3])
+    CSP = CSP.replace("connect-src 'self'", "connect-src 'self' " + _chat_origin)
 
 FONTS = [  # (family, weight, style, file in _build/fonts)
     ('Jost', 300, 'normal', 'jost-latin-300-normal.woff2'),
@@ -282,6 +287,12 @@ def main():
     js = js.replace('__ROUTES__', json.dumps(sorted(PAGES))).replace('__SHEET_URL__', json.dumps(SHEET_URL))
     js_v = hashlib.sha1(js.encode()).hexdigest()[:8]
     (ROOT / 'assets' / 'site.js').write_text(js, encoding='utf-8')
+    chat_js = (BUILD / 'chat.js').read_text(encoding='utf-8').replace('__CHAT_URL__', json.dumps(CHAT_URL))
+    chat_v = hashlib.sha1(chat_js.encode()).hexdigest()[:8]
+    if CHAT_URL:
+        (ROOT / 'assets' / 'chat.js').write_text(chat_js, encoding='utf-8')
+    elif (ROOT / 'assets' / 'chat.js').exists():
+        (ROOT / 'assets' / 'chat.js').unlink()
 
     # ---- OG image
     og = BUILD / 'og-image.jpg'
@@ -346,7 +357,7 @@ def main():
                      json.dumps({'@context': 'https://schema.org', '@graph': graph}, ensure_ascii=False).replace('</', '<\\/') +
                      '</script>')
         lines += ['</head>', '<body>', nav.strip(), '<main id="app" tabindex="-1">', content.strip(), '</main>',
-                  foot.strip(), f'<script src="/assets/site.js?v={js_v}" defer></script>', '</body>', '</html>', '']
+                  foot.strip(), f'<script src="/assets/site.js?v={js_v}" defer></script>' + (f'<script src="/assets/chat.js?v={chat_v}" defer></script>' if CHAT_URL else ''), '</body>', '</html>', '']
         return '\n'.join(lines)
 
     # ---- write pages
@@ -422,6 +433,24 @@ Sitemap: {SITE}/sitemap.xml
                                       '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + urls + '</urlset>\n')
     llms = (BUILD / 'llms.txt').read_text(encoding='utf-8')
     (ROOT / 'llms.txt').write_text(llms, encoding='utf-8')
+    full = [llms.strip(), '', '# Full page text', '']
+    for p in [p for p in PAGES if p not in ('privacy', 'terms', 'accessibility', 'home')]:
+        f = ROOT / f'{p}.html'
+        b = f.read_text(encoding='utf-8').split('<main', 1)[1].split('</main>')[0]
+        b = b.split('>', 1)[1]
+        b = re.sub(r'<script.*?</script>|<style.*?</style>|<form.*?</form>|<nav[^>]*class="crumbs.*?</nav>', '', b, flags=re.S)
+        b = re.sub(r'<h([1-4])[^>]*>', lambda m: '\n' + '#' * (int(m.group(1)) + 1) + ' ', b)
+        b = re.sub(r'</h[1-4]>', '\n', b)
+        b = re.sub(r'<(li)[^>]*>', '\n- ', b)
+        b = re.sub(r'<(p|tr|div|br)[^>]*>', '\n', b)
+        t = html.unescape(re.sub(r'<[^>]+>', ' ', b))
+        t = re.sub(r'[ \t]+', ' ', t)
+        t = '\n'.join(l.strip() for l in t.split('\n'))
+        t = re.sub(r'\n(- )?(View|Learn More|Read the Message|Our Mission|Open Positions|Home|Programs)?\s*(?=\n)', '', t)
+        t = re.sub(r'(?m)^(.*) View$', r'- \1', t)
+        t = re.sub(r'\n{2,}', '\n', t).strip()
+        full += [f'## Page: {SITE}/{p}', t, '']
+    (ROOT / 'llms-full.txt').write_text('\n'.join(full), encoding='utf-8')
     (ROOT / '.well-known').mkdir(exist_ok=True)
     expires = (datetime.date.today() + datetime.timedelta(days=365)).isoformat()
     (ROOT / '.well-known' / 'security.txt').write_text(
