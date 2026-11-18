@@ -471,6 +471,17 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
   .topbar .wrap{justify-content:center}
   .topbar-addr{display:none}
 }
+@media(max-width:360px){
+  .wrap{padding:0 14px}
+  .fgrid>*,.fgroup,.formcard,.formcard *{min-width:0;max-width:100%}
+  .fgroup input,.fgroup select,.fgroup textarea{width:100%;min-width:0}
+  .formcard,.panel{padding:24px 16px}
+  .ctaband-btns{min-width:0}
+  .factbar .wrap{grid-template-columns:1fr;padding:0 14px}
+  .fact{border-left:none;border-top:1px solid var(--line);padding:20px 10px}
+  .fact:first-child{border-top:none}
+  .fact:nth-child(2){border-top:1px solid var(--line)}
+}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 }
@@ -479,3 +490,40 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
 .crest{background-image:var(--seal);background-size:cover;background-position:center}
 .hero-slide--brand{background-image:var(--seal)}
 .about-brand-mark{width:92%;aspect-ratio:1/1;background-image:var(--seal);background-size:contain;background-repeat:no-repeat;background-position:center}
+/* Unfolded foldables, Surface Duo spanned, small tablets: keep hero text readable over the seal */
+@media(min-width:601px) and (max-width:1439px){
+  .hero-slide--brand{background-image:linear-gradient(90deg,rgba(10,23,41,.94) 0%,rgba(10,23,41,.82) 50%,rgba(10,23,41,.25) 100%),var(--seal);background-size:100% 100%,auto 72%;background-position:0 0,108% center}
+}
+@media(max-width:600px){
+  .hero-slide--brand{background-image:linear-gradient(180deg,rgba(10,23,41,.9) 0%,rgba(10,23,41,.82) 55%,rgba(10,23,41,.35) 100%),var(--seal);background-size:100% 100%,auto 44%;background-position:0 0,center 90%}
+}
+/* iPhone Duo open and held upright, and other tall tablet-width screens: seal sits below the text */
+@media(min-width:601px) and (max-width:1023px) and (orientation:portrait){
+  .hero-slide--brand{background-image:linear-gradient(180deg,rgba(10,23,41,.9) 0%,rgba(10,23,41,.82) 55%,rgba(10,23,41,.35) 100%),var(--seal);background-size:100% 100%,auto 40%;background-position:0 0,center 92%}
+}
+/* Phones turned sideways (iPhone Duo closed, any phone landscape): compact header and hero */
+@media(max-height:520px) and (orientation:landscape) and (max-width:1023px){
+  .topbar{display:none}
+  .masthead .wrap{height:64px;gap:12px}
+  .mobnav{top:64px}
+  .crest,.crest img{width:42px;height:42px}
+  .wordmark span.accred-line{display:none}
+  .mast-actions .btn{padding:10px 16px}
+  .hero{min-height:0}
+  .hero-content{padding:44px 0 52px}
+  .hero h1{font-size:36px;margin-bottom:14px;max-width:none}
+  .hero p{font-size:15px;line-height:1.6;margin-bottom:22px;max-width:58%}
+  .hero-slide--brand{background-image:linear-gradient(90deg,rgba(10,23,41,.94) 0%,rgba(10,23,41,.82) 55%,rgba(10,23,41,.3) 100%),var(--seal);background-size:100% 100%,auto 80%;background-position:0 0,105% center}
+}
+/* Narrow folded screens: show the full school name instead of cutting it off */
+@media(max-width:400px){
+  .wordmark strong{font-size:16px;text-overflow:clip}
+  .wordmark span{font-size:13px;white-space:normal;line-height:1.15;text-overflow:clip}
+}
+@media(max-width:320px){
+  .masthead .wrap{gap:8px}
+  .brand{gap:9px}
+  .crest,.crest img{width:38px;height:38px}
+  .wordmark strong{font-size:15px}
+  .wordmark span{font-size:12px}
+}
