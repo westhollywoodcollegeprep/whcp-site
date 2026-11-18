@@ -1,12 +1,16 @@
-/* WHCP website assistant: chat bubble (no cookies, nothing stored after the tab closes) */
+/* WHCP website assistant: chat bubble.
+   No cookies. The conversation is kept in this browser tab only (sessionStorage) so it
+   survives clicking a link to another page, and is cleared when the tab is closed. */
 (function () {
   'use strict';
   var URL_ = __CHAT_URL__;
   if (!URL_) return;
   var PHONE = '(323) 822-7900';
+  var GREETING = 'Hi! I can answer questions about WHCP: programs, grades, tuition, hours and how to visit. What would you like to know?';
   var history = [];
   var busy = false;
   var open = false;
+  var pushedState = false;
 
   function el(tag, cls, text) {
     var e = document.createElement(tag);
@@ -14,15 +18,43 @@
     if (text != null) e.textContent = text;
     return e;
   }
+  function store(k, v) { try { sessionStorage.setItem(k, v); } catch (e) {} }
+  function load(k) { try { return sessionStorage.getItem(k); } catch (e) { return null; } }
 
-  // Turn plain URLs in a reply into links (text only, never HTML from the model).
+  // Page names the chat mentions ("our Admissions page") become links.
+  var PAGES = [
+    ['Middle & High School', '/middle-high'], ['Middle and High School', '/middle-high'],
+    ['Early Childhood', '/early-childhood'], ['Elementary School', '/elementary'], ['Elementary', '/elementary'],
+    ['After School Programs', '/after-school'], ['After School Program', '/after-school'], ['After School', '/after-school'],
+    ['Tutoring Center', '/tutoring'], ['Tutoring', '/tutoring'], ['Individual Programs', '/individual'],
+    ['International Students', '/international'], ['International', '/international'],
+    ['Admissions', '/admissions'], ['Contact', '/contact'], ['About', '/about'], ['Programs', '/programs'],
+    ['Calendar', '/calendar'], ['Careers', '/careers'], ['Giving', '/giving'], ['Parents', '/parents'],
+    ['Students', '/students'], ['Mission', '/mission'], ['Principal’s Message', '/principals-message'],
+    ["Principal's Message", '/principals-message'], ['Privacy Policy', '/privacy'],
+  ];
+  var pageIndex = {};
+  PAGES.forEach(function (p) { pageIndex[p[0].toLowerCase()] = p[1]; });
+  var pageAlt = PAGES.map(function (p) { return p[0].replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }).join('|');
+  var LINK_RE = new RegExp('(https?:\\/\\/[^\\s)]+[^\\s).,!?:;])|(\\(323\\) 822-7900)|(info@westhollywoodschool\\.com)|\\b(' + pageAlt + ')( page)\\b', 'gi');
+
+  // Turn URLs, the phone number, the email and page names into links (text only, never HTML from the model).
   function addText(node, text) {
-    var re = /(https?:\/\/[^\s)]+[^\s).,!?])|(\(323\) 822-7900)|(info@westhollywoodschool\.com)/g, last = 0, m;
-    while ((m = re.exec(text))) {
+    var last = 0, m;
+    LINK_RE.lastIndex = 0;
+    while ((m = LINK_RE.exec(text))) {
       if (m.index > last) node.appendChild(document.createTextNode(text.slice(last, m.index)));
       var a = el('a', null, m[0]);
-      a.href = m[1] ? m[1] : m[2] ? 'tel:+13238227900' : 'mailto:info@westhollywoodschool.com';
-      if (m[1] && m[1].indexOf('westhollywoodschool.com') === -1) { a.target = '_blank'; a.rel = 'noopener'; }
+      if (m[1]) {
+        a.href = m[1];
+        if (m[1].indexOf('westhollywoodschool.com') === -1) { a.target = '_blank'; a.rel = 'noopener'; }
+      } else if (m[2]) {
+        a.href = 'tel:+13238227900';
+      } else if (m[3]) {
+        a.href = 'mailto:info@westhollywoodschool.com';
+      } else {
+        a.href = pageIndex[m[4].toLowerCase()] || '/';
+      }
       node.appendChild(a);
       last = m.index + m[0].length;
     }
@@ -64,14 +96,14 @@
     clearTimeout(peekTimer);
     peek.classList.remove('wc-in');
     setTimeout(function () { peek.hidden = true; document.documentElement.classList.remove('wc-peeking'); }, 250);
-    if (remember) { try { sessionStorage.setItem('wc-peeked', '1'); } catch (e) {} }
+    if (remember) store('wc-peeked', '1');
   }
   function showPeek() {
     if (open) return;
     peek.hidden = false;
     document.documentElement.classList.add('wc-peeking');
     requestAnimationFrame(function () { peek.classList.add('wc-in'); });
-    try { sessionStorage.setItem('wc-peeked', '1'); } catch (e) {}
+    store('wc-peeked', '1');
     // On small screens it tucks itself away after a while so it doesn't cover the page.
     if (window.innerWidth < 600) peekTimer = setTimeout(function () { hidePeek(false); }, 12000);
   }
@@ -81,6 +113,7 @@
   var panel = el('section', 'wc-panel');
   panel.id = 'wc-panel';
   panel.setAttribute('role', 'dialog');
+  panel.setAttribute('aria-modal', 'true');
   panel.setAttribute('aria-label', 'Ask WHCP');
   panel.hidden = true;
 
@@ -142,16 +175,45 @@
     return b;
   }
 
-  function setOpen(v) {
+  // "Talk to a person" buttons under the latest real answer.
+  function addActions() {
+    var old = log.querySelector('.wc-acts');
+    if (old) old.remove();
+    var acts = el('div', 'wc-acts');
+    var call = el('a', 'wc-act', 'Call us');
+    call.href = 'tel:+13238227900';
+    var tour = el('a', 'wc-act', 'Schedule a tour');
+    tour.href = '/contact';
+    acts.appendChild(call);
+    acts.appendChild(tour);
+    log.appendChild(acts);
+    log.scrollTop = log.scrollHeight;
+  }
+
+  function save() {
+    store('wc-hist', JSON.stringify(history.slice(-24)));
+  }
+
+  function setOpen(v, fromBack) {
     open = v;
     panel.hidden = !v;
     btn.setAttribute('aria-expanded', String(v));
     document.documentElement.classList.toggle('wc-open', v);
+    store('wc-isopen', v ? '1' : '0');
     if (v) {
       if (!peek.hidden) hidePeek(true);
-      if (!log.childNodes.length) bubble('bot', 'Hi! I can answer questions about WHCP: programs, grades, tuition, hours and how to visit. What would you like to know?');
+      if (!log.childNodes.length) bubble('bot', GREETING);
+      // On phones the chat fills the screen, so the back button should close it, not leave the page.
+      if (window.innerWidth <= 480 && !pushedState) {
+        try { window.history.pushState({ wcChat: 1 }, ''); pushedState = true; } catch (e) {}
+      }
       setTimeout(function () { input.focus(); }, 30);
     } else {
+      if (pushedState && !fromBack) {
+        pushedState = false;
+        try { window.history.back(); } catch (e) {}
+      }
+      pushedState = false;
       btn.focus();
     }
   }
@@ -162,14 +224,17 @@
     busy = true;
     go.disabled = true;
     chips.hidden = true;
+    var old = log.querySelector('.wc-acts');
+    if (old) old.remove();
     bubble('user', text);
     history.push({ role: 'user', content: text });
+    save();
     input.value = '';
     var wait = bubble('bot wc-wait', 'Typing…');
     fetch(URL_, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: history.slice(-6) }),
+      body: JSON.stringify({ messages: history.slice(-12), page: location.pathname }),
     }).then(function (r) {
       return r.json().catch(function () { return {}; }).then(function (d) { return { status: r.status, d: d }; });
     }).then(function (res) {
@@ -177,17 +242,20 @@
       if (res.d && res.d.reply) {
         bubble('bot', res.d.reply);
         history.push({ role: 'assistant', content: res.d.reply });
-      } else if (res.status === 429) {
-        bubble('bot', 'That’s a lot of questions at once! Give it a few minutes, or call us at ' + PHONE + '.');
-        history.pop();
+        save();
+        if (res.d.kind !== 'offtopic' && res.d.kind !== 'smalltalk') addActions();
       } else {
-        bubble('bot', 'Sorry, I can’t answer right now. Please call us at ' + PHONE + ' or email info@westhollywoodschool.com.');
         history.pop();
+        save();
+        bubble('bot', res.status === 429
+          ? 'That’s a lot of questions at once! Give it a few minutes, or call us at ' + PHONE + '.'
+          : 'Sorry, I can’t answer right now. Please call us at ' + PHONE + ' or email info@westhollywoodschool.com.');
       }
     }).catch(function () {
       wait.remove();
-      bubble('bot', 'Sorry, I can’t connect right now. Please call us at ' + PHONE + '.');
       history.pop();
+      save();
+      bubble('bot', 'Sorry, I can’t connect right now. Please call us at ' + PHONE + '.');
     }).then(function () {
       busy = false;
       go.disabled = false;
@@ -198,13 +266,34 @@
   btn.addEventListener('click', function () { setOpen(!open); });
   close.addEventListener('click', function () { setOpen(false); });
   form.addEventListener('submit', function (e) { e.preventDefault(); send(input.value); });
-  document.addEventListener('keydown', function (e) { if (open && e.key === 'Escape') setOpen(false); });
+  window.addEventListener('popstate', function () { if (open && pushedState) { pushedState = false; setOpen(false, true); } });
+  document.addEventListener('keydown', function (e) {
+    if (!open) return;
+    if (e.key === 'Escape') { setOpen(false); return; }
+    // Keep keyboard focus inside the chat while it's open.
+    if (e.key === 'Tab') {
+      var f = Array.prototype.filter.call(panel.querySelectorAll('a[href], button:not([disabled]), input'), function (x) { return x.offsetParent !== null; });
+      if (!f.length) return;
+      var first = f[0], lastEl = f[f.length - 1];
+      if (e.shiftKey && (document.activeElement === first || !panel.contains(document.activeElement))) { e.preventDefault(); lastEl.focus(); }
+      else if (!e.shiftKey && (document.activeElement === lastEl || !panel.contains(document.activeElement))) { e.preventDefault(); first.focus(); }
+    }
+  });
 
   document.body.appendChild(peek);
   document.body.appendChild(panel);
   document.body.appendChild(btn);
 
-  var seen = false;
-  try { seen = sessionStorage.getItem('wc-peeked') === '1'; } catch (e) {}
-  if (!seen) setTimeout(showPeek, 4000);
+  // Pick the conversation back up after moving to another page in the same tab.
+  try { history = JSON.parse(load('wc-hist') || '[]').filter(function (m) { return m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string'; }); } catch (e) { history = []; }
+  if (history.length) {
+    bubble('bot', GREETING);
+    history.forEach(function (m) { bubble(m.role === 'user' ? 'user' : 'bot', m.content); });
+    chips.hidden = true;
+    if (history[history.length - 1].role === 'assistant') addActions();
+    // Reopen it on wider screens; on phones it would cover the page they just went to.
+    if (load('wc-isopen') === '1' && window.innerWidth >= 600) setOpen(true);
+  }
+
+  if (load('wc-peeked') !== '1' && !history.length) setTimeout(showPeek, 4000);
 })();

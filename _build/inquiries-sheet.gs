@@ -10,6 +10,8 @@
  *   4. Send that URL to Claude (it goes into SHEET_URL in _build/build.py).
  *
  * Each website form submission adds one row to the "Inquiries" tab.
+ * Questions the website chat could not answer go to the "Chat questions" tab
+ * (question text only: no names, emails, phone numbers or IP addresses).
  * Visit the /exec URL in a browser to check it is running.
  */
 
@@ -38,6 +40,7 @@ var COLUMNS = [
 function doPost(e) {
   var p = (e && e.parameter) || {};
   if (p._gotcha) return reply_('ok');                       // spam trap filled: ignore
+  if (p.form === 'chat_unanswered') return logChat_(p);
   var email = String(p.email || '').trim();
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return reply_('ignored');
 
@@ -51,6 +54,29 @@ function doPost(e) {
       return clean_(p[c[0]]);
     });
     sheet.appendRow(row);
+  } finally {
+    lock.releaseLock();
+  }
+  return reply_('ok');
+}
+
+// A question the website chat couldn't answer: date, question, what the chat said.
+function logChat_(p) {
+  var q = clean_(p.question).slice(0, 500);
+  if (!q) return reply_('ignored');
+  var lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheetByName('Chat questions') || ss.insertSheet('Chat questions');
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(['Asked', 'Question the chat could not answer', 'What the chat said', 'Page']);
+      sheet.getRange(1, 1, 1, 4).setFontWeight('bold');
+      sheet.setFrozenRows(1);
+      sheet.setColumnWidth(2, 380);
+      sheet.setColumnWidth(3, 420);
+    }
+    sheet.appendRow([new Date(), q, clean_(p.reply).slice(0, 800), clean_(p.page).slice(0, 200)]);
   } finally {
     lock.releaseLock();
   }
