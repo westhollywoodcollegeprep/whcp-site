@@ -453,7 +453,7 @@ html,body{height:100%;background:var(--ink);color:var(--ink);overflow:hidden;fon
    EDIT HERE. Everything the board shows that changes over time.
    ============================================================ */
 const CONFIG = {
-  pageSeconds: 30,
+  pageSeconds: 12,
   place: { lat: 34.0900, lon: -118.3617, tz: 'America/Los_Angeles' },
 
   // The bell schedule: each class period, start and end, in 24-hour time.
@@ -1027,6 +1027,21 @@ async function stayAwake(){
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') stayAwake(); });
 setInterval(stayAwake, 30 * 1000);
 stayAwake();
+
+/* ---------- self-update: when a new version of this page is published, reload between slides ---------- */
+(function(){
+  let mine = null, waiting = false;
+  const sig = t => { let h = 0; for (let i = 0; i < t.length; i++) h = (h * 31 + t.charCodeAt(i)) | 0; return t.length + ':' + h; };
+  const fetchSig = () => fetch(location.pathname + '?check=' + Date.now(), { cache: 'no-store' }).then(r => r.ok ? r.text() : null).then(t => t ? sig(t) : null).catch(() => null);
+  fetchSig().then(s => { mine = s; });
+  setInterval(async () => {
+    if (!mine){ mine = await fetchSig(); return; }
+    if (waiting) return;
+    const s = await fetchSig();
+    // Only reload when the new version actually downloaded, so a dropped connection never blanks the TV.
+    if (s && s !== mine){ waiting = true; setTimeout(() => location.replace(location.pathname + '?v=' + Date.now()), 1500); }
+  }, 5 * 60 * 1000);
+})();
 
 /* ---------- go ---------- */
 WX = cachedWeather() || (HOSTED ? blankWeather() : sampleWeather());
