@@ -311,6 +311,13 @@ html,body{height:100%;background:var(--ink);color:var(--ink);overflow:hidden;fon
 .p-flag{transform-origin:0 100%}
 .page.on .p-flag{animation:pop .75s cubic-bezier(.3,1.7,.5,1) 1.5s both,wave 1.3s ease-in-out 2.3s infinite alternate}
 .page.on .p-umbrella{animation:pop .9s cubic-bezier(.3,1.7,.5,1) 1.5s both,sway 2.6s ease-in-out 2.5s infinite alternate}
+.p-raincloud,.rc-float{transform-box:fill-box;transform-origin:50% 50%}
+.page.on .p-raincloud{animation:pop .9s cubic-bezier(.3,1.7,.5,1) 1.5s both}
+.page.on .rc-float{animation:rcdrift 3.2s ease-in-out 2.4s infinite alternate}
+.rdrop{opacity:0}
+.page.on .rdrop{animation:rdrop 1.3s linear infinite}
+@keyframes rcdrift{from{transform:translateX(-8px)}to{transform:translateX(10px)}}
+@keyframes rdrop{0%{opacity:0;transform:translateY(-6px)}15%{opacity:1}80%{opacity:1}100%{opacity:0;transform:translateY(110px)}}
 .page.on .p-scarf{animation:pop .75s cubic-bezier(.3,1.7,.5,1) 1.5s both,sway 2.2s ease-in-out 2.3s infinite alternate}
 .page.on .p-shades{animation:drop .8s ease-out 1.5s both}
 .page.on .p-gradcap{animation:drop .9s ease-out 1.5s both}
@@ -320,6 +327,7 @@ html,body{height:100%;background:var(--ink);color:var(--ink);overflow:hidden;fon
 .page.on .p-pumpkin{animation:pop .75s cubic-bezier(.3,1.7,.5,1) 1.5s both,squash 1.8s ease-in-out 2.3s infinite}
 .page.on .p-tree .tw{animation:twinkle .9s ease-in-out 2.2s infinite alternate}
 .page.on .p-tree .tw2{animation-duration:1.4s}
+@media (prefers-reduced-motion:reduce){.page.on .rdrop,.page.on .rc-float,.page.on .p-raincloud{animation:none}.rdrop{opacity:1}}
 @media (prefers-reduced-motion:reduce){
   .blink,.page.on .bite,.page.on .note,.page.on .owl.in,.page.on .prop,.page.on .p-tree .tw,.owl svg,.page.on .in,.big-g .rays,.big-g .drift,.big-g .drop,.wd.today .num::before,.p-remind .rings circle{animation:none}
   .p-remind .stroke path,.p-site .under path,.p-water .stroke path{stroke-dashoffset:0;animation:none}
@@ -781,12 +789,25 @@ $('waterProp').innerHTML = PROPS.water;
   }
 })();
 let owlKey = null;
+const HEAD_PROPS = ['partyhat', 'gradcap'];
+// Rain cloud for when the owl is already wearing a hat: floats beside its head and rains.
+const RAIN_CLOUD = '<g class="rc-float"><path d="M58 176 Q40 112 106 106 Q120 50 190 60 Q236 22 284 66 Q344 62 344 120 Q376 156 330 182 L92 182 Q46 182 58 176 Z" fill="#E3EDF9" ' + st(9) + '/>' +
+  '<path d="M118 132 Q128 104 160 106 M232 92 Q262 86 280 108" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/></g>' +
+  [[110, 0], [160, .45], [210, .2], [260, .65], [310, .35], [135, .85], [235, 1.05], [285, .1]].map((d, i) =>
+    '<path class="rdrop" style="animation-delay:' + d[1] + 's" d="M' + d[0] + ' ' + (200 + (i % 3) * 14) + ' q-11 20 0 27 q11 -7 0 -27 Z" fill="' + OW.B + '" stroke="#000" stroke-width="4" stroke-linejoin="round"/>').join('');
 function renderOwl(){
   const bs = bellState(laNow()), rs = ringState(laNow());
   const k = rs ? 'ring' : bs ? (bs.what === 'Lunch' ? 'lunch' : 'books') : outfit(laNow().n);
-  if (k === owlKey) return;                 // only redraw when the outfit actually changes
-  owlKey = k;
-  $('owlProp').innerHTML = '<g class="prop p-' + k + '">' + (PROPS[k] || '') + '</g>';
+  // When it's raining right now, the owl also holds the umbrella, on top of any holiday or bell prop.
+  const rainingNow = !!(WX && isFinite(WX.temp) && isWet({ code: WX.code, rain: 0 }));
+  const both = rainingNow && k !== 'umbrella';
+  const key = k + (both ? '+umbrella' : '');
+  if (key === owlKey) return;               // only redraw when the outfit actually changes
+  owlKey = key;
+  $('owlProp').innerHTML = '<g class="prop p-' + k + '">' + (PROPS[k] || '') + '</g>' +
+    (!both ? '' : HEAD_PROPS.includes(k)
+      ? '<g class="prop p-raincloud">' + RAIN_CLOUD + '</g>'   // a hat is already on its head, so a rain cloud floats beside it instead
+      : '<g class="prop p-umbrella">' + PROPS.umbrella + '</g>');
 }
 
 /* ---------- bell countdown ---------- */
