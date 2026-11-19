@@ -1,0 +1,9 @@
+# Cloudflare Worker for the website chat ("Ask WHCP").
+# Deployed automatically by .github/workflows/deploy-chat.yml whenever worker.js changes.
+name = "whcp-chat"
+main = "worker.js"
+compatibility_date = "2025-11-01"
+workers_dev = true
+
+[ai]
+binding = "AI"
