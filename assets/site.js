@@ -71,6 +71,24 @@
     restart();
   }
 
+  /* Toy drive slide: a gift jumps, pops its lid and sparkles when the mouse goes over it (or it's tapped) */
+  var giftArt = document.querySelector('.toy-gifts');
+  if (giftArt) {
+    var popGift = function (g) {
+      if (g.classList.contains('pop')) return;
+      var key = (g.getAttribute('class').match(/\bg\d\b/) || [''])[0];
+      var moving = [g];
+      if (key === 'g2') { var top = giftArt.querySelector('.gift.g1'); if (top) moving.push(top); }   // the bottom box carries the one stacked on it
+      var burst = giftArt.querySelector('.burst.b-' + key);
+      moving.forEach(function (m) { m.classList.add('pop'); });
+      if (burst) burst.classList.add('pop');
+      setTimeout(function () { moving.forEach(function (m) { m.classList.remove('pop'); }); if (burst) burst.classList.remove('pop'); }, 950);
+    };
+    var onGift = function (e) { var g = e.target.closest && e.target.closest('.gift'); if (g) popGift(g); };
+    giftArt.addEventListener('pointerover', onGift);
+    giftArt.addEventListener('click', onGift);
+  }
+
   /* "How did you hear about us?": show the details box for referrals and Other */
   document.querySelectorAll('select[data-more]').forEach(function (sel) {
     var wrap = document.getElementById(sel.getAttribute('data-more'));
