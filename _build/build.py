@@ -203,6 +203,9 @@ def main():
     (ROOT / 'img').mkdir()
     # newsletter images (JPG/PNG copies email apps can show) are kept in _build/email and copied in as-is
     shutil.copytree(ROOT / '_build' / 'email', ROOT / 'img' / 'email')
+    # hand-made images (like the toy drive owl) are kept in _build/static-img and copied in as-is
+    for f in (ROOT / '_build' / 'static-img').glob('*'):
+        shutil.copy(f, ROOT / 'img' / f.name)
     (ROOT / 'assets' / 'fonts').mkdir(parents=True)
     imgs = Images(ROOT / 'img')
 
