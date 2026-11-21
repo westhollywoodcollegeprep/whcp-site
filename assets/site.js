@@ -60,11 +60,13 @@
     var own = slides[current].classList.contains('hero-slide--own');
     if (hero) hero.classList.toggle('hero--own', own);
     Array.prototype.forEach.call(slides, function (s, i) { if (s.classList.contains('hero-slide--own')) { s.setAttribute('aria-hidden', i === current ? 'false' : 'true'); if (i === current) s.removeAttribute('inert'); else s.setAttribute('inert', ''); } });
-    if (manual) restart();
+    restart();
   }
+  // Each slide shows for 6.5 seconds; data-hold="2" keeps one up twice as long (the toy drive).
   function restart() {
-    if (timer) clearInterval(timer);
-    timer = setInterval(function () { goSlide(current + 1); }, 6500);
+    if (timer) clearTimeout(timer);
+    var hold = +(slides[current].getAttribute('data-hold') || 1);
+    timer = setTimeout(function () { goSlide(current + 1); }, 6500 * hold);
   }
   if (slides.length) {
     dots.forEach(function (b, i) { b.addEventListener('click', function () { goSlide(i, true); }); });
