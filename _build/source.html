@@ -199,7 +199,7 @@ button{font-family:inherit}
 /* ----- Detail rows / definition lists ----- */
 .rows{border-bottom:1px solid var(--line)}
 .row{display:grid;grid-template-columns:220px 1fr;gap:36px;padding:26px 0;border-top:1px solid var(--line)}
-.row h4{font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--navy);padding-top:3px}
+.row h3{font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--navy);padding-top:3px}
 .row p{font-size:15px;line-height:1.8}
 .row a{color:var(--navy);text-decoration:none;border-bottom:1px solid var(--brass-line)}
 .row a:hover{color:var(--brass)}
@@ -236,12 +236,12 @@ button{font-family:inherit}
 .detail-grid{display:grid;grid-template-columns:7.2fr 4fr;gap:72px;align-items:start}
 .aside{position:sticky;top:118px;display:flex;flex-direction:column;gap:24px}
 .aside-card{background:var(--paper);border:1px solid var(--line);padding:30px}
-.aside-card h4{font-size:10.5px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--brass);margin-bottom:18px}
+.aside-card h3{font-size:10.5px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--brass);margin-bottom:18px}
 .aside-card p{font-size:14px;line-height:1.75;margin-bottom:16px}
 .aside-card p:last-child{margin-bottom:0}
 .aside-card .btn{width:100%}
 .aside-card--navy{background:var(--navy);border-color:var(--navy);color:rgba(255,255,255,.75)}
-.aside-card--navy h4{color:var(--brass-bright)}
+.aside-card--navy h3{color:var(--brass-bright)}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{font-size:10.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--navy);border:1px solid var(--line);padding:7px 13px;background:var(--stone)}
 .ticks{display:flex;flex-direction:column}
@@ -258,6 +258,7 @@ button{font-family:inherit}
 
 /* ----- Tables ----- */
 .table-scroll{overflow-x:auto;margin-top:28px;border:1px solid var(--line);background:#fff}
+.table-scroll:focus-visible{outline:3px solid var(--blue, #0757A7);outline-offset:3px}
 table.tuition{width:100%;border-collapse:collapse;min-width:640px}
 .tuition th{font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--navy);text-align:left;padding:16px 20px;border-bottom:2px solid var(--navy);background:#fff;white-space:nowrap}
 .tuition td{font-size:14.5px;padding:16px 20px;border-bottom:1px solid var(--line);color:var(--body);vertical-align:top}
@@ -376,7 +377,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
 .foot-brand address{font-style:normal;font-size:14px;line-height:1.9}
 .foot-brand address a{color:rgba(255,255,255,.55);text-decoration:none}
 .foot-brand address a:hover{color:#fff}
-.foot-col h4{font-size:10.5px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--brass-bright);margin-bottom:20px}
+.foot-col h2{font-size:10.5px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--brass-bright);margin-bottom:20px}
 .foot-col ul{list-style:none;display:flex;flex-direction:column;gap:11px}
 .foot-col a{font-size:13.5px;color:rgba(255,255,255,.55);text-decoration:none;transition:color .2s;cursor:pointer}
 .foot-col a:hover{color:#fff}
@@ -389,8 +390,8 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
 .skip-link{position:absolute;left:-9999px;top:0;z-index:2000;background:var(--navy-deep);color:#fff;padding:12px 20px;font-size:13px;letter-spacing:.04em;text-decoration:none}
 .skip-link:focus{left:0}
 .legal{max-width:780px}
-.legal h3{font-family:'Cormorant Garamond',serif;font-size:25px;font-weight:600;color:var(--navy);margin:42px 0 14px}
-.legal h3:first-of-type{margin-top:0}
+.legal h2{font-family:'Cormorant Garamond',serif;font-size:25px;font-weight:600;color:var(--navy);margin:42px 0 14px}
+.legal h2:first-of-type{margin-top:0}
 .legal p{margin-bottom:16px;color:var(--body)}
 .legal ul{margin:0 0 16px;padding-left:22px}
 .legal li{margin-bottom:9px;color:var(--body)}
@@ -593,7 +594,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
 <a class="skip-link" href="#app">Skip to main content</a>
 
 <!-- ===== Top bar ===== -->
-<div class="topbar">
+<div class="topbar" role="region" aria-label="Phone, address and quick links">
   <div class="wrap">
     <div><a href="tel:+13238227900">(323) 822-7900</a><span class="topbar-addr">&nbsp;&nbsp;·&nbsp;&nbsp;1317 N. Crescent Heights Blvd., West Hollywood</span></div>
     <nav class="topbar-links" aria-label="Audience">
@@ -754,7 +755,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
         </div>
         <div class="intro-copy">
           <p>West Hollywood College Preparatory School is a private, nonprofit Pre&#8209;school through 12th grade center of learning located in the heart of West Hollywood, California. We emphasize achievement in math, language arts, and science.</p>
-          <p>Students learn in a nurturing environment with small classes, enjoy a superb curriculum and faculty, and are encouraged to participate in civic and community life. Our intimate class sizes mean every student is seen, challenged, and supported &mdash; from their first day of pre&#8209;school to their college acceptance letter.</p>
+          <p>Students learn in small classes with a strong curriculum and faculty, and are encouraged to take part in civic and community life. Our intimate class sizes mean every student is seen, challenged, and supported &mdash; from their first day of pre&#8209;school to their college acceptance letter.</p>
           <a class="tlink" href="/about">More About Our School</a>
         </div>
       </div>
@@ -906,11 +907,11 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
           <span class="eyebrow">Plan Your Visit</span>
           <h2 class="h2" style="margin-bottom:36px">Visit Us</h2>
           <div class="rows">
-            <div class="row"><h4>Address</h4><p>1317 N. Crescent Heights Blvd.<br>West Hollywood, CA 90046</p></div>
-            <div class="row"><h4>Telephone</h4><p><a href="tel:+13238227900">(323) 822-7900</a></p></div>
-            <div class="row" data-nosnippet><h4>Facsimile</h4><p>(323) 822-7999</p></div>
-            <div class="row"><h4>Email</h4><p><a href="mailto:info@westhollywoodschool.com">info@westhollywoodschool.com</a></p></div>
-            <div class="row"><h4>Office Hours</h4><p>Monday &ndash; Friday, 8:00 AM &ndash; 6:00 PM</p></div>
+            <div class="row"><h3>Address</h3><p>1317 N. Crescent Heights Blvd.<br>West Hollywood, CA 90046</p></div>
+            <div class="row"><h3>Telephone</h3><p><a href="tel:+13238227900">(323) 822-7900</a></p></div>
+            <div class="row" data-nosnippet><h3>Facsimile</h3><p>(323) 822-7999</p></div>
+            <div class="row"><h3>Email</h3><p><a href="mailto:info@westhollywoodschool.com">info@westhollywoodschool.com</a></p></div>
+            <div class="row"><h3>Office Hours</h3><p>Monday &ndash; Friday, 8:00 AM &ndash; 6:00 PM</p></div>
           </div>
           <div style="margin-top:40px;display:flex;gap:16px;flex-wrap:wrap">
             <a class="btn" href="/contact">Schedule a Tour</a>
@@ -942,7 +943,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
           <span class="eyebrow">Our School</span>
           <h2 class="h2" style="margin-bottom:22px">Overview</h2>
           <p style="margin-bottom:18px;font-size:16.5px;line-height:1.9">West Hollywood College Preparatory School (WHCP) is a private, nonprofit Pre&#8209;school through 12th grade center of learning located in the heart of West Hollywood, California.</p>
-          <p style="margin-bottom:34px;font-size:16.5px;line-height:1.9">At WHCP, we emphasize achievement in math, language arts, and science. Students learn in a nurturing environment with small classes, enjoy a superb curriculum and faculty, and are encouraged to participate in civic and community life.</p>
+          <p style="margin-bottom:34px;font-size:16.5px;line-height:1.9">At WHCP, we emphasize achievement in math, language arts, and science. Students learn in a supportive environment with small classes, enjoy a superb curriculum and faculty, and are encouraged to participate in civic and community life.</p>
           <div class="rows">
             <div class="row" style="grid-template-columns:1fr auto"><p style="font-weight:400;color:var(--navy)">Early Childhood Education</p><a class="tlink" href="/early-childhood">View</a></div>
             <div class="row" style="grid-template-columns:1fr auto"><p style="font-weight:400;color:var(--navy)">Elementary School</p><a class="tlink" href="/elementary">View</a></div>
@@ -997,7 +998,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
       <h2 class="h2" style="margin-bottom:28px">Welcome to WHCP</h2>
       <div class="prose">
         <p>Welcome to West Hollywood College Preparatory School. Our school stands as a beacon of educational excellence in the heart of West Hollywood, providing students from Pre&#8209;school through 12th grade with the tools, knowledge, and values they need to thrive in a rapidly changing world.</p>
-        <p>At WHCP, we believe that every child deserves a personalized education that honors their unique strengths and nurtures their curiosity. Our small class sizes are intentional. They allow our outstanding faculty to build genuine relationships with every student and tailor instruction to meet each learner where they are.</p>
+        <p>At WHCP, we believe that every child deserves a personalized education that honors their unique strengths and feeds their curiosity. Our small class sizes are intentional. They allow our outstanding faculty to build genuine relationships with every student and tailor instruction to meet each learner where they are.</p>
         <p>We place a special emphasis on math, language arts, and science. Our graduates consistently gain admission to top colleges and universities, and they carry with them not just academic preparation, but a deep sense of civic responsibility and community engagement.</p>
         <p>I invite you to come visit our campus, meet our team, and see firsthand what makes WHCP such a special place to learn and grow. We are open for enrollment throughout the year and welcome families from all backgrounds.</p>
       </div>
@@ -1196,26 +1197,26 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
       <div class="detail-grid">
         <div class="prose">
           <h2>Learning Through Play</h2>
-          <p>WHCP&rsquo;s Early Childhood Education program provides a safe, nurturing, and stimulating environment for our youngest learners in Pre&#8209;school and Kindergarten. Our experienced early childhood educators understand child development deeply and design every activity to build both skills and joy.</p>
+          <p>WHCP&rsquo;s Early Childhood Education program provides a safe, warm and engaging environment for our youngest learners in Pre&#8209;school and Kindergarten. Our experienced early childhood educators understand child development deeply and design every activity to build both skills and joy.</p>
           <p>We believe that play is the work of childhood. Through guided play, exploration, storytelling, music, and hands-on activities, our young students develop language, mathematical thinking, social skills, and creative expression, all while having fun.</p>
           <h2>Program Goals</h2>
           <ul>
             <li>Build language and early literacy foundations</li>
             <li>Develop number sense and early math concepts</li>
-            <li>Foster curiosity, creativity, and a love of learning</li>
+            <li>Build curiosity, creativity and a love of learning</li>
             <li>Build social and emotional skills: sharing, empathy, cooperation</li>
-            <li>Prepare children seamlessly for Kindergarten and beyond</li>
+            <li>Get children ready for Kindergarten and beyond</li>
           </ul>
-          <h2>A Safe, Nurturing Space</h2>
+          <h2>A Safe, Caring Space</h2>
           <p>Our early childhood classrooms are bright, welcoming, and designed with young learners in mind. We maintain very small group sizes so that every child receives individual attention and care. Our teachers are warm, patient, and deeply committed to each child&rsquo;s development.</p>
         </div>
         <div class="aside">
           <div class="aside-card">
-            <h4>Ages Served</h4>
+            <h3>Ages Served</h3>
             <div class="chips"><span class="chip">Pre&#8209;school &middot; Ages 2&ndash;4</span><span class="chip">Kindergarten &middot; Age 5</span></div>
           </div>
           <div class="aside-card">
-            <h4>Program Features</h4>
+            <h3>Program Features</h3>
             <div class="ticks">
               <div class="tick">Play-based learning</div>
               <div class="tick">Very small group sizes</div>
@@ -1225,7 +1226,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
             </div>
           </div>
           <div class="aside-card aside-card--navy">
-            <h4>Enroll Your Child</h4>
+            <h3>Enroll Your Child</h3>
             <p>Contact us to learn about availability and schedule a visit to our early childhood classrooms.</p>
             <a class="btn btn--gold" href="/admissions">Learn More</a>
           </div>
@@ -1238,7 +1239,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
       <span class="eyebrow">Programs</span>
       <h2 class="h2" style="margin-bottom:44px">Explore Other Programs</h2>
       <div class="pillar-grid">
-        <a class="pillar-col" href="/elementary" style="text-decoration:none;display:block"><h3>Elementary School</h3><p style="margin-bottom:18px">Grades 1&ndash;5 in small, nurturing classes.</p><span class="tlink">Learn More</span></a>
+        <a class="pillar-col" href="/elementary" style="text-decoration:none;display:block"><h3>Elementary School</h3><p style="margin-bottom:18px">Grades 1&ndash;5 in small classes where every child is known.</p><span class="tlink">Learn More</span></a>
         <a class="pillar-col" href="/middle-high" style="text-decoration:none;display:block"><h3>Middle &amp; High School</h3><p style="margin-bottom:18px">College-preparatory Grades 6&ndash;12.</p><span class="tlink">Learn More</span></a>
         <a class="pillar-col" href="/after-school" style="text-decoration:none;display:block"><h3>After School Programs</h3><p style="margin-bottom:18px">Supervised study, enrichment and care until 5:00 PM.</p><span class="tlink">Learn More</span></a>
         <a class="pillar-col" href="/individual" style="text-decoration:none;display:block"><h3>Individual Programs</h3><p style="margin-bottom:18px">One-on-one learning built around each student.</p><span class="tlink">Learn More</span></a>
@@ -1255,7 +1256,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
     <div class="wrap">
       <nav class="crumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/programs">Programs</a><span>/</span>Elementary</nav>
       <h1>Elementary School</h1>
-      <p>Grades 1&ndash;5. Building the foundation for a lifetime of learning in a warm, nurturing environment.</p>
+      <p>Grades 1&ndash;5. Strong foundations in reading, writing and math, with teachers who know each child well.</p>
     </div>
   </div>
   <div class="factbar factbar--glance" aria-labelledby="glance-elementary">
@@ -1266,7 +1267,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
       <div class="detail-grid">
         <div class="prose">
           <h2>A Strong Foundation</h2>
-          <p>Our Elementary program gives students in grades 1&ndash;5 the strong academic and social foundations they need to thrive. Our talented, caring teachers create classrooms where every child feels safe, seen, and eager to learn.</p>
+          <p>Our Elementary program gives students in grades 1&ndash;5 the strong academic and social foundations they need for the grades ahead. Our talented, caring teachers create classrooms where every child feels safe, seen, and eager to learn.</p>
           <p>We understand that the early elementary years are formative. That is why we invest so heavily in small class sizes and individualized instruction, so that every child&rsquo;s needs are met, every curiosity is honored, and every student builds genuine confidence as a learner.</p>
           <h2>What We Teach</h2>
           <ul>
@@ -1278,15 +1279,15 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
             <li>Social-emotional learning and character development</li>
           </ul>
           <h2>The WHCP Difference</h2>
-          <p>Elementary students at WHCP benefit from the same high standards and dedicated faculty that make our middle and high school program exceptional. As students progress, they are seamlessly prepared for the rigors of WHCP&rsquo;s college-prep upper school curriculum.</p>
+          <p>Elementary students at WHCP benefit from the same high standards and dedicated faculty that make our middle and high school program exceptional. As students progress, they are steadily prepared for the rigors of WHCP&rsquo;s college-prep upper school curriculum.</p>
         </div>
         <div class="aside">
           <div class="aside-card">
-            <h4>Grade Levels</h4>
+            <h3>Grade Levels</h3>
             <div class="chips"><span class="chip">Grade 1</span><span class="chip">Grade 2</span><span class="chip">Grade 3</span><span class="chip">Grade 4</span><span class="chip">Grade 5</span></div>
           </div>
           <div class="aside-card">
-            <h4>Program Features</h4>
+            <h3>Program Features</h3>
             <div class="ticks">
               <div class="tick">Small class sizes</div>
               <div class="tick">Individualized instruction</div>
@@ -1295,7 +1296,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
             </div>
           </div>
           <div class="aside-card aside-card--navy">
-            <h4>Enroll Today</h4>
+            <h3>Enroll Today</h3>
             <p>Spaces fill quickly. Contact us to schedule a visit and learn more.</p>
             <a class="btn btn--gold" href="/admissions">Apply Now</a>
           </div>
@@ -1354,11 +1355,11 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
         </div>
         <div class="aside">
           <div class="aside-card">
-            <h4>Grade Levels</h4>
+            <h3>Grade Levels</h3>
             <div class="chips"><span class="chip">Grade 6</span><span class="chip">Grade 7</span><span class="chip">Grade 8</span><span class="chip">Grade 9</span><span class="chip">Grade 10</span><span class="chip">Grade 11</span><span class="chip">Grade 12</span></div>
           </div>
           <div class="aside-card">
-            <h4>Program Features</h4>
+            <h3>Program Features</h3>
             <div class="ticks">
               <div class="tick">Small class sizes</div>
               <div class="tick">Math, language arts &amp; science</div>
@@ -1368,7 +1369,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
             </div>
           </div>
           <div class="aside-card aside-card--navy">
-            <h4>Ready to Apply?</h4>
+            <h3>Ready to Apply?</h3>
             <p>Enrollment is open all year. Contact us to schedule a campus visit or request more information.</p>
             <a class="btn btn--gold" href="/admissions">Apply Now</a>
           </div>
@@ -1382,7 +1383,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
       <h2 class="h2" style="margin-bottom:44px">Explore Other Programs</h2>
       <div class="pillar-grid">
         <a class="pillar-col" href="/early-childhood" style="text-decoration:none;display:block"><h3>Early Childhood</h3><p style="margin-bottom:18px">Play-based pre-school for ages 2&ndash;4 and Kindergarten.</p><span class="tlink">Learn More</span></a>
-        <a class="pillar-col" href="/elementary" style="text-decoration:none;display:block"><h3>Elementary School</h3><p style="margin-bottom:18px">Grades 1&ndash;5 in small, nurturing classes.</p><span class="tlink">Learn More</span></a>
+        <a class="pillar-col" href="/elementary" style="text-decoration:none;display:block"><h3>Elementary School</h3><p style="margin-bottom:18px">Grades 1&ndash;5 in small classes where every child is known.</p><span class="tlink">Learn More</span></a>
         <a class="pillar-col" href="/after-school" style="text-decoration:none;display:block"><h3>After School Programs</h3><p style="margin-bottom:18px">Supervised study, enrichment and care until 5:00 PM.</p><span class="tlink">Learn More</span></a>
         <a class="pillar-col" href="/individual" style="text-decoration:none;display:block"><h3>Individual Programs</h3><p style="margin-bottom:18px">One-on-one learning built around each student.</p><span class="tlink">Learn More</span></a>
         <a class="pillar-col" href="/tutoring" style="text-decoration:none;display:block"><h3>Tutoring Center</h3><p style="margin-bottom:18px">All subjects and SAT/ACT prep with professional tutors.</p><span class="tlink">Learn More</span></a>
@@ -1423,11 +1424,11 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
         </div>
         <div class="aside">
           <div class="aside-card">
-            <h4>Program Times</h4>
+            <h3>Program Times</h3>
             <p style="margin-bottom:0"><strong style="font-weight:500;color:var(--navy)">After School:</strong> School end &ndash; 5:00 PM</p>
           </div>
           <div class="aside-card">
-            <h4>Also Available</h4>
+            <h3>Also Available</h3>
             <div class="ticks">
               <div class="tick">Summer School</div>
               <div class="tick">Summer Camp</div>
@@ -1436,7 +1437,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
             </div>
           </div>
           <div class="aside-card aside-card--navy">
-            <h4>Register Today</h4>
+            <h3>Register Today</h3>
             <p>Open enrollment all year round. Contact us for current availability.</p>
             <a class="btn btn--gold" href="/contact">Contact Us</a>
           </div>
@@ -1450,7 +1451,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
       <h2 class="h2" style="margin-bottom:44px">Explore Other Programs</h2>
       <div class="pillar-grid">
         <a class="pillar-col" href="/early-childhood" style="text-decoration:none;display:block"><h3>Early Childhood</h3><p style="margin-bottom:18px">Play-based pre-school for ages 2&ndash;4 and Kindergarten.</p><span class="tlink">Learn More</span></a>
-        <a class="pillar-col" href="/elementary" style="text-decoration:none;display:block"><h3>Elementary School</h3><p style="margin-bottom:18px">Grades 1&ndash;5 in small, nurturing classes.</p><span class="tlink">Learn More</span></a>
+        <a class="pillar-col" href="/elementary" style="text-decoration:none;display:block"><h3>Elementary School</h3><p style="margin-bottom:18px">Grades 1&ndash;5 in small classes where every child is known.</p><span class="tlink">Learn More</span></a>
         <a class="pillar-col" href="/middle-high" style="text-decoration:none;display:block"><h3>Middle &amp; High School</h3><p style="margin-bottom:18px">College-preparatory Grades 6&ndash;12.</p><span class="tlink">Learn More</span></a>
         <a class="pillar-col" href="/individual" style="text-decoration:none;display:block"><h3>Individual Programs</h3><p style="margin-bottom:18px">One-on-one learning built around each student.</p><span class="tlink">Learn More</span></a>
         <a class="pillar-col" href="/tutoring" style="text-decoration:none;display:block"><h3>Tutoring Center</h3><p style="margin-bottom:18px">All subjects and SAT/ACT prep with professional tutors.</p><span class="tlink">Learn More</span></a>
@@ -1492,7 +1493,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
         </div>
         <div class="aside">
           <div class="aside-card">
-            <h4>Program Features</h4>
+            <h3>Program Features</h3>
             <div class="ticks">
               <div class="tick">100% personalized</div>
               <div class="tick">Flexible scheduling</div>
@@ -1503,7 +1504,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
             </div>
           </div>
           <div class="aside-card aside-card--navy">
-            <h4>Get Started</h4>
+            <h3>Get Started</h3>
             <p>Contact us for an initial consultation. We will discuss your student&rsquo;s needs and design the right program.</p>
             <a class="btn btn--gold" href="/contact">Inquire Now</a>
           </div>
@@ -1517,7 +1518,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
       <h2 class="h2" style="margin-bottom:44px">Explore Other Programs</h2>
       <div class="pillar-grid">
         <a class="pillar-col" href="/early-childhood" style="text-decoration:none;display:block"><h3>Early Childhood</h3><p style="margin-bottom:18px">Play-based pre-school for ages 2&ndash;4 and Kindergarten.</p><span class="tlink">Learn More</span></a>
-        <a class="pillar-col" href="/elementary" style="text-decoration:none;display:block"><h3>Elementary School</h3><p style="margin-bottom:18px">Grades 1&ndash;5 in small, nurturing classes.</p><span class="tlink">Learn More</span></a>
+        <a class="pillar-col" href="/elementary" style="text-decoration:none;display:block"><h3>Elementary School</h3><p style="margin-bottom:18px">Grades 1&ndash;5 in small classes where every child is known.</p><span class="tlink">Learn More</span></a>
         <a class="pillar-col" href="/middle-high" style="text-decoration:none;display:block"><h3>Middle &amp; High School</h3><p style="margin-bottom:18px">College-preparatory Grades 6&ndash;12.</p><span class="tlink">Learn More</span></a>
         <a class="pillar-col" href="/after-school" style="text-decoration:none;display:block"><h3>After School Programs</h3><p style="margin-bottom:18px">Supervised study, enrichment and care until 5:00 PM.</p><span class="tlink">Learn More</span></a>
         <a class="pillar-col" href="/tutoring" style="text-decoration:none;display:block"><h3>Tutoring Center</h3><p style="margin-bottom:18px">All subjects and SAT/ACT prep with professional tutors.</p><span class="tlink">Learn More</span></a>
@@ -1561,7 +1562,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
         </div>
         <div class="aside">
           <div class="aside-card">
-            <h4>Session Options</h4>
+            <h3>Session Options</h3>
             <div class="ticks">
               <div class="tick">One-on-one sessions</div>
               <div class="tick">Small group (2&ndash;3 students)</div>
@@ -1569,7 +1570,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
             </div>
           </div>
           <div class="aside-card">
-            <h4>Features</h4>
+            <h3>Features</h3>
             <div class="ticks">
               <div class="tick">All subjects</div>
               <div class="tick">Professional tutors</div>
@@ -1579,7 +1580,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
             </div>
           </div>
           <div class="aside-card aside-card--navy">
-            <h4>Book a Session</h4>
+            <h3>Book a Session</h3>
             <p>Contact us to discuss your student&rsquo;s needs and get started right away.</p>
             <a class="btn btn--gold" href="/contact">Contact Us</a>
           </div>
@@ -1593,7 +1594,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
       <h2 class="h2" style="margin-bottom:44px">Explore Other Programs</h2>
       <div class="pillar-grid">
         <a class="pillar-col" href="/early-childhood" style="text-decoration:none;display:block"><h3>Early Childhood</h3><p style="margin-bottom:18px">Play-based pre-school for ages 2&ndash;4 and Kindergarten.</p><span class="tlink">Learn More</span></a>
-        <a class="pillar-col" href="/elementary" style="text-decoration:none;display:block"><h3>Elementary School</h3><p style="margin-bottom:18px">Grades 1&ndash;5 in small, nurturing classes.</p><span class="tlink">Learn More</span></a>
+        <a class="pillar-col" href="/elementary" style="text-decoration:none;display:block"><h3>Elementary School</h3><p style="margin-bottom:18px">Grades 1&ndash;5 in small classes where every child is known.</p><span class="tlink">Learn More</span></a>
         <a class="pillar-col" href="/middle-high" style="text-decoration:none;display:block"><h3>Middle &amp; High School</h3><p style="margin-bottom:18px">College-preparatory Grades 6&ndash;12.</p><span class="tlink">Learn More</span></a>
         <a class="pillar-col" href="/after-school" style="text-decoration:none;display:block"><h3>After School Programs</h3><p style="margin-bottom:18px">Supervised study, enrichment and care until 5:00 PM.</p><span class="tlink">Learn More</span></a>
         <a class="pillar-col" href="/individual" style="text-decoration:none;display:block"><h3>Individual Programs</h3><p style="margin-bottom:18px">One-on-one learning built around each student.</p><span class="tlink">Learn More</span></a>
@@ -1609,7 +1610,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
     <div class="wrap">
       <nav class="crumb" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/programs">Programs</a><span>/</span>International Students</nav>
       <h1>International Students</h1>
-      <p>A welcoming home for students from around the world, with the dedicated support needed to thrive in U.S. education.</p>
+      <p>A welcoming home for students from around the world, with the dedicated support needed to succeed in a U.S. school.</p>
     </div>
   </div>
   <div class="factbar factbar--glance" aria-labelledby="glance-international">
@@ -1633,15 +1634,15 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
             <li>Integration into the broader WHCP community</li>
           </ul>
           <h2>Los Angeles &amp; West Hollywood</h2>
-          <p>Students who attend WHCP get to experience life in one of the world&rsquo;s most vibrant, diverse cities. West Hollywood is a welcoming, culturally rich neighborhood and a wonderful home base for an international student&rsquo;s American experience.</p>
+          <p>Students who attend WHCP get to experience life in one of the world&rsquo;s most exciting, diverse cities. West Hollywood is a welcoming, culturally rich neighborhood and a wonderful home base for an international student&rsquo;s American experience.</p>
         </div>
         <div class="aside">
           <div class="aside-card">
-            <h4>We Serve</h4>
+            <h3>We Serve</h3>
             <p style="margin-bottom:0">Students from any country are welcome.</p>
           </div>
           <div class="aside-card">
-            <h4>We Offer</h4>
+            <h3>We Offer</h3>
             <div class="ticks">
               <div class="tick">ESL instruction</div>
               <div class="tick">SEVP-certified for F-1 students</div>
@@ -1652,7 +1653,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
             </div>
           </div>
           <div class="aside-card aside-card--navy">
-            <h4>Apply to WHCP</h4>
+            <h3>Apply to WHCP</h3>
             <p>We accept international students year-round. Contact us to begin the application process.</p>
             <a class="btn btn--gold" href="/admissions">Start Application</a>
           </div>
@@ -1666,7 +1667,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
       <h2 class="h2" style="margin-bottom:44px">Explore Other Programs</h2>
       <div class="pillar-grid">
         <a class="pillar-col" href="/early-childhood" style="text-decoration:none;display:block"><h3>Early Childhood</h3><p style="margin-bottom:18px">Play-based pre-school for ages 2&ndash;4 and Kindergarten.</p><span class="tlink">Learn More</span></a>
-        <a class="pillar-col" href="/elementary" style="text-decoration:none;display:block"><h3>Elementary School</h3><p style="margin-bottom:18px">Grades 1&ndash;5 in small, nurturing classes.</p><span class="tlink">Learn More</span></a>
+        <a class="pillar-col" href="/elementary" style="text-decoration:none;display:block"><h3>Elementary School</h3><p style="margin-bottom:18px">Grades 1&ndash;5 in small classes where every child is known.</p><span class="tlink">Learn More</span></a>
         <a class="pillar-col" href="/middle-high" style="text-decoration:none;display:block"><h3>Middle &amp; High School</h3><p style="margin-bottom:18px">College-preparatory Grades 6&ndash;12.</p><span class="tlink">Learn More</span></a>
         <a class="pillar-col" href="/after-school" style="text-decoration:none;display:block"><h3>After School Programs</h3><p style="margin-bottom:18px">Supervised study, enrichment and care until 5:00 PM.</p><span class="tlink">Learn More</span></a>
         <a class="pillar-col" href="/individual" style="text-decoration:none;display:block"><h3>Individual Programs</h3><p style="margin-bottom:18px">One-on-one learning built around each student.</p><span class="tlink">Learn More</span></a>
@@ -1705,10 +1706,10 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
       <h2 class="h2">Tuition &amp; Fees</h2>
       <p class="lead" style="margin-top:18px">WHCPS offers monthly and annual payment options. The annual tuition shown reflects the one-payment plan.</p>
 
-      <h3 class="tbl-title">Domestic Students</h3>
-      <div class="table-scroll">
+      <h3 class="tbl-title" id="tuition-domestic">Domestic Students</h3>
+      <div class="table-scroll" tabindex="0" role="region" aria-labelledby="tuition-domestic">
         <table class="tuition">
-          <thead><tr><th>Grade Level</th><th>Monthly Payment</th><th>Annual Tuition</th><th>Enrollment Fee</th><th>Other Fees</th></tr></thead>
+          <thead><tr><th scope="col">Grade Level</th><th scope="col">Monthly Payment</th><th scope="col">Annual Tuition</th><th scope="col">Enrollment Fee</th><th scope="col">Other Fees</th></tr></thead>
           <tbody>
             <tr><td>2 Years &ndash; Kindergarten</td><td>$1,600/mo</td><td>$18,200</td><td>$300</td><td>Security Deposit $300 &middot; Emergency Kit $25</td></tr>
             <tr><td>Grades 1&ndash;5</td><td>$1,700/mo</td><td>$16,000*</td><td>$500</td><td>Security Deposit $300 &middot; Emergency Kit $25</td></tr>
@@ -1719,10 +1720,10 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
         </table>
       </div>
 
-      <h3 class="tbl-title">International Students</h3>
-      <div class="table-scroll">
+      <h3 class="tbl-title" id="tuition-intl">International Students</h3>
+      <div class="table-scroll" tabindex="0" role="region" aria-labelledby="tuition-intl">
         <table class="tuition">
-          <thead><tr><th>Grade Level</th><th>Annual Tuition</th></tr></thead>
+          <thead><tr><th scope="col">Grade Level</th><th scope="col">Annual Tuition</th></tr></thead>
           <tbody>
             <tr><td>Grades K&ndash;5</td><td>$18,000 per school year</td></tr>
             <tr><td>Grades 6&ndash;8</td><td>$21,000 per school year</td></tr>
@@ -1804,10 +1805,10 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
         </div>
         <div>
           <div class="rows">
-            <div class="row"><h4>Open Enrollment</h4><p>We accept students year-round. There is no fixed enrollment deadline &mdash; apply whenever you're ready.</p></div>
-            <div class="row"><h4>International Families</h4><p>International students are warmly welcomed. We provide I-20 documentation and ESL support throughout enrollment.</p></div>
-            <div class="row"><h4>Campus Tours</h4><p>We encourage all prospective families to visit. Contact us to schedule a personalized tour at a time that works for you.</p></div>
-            <div class="row"><h4>Questions</h4><p>Call us at <a href="tel:+13238227900">(323) 822-7900</a>. We're happy to answer any questions before you apply.</p></div>
+            <div class="row"><h3>Open Enrollment</h3><p>We accept students year-round. There is no fixed enrollment deadline &mdash; apply whenever you're ready.</p></div>
+            <div class="row"><h3>International Families</h3><p>International students are warmly welcomed. We provide I-20 documentation and ESL support throughout enrollment.</p></div>
+            <div class="row"><h3>Campus Tours</h3><p>We encourage all prospective families to visit. Contact us to schedule a personalized tour at a time that works for you.</p></div>
+            <div class="row"><h3>Questions</h3><p>Call us at <a href="tel:+13238227900">(323) 822-7900</a>. We're happy to answer any questions before you apply.</p></div>
           </div>
         </div>
       </div>
@@ -1941,10 +1942,10 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
           <span class="eyebrow">Visit Us</span>
           <h2 class="h2" style="margin-bottom:36px">Our Campus</h2>
           <div class="rows" style="margin-bottom:40px">
-            <div class="row"><h4>Address</h4><p>1317 N. Crescent Heights Blvd.<br>West Hollywood, CA 90046</p></div>
-            <div class="row"><h4>Telephone</h4><p><a href="tel:+13238227900">(323) 822-7900</a></p></div>
-            <div class="row" data-nosnippet><h4>Fax</h4><p>(323) 822-7999</p></div><div class="row"><h4>Email</h4><p><a href="mailto:info@westhollywoodschool.com">info@westhollywoodschool.com</a></p></div>
-            <div class="row"><h4>Office Hours</h4><p>Monday &ndash; Friday, 8:00 AM &ndash; 6:00 PM</p></div>
+            <div class="row"><h3>Address</h3><p>1317 N. Crescent Heights Blvd.<br>West Hollywood, CA 90046</p></div>
+            <div class="row"><h3>Telephone</h3><p><a href="tel:+13238227900">(323) 822-7900</a></p></div>
+            <div class="row" data-nosnippet><h3>Fax</h3><p>(323) 822-7999</p></div><div class="row"><h3>Email</h3><p><a href="mailto:info@westhollywoodschool.com">info@westhollywoodschool.com</a></p></div>
+            <div class="row"><h3>Office Hours</h3><p>Monday &ndash; Friday, 8:00 AM &ndash; 6:00 PM</p></div>
           </div>
           <div class="mapframe"><iframe src="https://maps.google.com/maps?q=West+Hollywood+College+Preparatory+School,+1317+N+Crescent+Heights+Blvd,+West+Hollywood,+CA+90046&z=15&output=embed" allowfullscreen loading="lazy" title="Map to West Hollywood College Preparatory School"></iframe></div>
         </div>
@@ -1984,14 +1985,14 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
       <h2 class="h2">Community Service</h2>
       <p class="lead" style="margin-top:18px;margin-bottom:36px">WHCP requires students in grades 9&ndash;12 to complete 100 community service hours prior to graduation. Counselors and staff help identify opportunities suited to each student's interests and abilities, and keep records of participation. Parental support is essential.</p>
       <div class="rows" style="margin-bottom:72px">
-        <div class="row"><h4>Past Projects</h4><p>West Hollywood Book Fair &middot; Revlon Walk for Breast Cancer &middot; AIDS Walk Los Angeles &middot; West Hollywood Kids Fair &middot; West Hollywood Russian Culture Festival &middot; West Hollywood Holocaust Remembrance Day &middot; Red Cross Hurricane Katrina Relief Fund.</p></div>
+        <div class="row"><h3>Past Projects</h3><p>West Hollywood Book Fair &middot; Revlon Walk for Breast Cancer &middot; AIDS Walk Los Angeles &middot; West Hollywood Kids Fair &middot; West Hollywood Russian Culture Festival &middot; West Hollywood Holocaust Remembrance Day &middot; Red Cross Hurricane Katrina Relief Fund.</p></div>
       </div>
 
       <span class="eyebrow">Support</span>
       <h2 class="h2">Academic Counseling</h2>
       <p class="lead" style="margin-top:18px;margin-bottom:36px">In WHCP's small school setting, teachers, counselors, and administrators team up to motivate students and help them be their best &mdash; academically, personally, and socially. We promote responsibility, self-discipline, strong ethics, and self-respect alongside rigorous college preparation.</p>
       <div class="rows">
-        <div class="row"><h4>Registration &amp; Planning</h4><p>Students are registered in classes based on ability and achievement, and assisted in building a long-range academic plan that prepares them for future training and work.</p></div>
+        <div class="row"><h3>Registration &amp; Planning</h3><p>Students are registered in classes based on ability and achievement, and assisted in building a long-range academic plan that prepares them for future training and work.</p></div>
       </div>
     </div>
   </section>
@@ -2013,12 +2014,12 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
       <h2 class="h2">Parent Involvement</h2>
       <p class="lead" style="margin-top:18px;margin-bottom:36px">Parent involvement is essential to the success of students at WHCP. Parents are encouraged to take part in school life in a number of ways:</p>
       <div class="rows" style="margin-bottom:72px">
-        <div class="row"><h4>PTO Meetings</h4><p>Participate in monthly Parent Teacher Organization meetings. The PTO helps organize school events and projects, leads fundraisers, and coordinates parents and teachers in these activities.</p></div>
-        <div class="row"><h4>Field Trips</h4><p>Assist with school field trips by driving children to destinations and acting as chaperones throughout the year.</p></div>
-        <div class="row"><h4>Progress Meetings</h4><p>Request student progress report meetings, available throughout the year, where parents meet with teachers to discuss their child's academic development.</p></div>
-        <div class="row"><h4>Events &amp; Projects</h4><p>Participate in school projects and events throughout the year &mdash; helping organize, supplying resources, and attending are all great ways to be part of student life.</p></div>
-        <div class="row"><h4>Activity Advisor</h4><p>Become an advisor for after-school student activities such as Student Government, the Student Art Show, and school fundraisers, based on student interest.</p></div>
-        <div class="row"><h4>Career Day</h4><p>Come share what you do for work with our students at Career Day, helping them learn about different careers and pathways.</p></div>
+        <div class="row"><h3>PTO Meetings</h3><p>Participate in monthly Parent Teacher Organization meetings. The PTO helps organize school events and projects, leads fundraisers, and coordinates parents and teachers in these activities.</p></div>
+        <div class="row"><h3>Field Trips</h3><p>Assist with school field trips by driving children to destinations and acting as chaperones throughout the year.</p></div>
+        <div class="row"><h3>Progress Meetings</h3><p>Request student progress report meetings, available throughout the year, where parents meet with teachers to discuss their child's academic development.</p></div>
+        <div class="row"><h3>Events &amp; Projects</h3><p>Participate in school projects and events throughout the year &mdash; helping organize, supplying resources, and attending are all great ways to be part of student life.</p></div>
+        <div class="row"><h3>Activity Advisor</h3><p>Become an advisor for after-school student activities such as Student Government, the Student Art Show, and school fundraisers, based on student interest.</p></div>
+        <div class="row"><h3>Career Day</h3><p>Come share what you do for work with our students at Career Day, helping them learn about different careers and pathways.</p></div>
       </div>
 
       <div class="panel" style="margin-bottom:72px">
@@ -2033,7 +2034,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
       <h2 class="h2">Parent &amp; Teacher Meetings</h2>
       <p class="lead" style="margin-top:18px;margin-bottom:36px">We encourage parents and teachers to communicate about their child's progress throughout the school year. Healthy parent&ndash;teacher partnerships are key to every student's success.</p>
       <div class="rows">
-        <div class="row"><h4>Meetings by Request</h4><p>Parents may request a meeting with a teacher at any time through the Director. Teachers may also request meetings with parents, and families will be notified by the Director.</p></div>
+        <div class="row"><h3>Meetings by Request</h3><p>Parents may request a meeting with a teacher at any time through the Director. Teachers may also request meetings with parents, and families will be notified by the Director.</p></div>
       </div>
     </div>
   </section>
@@ -2083,7 +2084,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
 
         <p>West Hollywood College Preparatory School (&ldquo;WHCP,&rdquo; &ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;) respects your privacy. This Privacy Policy explains what information we collect through this website, how we use it, and the choices you have. It applies to information collected through this site and is provided in keeping with the California Online Privacy Protection Act (CalOPPA) and other applicable privacy laws.</p>
 
-        <h3>Information We Collect</h3>
+        <h2>Information We Collect</h2>
         <p>We collect personal information only when you choose to provide it &mdash; primarily through our contact and admissions inquiry forms. Depending on the form, the categories of personally identifiable information we may collect include:</p>
         <ul>
           <li>Identifiers such as your name and, for admissions inquiries, a prospective student&rsquo;s name;</li>
@@ -2093,35 +2094,35 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
         </ul>
         <p>We do not knowingly collect payment card numbers, government identification numbers, or sensitive personal information through this website.</p>
 
-        <h3>How We Use Your Information</h3>
+        <h2>How We Use Your Information</h2>
         <p>We use the information you provide to respond to your inquiry, keep a secure record of inquiries, process admissions interest, schedule tours, communicate with you about our programs, and improve our services. If you check the box to receive updates, we will also email you news about open houses, events and enrollment; every email includes a link to unsubscribe, and we will not send updates to families who do not check the box. We do not sell your personal information, and we do not share it with third parties for their own marketing purposes.</p>
 
-        <h3>Categories of Third Parties</h3>
+        <h2>Categories of Third Parties</h2>
         <p>We may share information with service providers who help us operate this website and respond to inquiries &mdash; for example, our form-processing and email-delivery provider (Formspree, which receives the information you submit through our forms), our website hosting provider (GitHub Pages), and Cloudflare, which runs the automated chat assistant described below. These providers act on our behalf and are not authorized to use your information for unrelated purposes. We may also disclose information when required by law or to protect the rights and safety of our community.</p>
 
-        <h3>Website Chat Assistant</h3>
+        <h2>Website Chat Assistant</h2>
         <p>Our website offers an optional automated chat assistant (&ldquo;Ask WHCP&rdquo;) that answers general questions about our school using information published on this site. If you use it, the questions you type and the assistant&rsquo;s answers are sent to and processed by Cloudflare, Inc. through its Workers AI service, which runs the AI model on our behalf. Your use of the chat is also subject to Cloudflare&rsquo;s <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Privacy Policy</a>, <a href="https://www.cloudflare.com/terms/" target="_blank" rel="noopener">terms of service</a> and <a href="https://developers.cloudflare.com/workers-ai/platform/privacy/" target="_blank" rel="noopener">Workers AI data practices</a>, and to the license terms of the underlying open-source AI model. Like any web request, your IP address and basic technical information are received by Cloudflare to deliver the service, prevent abuse and limit how many questions can be sent.</p>
         <p>We do not save full chat conversations, and we do not use chats for marketing. When the assistant is unable to answer a question, we save the text of that question and the assistant&rsquo;s reply, along with the website page it was asked from, so we can add the missing information to our website. We do not save your name, IP address or any other identifier with it, and email addresses and phone numbers typed into a question are removed automatically before it is saved. These saved questions are kept securely in the school&rsquo;s own records and are used only to improve our website. According to Cloudflare, it does not use content processed by Workers AI to train AI models. Otherwise, your conversation is kept only in your open browser tab, so it can continue as you move between pages, and it disappears when you close the tab. The chat is not monitored by staff in real time, cannot enroll students, book tours or make commitments on our behalf, and its answers may be incomplete or wrong. <strong>Please do not enter private or sensitive information</strong>, especially about a child, such as health, family, financial or immigration details. For anything important, contact us directly at (323) 822-7900 or info@westhollywoodschool.com.</p>
 
-        <h3>Cookies &amp; Do Not Track</h3>
+        <h2>Cookies &amp; Do Not Track</h2>
         <p>This website does not use advertising or cross-site tracking cookies, and we do not track visitors across other websites over time. The chat assistant uses your browser&rsquo;s session storage to remember that the welcome message was already shown and to keep your conversation as you move between pages; it is not a cookie, is not sent to us, and is cleared when you close the browser tab. Because we do not track you across third-party websites, we do not respond differently to &ldquo;Do Not Track&rdquo; (DNT) signals sent by your browser. We are not aware of third parties collecting personally identifiable information about your online activities across different websites when you visit this site.</p>
 
-        <h3>Student &amp; Children&rsquo;s Privacy</h3>
+        <h2>Student &amp; Children&rsquo;s Privacy</h2>
         <p>Inquiry forms on this site are intended to be completed by parents, guardians, or prospective adult students. We are committed to protecting the privacy of children and students and handle any student information consistent with applicable laws, including the federal Family Educational Rights and Privacy Act (FERPA) and California student-privacy laws. Please do not submit a child&rsquo;s information through this site except as part of a parent- or guardian-initiated admissions inquiry.</p>
 
-        <h3>How We Protect Your Information</h3>
+        <h2>How We Protect Your Information</h2>
         <p>We maintain reasonable administrative, technical, and physical safeguards designed to protect the information submitted through this website. No method of transmission over the Internet is completely secure, however, and we cannot guarantee absolute security.</p>
 
-        <h3>Reviewing or Changing Your Information</h3>
+        <h2>Reviewing or Changing Your Information</h2>
         <p>You may request to review, update, or delete the personal information you have submitted through this website by contacting us using the details below. We will respond to your request consistent with applicable law.</p>
 
-        <h3>Your California Privacy Rights</h3>
+        <h2>Your California Privacy Rights</h2>
         <p>California residents may have rights regarding their personal information under California law. To exercise any available rights, or to ask how your information is handled, please contact us using the information below.</p>
 
-        <h3>Changes to This Policy</h3>
+        <h2>Changes to This Policy</h2>
         <p>We may update this Privacy Policy from time to time. When we make material changes, we will revise the effective date above and post the updated policy on this page. We encourage you to review it periodically.</p>
 
-        <h3>Contact Us</h3>
+        <h2>Contact Us</h2>
         <p>If you have questions about this Privacy Policy or our privacy practices, contact us at:</p>
         <p>West Hollywood College Preparatory School<br>
         1317 N. Crescent Heights Blvd., West Hollywood, CA 90046<br>
@@ -2147,37 +2148,37 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
 
         <p>Welcome to the West Hollywood College Preparatory School website. By accessing or using this website, you agree to these Terms of Use. If you do not agree, please do not use the site.</p>
 
-        <h3>Use of This Website</h3>
+        <h2>Use of This Website</h2>
         <p>This website is provided for general informational purposes about WHCP and its programs. You agree to use it only for lawful purposes and not to interfere with its operation or attempt to access it in any unauthorized manner.</p>
 
-        <h3>Accuracy of Information</h3>
+        <h2>Accuracy of Information</h2>
         <p>We strive to keep the information on this site accurate and current, including details about programs, tuition, and events. However, information is provided &ldquo;as is&rdquo; and may change without notice. Tuition figures, schedules, and program details should be confirmed with the school&rsquo;s admissions office before you rely on them.</p>
 
-        <h3>Website Design &amp; AI-Assisted Content</h3>
+        <h2>Website Design &amp; AI-Assisted Content</h2>
         <p>Portions of this website were designed and developed with the assistance of artificial-intelligence tools. While we review the site for quality and accuracy, AI-assisted content can contain errors, omissions, or inaccuracies, and the site may occasionally display technical issues. Information here is provided for general reference and should not be treated as definitive. Please confirm any important details &mdash; including programs, tuition, dates, and policies &mdash; directly with the school before acting on them.</p>
 
-        <h3>Website Chat Assistant</h3>
+        <h2>Website Chat Assistant</h2>
         <p>The &ldquo;Ask WHCP&rdquo; chat on this website is an automated assistant powered by a third-party AI model running on Cloudflare&rsquo;s Workers AI service. By using it, you also agree to Cloudflare&rsquo;s applicable <a href="https://www.cloudflare.com/terms/" target="_blank" rel="noopener">terms</a> and <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">privacy policy</a>. Its answers are provided for general information only, may be inaccurate or out of date, and are not an offer, a guarantee of admission or availability, or an official statement of school policy, tuition or fees. Nothing the chat says creates any agreement or obligation for WHCP. Always confirm important details with us directly. Do not use the chat for emergencies or to share private or sensitive information. We may change, limit or remove the chat at any time. See our <a href="/privacy">Privacy Policy</a> for how chat messages are handled.</p>
 
-        <h3>Intellectual Property</h3>
+        <h2>Intellectual Property</h2>
         <p>The content on this website &mdash; including text, graphics, logos, and the WHCP name and seal &mdash; is the property of West Hollywood College Preparatory School or its licensors and is protected by applicable intellectual-property laws. You may not reproduce or distribute it without permission, except for personal, non-commercial use.</p>
 
-        <h3>Third-Party Links</h3>
+        <h2>Third-Party Links</h2>
         <p>This site may contain links to third-party websites or services, such as social media or secure payment pages. We are not responsible for the content or privacy practices of those third parties, and links do not imply our endorsement.</p>
 
-        <h3>Online Payments</h3>
+        <h2>Online Payments</h2>
         <p>Any donations or payments made through links on this site are processed by a third-party payment provider subject to that provider&rsquo;s own terms and privacy practices. Please review those terms before completing a transaction.</p>
 
-        <h3>Disclaimer &amp; Limitation of Liability</h3>
+        <h2>Disclaimer &amp; Limitation of Liability</h2>
         <p>This website and its content are provided without warranties of any kind, whether express or implied, to the fullest extent permitted by law. WHCP is not liable for any damages arising from your use of, or inability to use, this website.</p>
 
-        <h3>Governing Law</h3>
+        <h2>Governing Law</h2>
         <p>These Terms of Use are governed by the laws of the State of California, without regard to its conflict-of-laws principles.</p>
 
-        <h3>Changes to These Terms</h3>
+        <h2>Changes to These Terms</h2>
         <p>We may revise these Terms of Use from time to time. Changes take effect when posted on this page, and the effective date above will be updated accordingly.</p>
 
-        <h3>Contact Us</h3>
+        <h2>Contact Us</h2>
         <p>Questions about these Terms of Use may be directed to the school at <a href="tel:+13238227900">(323) 822-7900</a> or 1317 N. Crescent Heights Blvd., West Hollywood, CA 90046.</p>
       </div>
     </div>
@@ -2200,10 +2201,10 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
 
         <p>West Hollywood College Preparatory School is committed to ensuring that our website is accessible to people with disabilities, and to providing full and equal access to the information and services we offer online.</p>
 
-        <h3>Our Standard</h3>
+        <h2>Our Standard</h2>
         <p>We aim to conform to the Web Content Accessibility Guidelines (WCAG) 2.1 Level AA, the standard widely recognized under the Americans with Disabilities Act and the California Unruh Civil Rights Act. These guidelines explain how to make web content more accessible to people with a wide range of disabilities.</p>
 
-        <h3>Measures We Take</h3>
+        <h2>Measures We Take</h2>
         <ul>
           <li>Descriptive text alternatives for meaningful images;</li>
           <li>Clear, consistent navigation and a &ldquo;skip to main content&rdquo; link for keyboard users;</li>
@@ -2212,10 +2213,10 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
           <li>Readable text, structured headings, and support for reduced-motion preferences.</li>
         </ul>
 
-        <h3>Ongoing Effort</h3>
+        <h2>Ongoing Effort</h2>
         <p>Accessibility is an ongoing effort. We continue to review and improve the site, and we recognize that some content may not yet fully meet our target standard. We welcome your feedback to help us identify and resolve any barriers.</p>
 
-        <h3>Contact Us</h3>
+        <h2>Contact Us</h2>
         <p>If you encounter any difficulty using this website, or need information in an alternative format, please contact us so we can assist you and address the issue:</p>
         <p>West Hollywood College Preparatory School<br>
         1317 N. Crescent Heights Blvd., West Hollywood, CA 90046<br>
@@ -2249,7 +2250,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
         </address>
       </div>
       <div class="foot-col">
-        <h4>About</h4>
+        <h2>About</h2>
         <ul>
           <li><a href="/about">Our School</a></li>
           <li><a href="/principals-message">Principal's Message</a></li>
@@ -2258,7 +2259,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
         </ul>
       </div>
       <div class="foot-col">
-        <h4>Programs</h4>
+        <h2>Programs</h2>
         <ul>
           <li><a href="/early-childhood">Early Childhood</a></li>
           <li><a href="/elementary">Elementary School</a></li>
@@ -2270,7 +2271,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
         </ul>
       </div>
       <div class="foot-col">
-        <h4>Connect</h4>
+        <h2>Connect</h2>
         <ul>
           <li><a href="/admissions">Admissions</a></li>
           <li><a href="/students">Students</a></li>

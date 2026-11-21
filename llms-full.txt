@@ -9,7 +9,7 @@
 - Accreditation: Accrediting Commission for Schools, Western Association of Schools and Colleges (ACS WASC)
 - Licensing: Licensed Childcare Center (California Department of Social Services, Community Care Licensing)
 - International: SEVP-certified to enroll F-1 students; I-20 support
-- Founder and principal: Dr. Elina Dvorskaya. Formerly named Dvorsky College Preparatory School (renamed 2010).
+- Founder and principal: Dr. Elina Dvorskaya.
 - Academic emphasis: math, language arts and science, with arts at all grade levels
 
 ## Programs
@@ -43,7 +43,7 @@ A private, nonprofit Pre‑school through 12th grade center of learning in the h
 Our School
 ### Overview
 West Hollywood College Preparatory School (WHCP) is a private, nonprofit Pre‑school through 12th grade center of learning located in the heart of West Hollywood, California.
-At WHCP, we emphasize achievement in math, language arts, and science. Students learn in a nurturing environment with small classes, enjoy a superb curriculum and faculty, and are encouraged to participate in civic and community life.
+At WHCP, we emphasize achievement in math, language arts, and science. Students learn in a supportive environment with small classes, enjoy a superb curriculum and faculty, and are encouraged to participate in civic and community life.
 - Early Childhood Education
 - Elementary School
 - Middle & High School
@@ -67,7 +67,7 @@ A personal welcome from the principal of West Hollywood College Preparatory Scho
 From the Principal
 ### Welcome to WHCP
 Welcome to West Hollywood College Preparatory School. Our school stands as a beacon of educational excellence in the heart of West Hollywood, providing students from Pre‑school through 12th grade with the tools, knowledge, and values they need to thrive in a rapidly changing world.
-At WHCP, we believe that every child deserves a personalized education that honors their unique strengths and nurtures their curiosity. Our small class sizes are intentional. They allow our outstanding faculty to build genuine relationships with every student and tailor instruction to meet each learner where they are.
+At WHCP, we believe that every child deserves a personalized education that honors their unique strengths and feeds their curiosity. Our small class sizes are intentional. They allow our outstanding faculty to build genuine relationships with every student and tailor instruction to meet each learner where they are.
 We place a special emphasis on math, language arts, and science. Our graduates consistently gain admission to top colleges and universities, and they carry with them not just academic preparation, but a deep sense of civic responsibility and community engagement.
 I invite you to come visit our campus, meet our team, and see firsthand what makes WHCP such a special place to learn and grow. We are open for enrollment throughout the year and welcome families from all backgrounds.
 — WHCP Principal
@@ -169,29 +169,29 @@ Licensed Childcare Center
 Group Size Very Small
 Tuition From $1,600/mo
 ### Learning Through Play
-WHCP’s Early Childhood Education program provides a safe, nurturing, and stimulating environment for our youngest learners in Pre‑school and Kindergarten. Our experienced early childhood educators understand child development deeply and design every activity to build both skills and joy.
+WHCP’s Early Childhood Education program provides a safe, warm and engaging environment for our youngest learners in Pre‑school and Kindergarten. Our experienced early childhood educators understand child development deeply and design every activity to build both skills and joy.
 We believe that play is the work of childhood. Through guided play, exploration, storytelling, music, and hands-on activities, our young students develop language, mathematical thinking, social skills, and creative expression, all while having fun.
 ### Program Goals
 - Build language and early literacy foundations
 - Develop number sense and early math concepts
-- Foster curiosity, creativity, and a love of learning
+- Build curiosity, creativity and a love of learning
 - Build social and emotional skills: sharing, empathy, cooperation
-- Prepare children seamlessly for Kindergarten and beyond
-### A Safe, Nurturing Space
+- Get children ready for Kindergarten and beyond
+### A Safe, Caring Space
 Our early childhood classrooms are bright, welcoming, and designed with young learners in mind. We maintain very small group sizes so that every child receives individual attention and care. Our teachers are warm, patient, and deeply committed to each child’s development.
-##### Ages Served
+#### Ages Served
 Pre‑school · Ages 2–4 Kindergarten · Age 5
-##### Program Features
+#### Program Features
 Play-based learning
 Very small group sizes
 Experienced ECE staff
 Social-emotional focus
 Kindergarten-readiness preparation
-##### Enroll Your Child
+#### Enroll Your Child
 Contact us to learn about availability and schedule a visit to our early childhood classrooms.
 ### Explore Other Programs
 #### Elementary School
-Grades 1–5 in small, nurturing classes. Learn More
+Grades 1–5 in small classes where every child is known. Learn More
 #### Middle & High School
 College-preparatory Grades 6–12. Learn More
 #### After School Programs
@@ -206,14 +206,14 @@ F-1 and I-20 support, year-round enrollment. Learn More
 ## Page: https://www.westhollywoodschool.com/elementary
 Home / Programs / Elementary
 ## Elementary School
-Grades 1–5. Building the foundation for a lifetime of learning in a warm, nurturing environment.
+Grades 1–5. Strong foundations in reading, writing and math, with teachers who know each child well.
 ### At a Glance
 Grades 1–5
 Class Size Small
 Tuition $1,700/mo
 Accreditation WASC
 ### A Strong Foundation
-Our Elementary program gives students in grades 1–5 the strong academic and social foundations they need to thrive. Our talented, caring teachers create classrooms where every child feels safe, seen, and eager to learn.
+Our Elementary program gives students in grades 1–5 the strong academic and social foundations they need for the grades ahead. Our talented, caring teachers create classrooms where every child feels safe, seen, and eager to learn.
 We understand that the early elementary years are formative. That is why we invest so heavily in small class sizes and individualized instruction, so that every child’s needs are met, every curiosity is honored, and every student builds genuine confidence as a learner.
 ### What We Teach
 - Reading, phonics, and writing foundations
@@ -223,15 +223,15 @@ We understand that the early elementary years are formative. That is why we inve
 - Arts, music, and physical education
 - Social-emotional learning and character development
 ### The WHCP Difference
-Elementary students at WHCP benefit from the same high standards and dedicated faculty that make our middle and high school program exceptional. As students progress, they are seamlessly prepared for the rigors of WHCP’s college-prep upper school curriculum.
-##### Grade Levels
+Elementary students at WHCP benefit from the same high standards and dedicated faculty that make our middle and high school program exceptional. As students progress, they are steadily prepared for the rigors of WHCP’s college-prep upper school curriculum.
+#### Grade Levels
 Grade 1 Grade 2 Grade 3 Grade 4 Grade 5
-##### Program Features
+#### Program Features
 Small class sizes
 Individualized instruction
 Arts integration
 Social-emotional learning
-##### Enroll Today
+#### Enroll Today
 Spaces fill quickly. Contact us to schedule a visit and learn more.
 Apply Now
 ### Explore Other Programs
@@ -270,22 +270,22 @@ We place a particular emphasis on math, language arts, and science. Our students
 - SAT/ACT preparation integrated into the curriculum
 ### Small Classes, Personal Attention
 Our middle and high school classes are kept intentionally small. Every student is known by their teachers, learning is personalized, expectations are high, and the results speak for themselves.
-##### Grade Levels
+#### Grade Levels
 Grade 6 Grade 7 Grade 8 Grade 9 Grade 10 Grade 11 Grade 12
-##### Program Features
+#### Program Features
 Small class sizes
 Math, language arts & science
 College counseling
 SAT/ACT preparation
 Personalized instruction
-##### Ready to Apply?
+#### Ready to Apply?
 Enrollment is open all year. Contact us to schedule a campus visit or request more information.
 Apply Now
 ### Explore Other Programs
 #### Early Childhood
 Play-based pre-school for ages 2–4 and Kindergarten. Learn More
 #### Elementary School
-Grades 1–5 in small, nurturing classes. Learn More
+Grades 1–5 in small classes where every child is known. Learn More
 #### After School Programs
 Supervised study, enrichment and care until 5:00 PM. Learn More
 #### Individual Programs
@@ -314,21 +314,21 @@ After school is not just supervision. It is an extension of learning. Students p
 - Reading and independent study time
 ### Summer Programs
 In addition to the regular school year, WHCP offers Summer School, Summer Camp, and Saturday School with open enrollment throughout the year. These programs keep students engaged, learning, and active during school breaks.
-##### Program Times
+#### Program Times
 After School: School end – 5:00 PM
-##### Also Available
+#### Also Available
 Summer School
 Summer Camp
 Saturday School
 Holiday programs
-##### Register Today
+#### Register Today
 Open enrollment all year round. Contact us for current availability.
 Contact Us
 ### Explore Other Programs
 #### Early Childhood
 Play-based pre-school for ages 2–4 and Kindergarten. Learn More
 #### Elementary School
-Grades 1–5 in small, nurturing classes. Learn More
+Grades 1–5 in small classes where every child is known. Learn More
 #### Middle & High School
 College-preparatory Grades 6–12. Learn More
 #### Individual Programs
@@ -358,21 +358,21 @@ WHCP’s Individual Programs offer a completely personalized educational experie
 - Students preparing for high-stakes exams
 ### How It Works
 Each individual program begins with an assessment to understand the student’s current level, learning style, and goals. We then design a custom curriculum, set benchmarks, and pair the student with the teacher who is the best match. Progress is reviewed regularly and the program adjusts as needed.
-##### Program Features
+#### Program Features
 100% personalized
 Flexible scheduling
 All subjects available
 Regular progress reviews
 All ages welcome
 Pricing varies by program
-##### Get Started
+#### Get Started
 Contact us for an initial consultation. We will discuss your student’s needs and design the right program.
 Inquire Now
 ### Explore Other Programs
 #### Early Childhood
 Play-based pre-school for ages 2–4 and Kindergarten. Learn More
 #### Elementary School
-Grades 1–5 in small, nurturing classes. Learn More
+Grades 1–5 in small classes where every child is known. Learn More
 #### Middle & High School
 College-preparatory Grades 6–12. Learn More
 #### After School Programs
@@ -404,24 +404,24 @@ Whether a student is struggling with a single concept or needs ongoing support i
 - Study skills and academic organization
 ### Flexible Scheduling
 We offer tutoring sessions after school, on weekends, and during school breaks. Sessions can be scheduled as needed or as recurring appointments. We work with your family’s schedule to make tutoring accessible and consistent.
-##### Session Options
+#### Session Options
 One-on-one sessions
 Small group (2–3 students)
 Intensive test prep packages
-##### Features
+#### Features
 All subjects
 Professional tutors
 Flexible scheduling
 All grade levels
 Test prep available
-##### Book a Session
+#### Book a Session
 Contact us to discuss your student’s needs and get started right away.
 Contact Us
 ### Explore Other Programs
 #### Early Childhood
 Play-based pre-school for ages 2–4 and Kindergarten. Learn More
 #### Elementary School
-Grades 1–5 in small, nurturing classes. Learn More
+Grades 1–5 in small classes where every child is known. Learn More
 #### Middle & High School
 College-preparatory Grades 6–12. Learn More
 #### After School Programs
@@ -434,7 +434,7 @@ F-1 and I-20 support, year-round enrollment. Learn More
 ## Page: https://www.westhollywoodschool.com/international
 Home / Programs / International Students
 ## International Students
-A welcoming home for students from around the world, with the dedicated support needed to thrive in U.S. education.
+A welcoming home for students from around the world, with the dedicated support needed to succeed in a U.S. school.
 ### At a Glance
 Enrollment Year-Round
 Visa SEVP-Certified (F-1)
@@ -452,24 +452,24 @@ We understand that transitioning to a new country, language, and school system i
 - Housing referral resources, if needed
 - Integration into the broader WHCP community
 ### Los Angeles & West Hollywood
-Students who attend WHCP get to experience life in one of the world’s most vibrant, diverse cities. West Hollywood is a welcoming, culturally rich neighborhood and a wonderful home base for an international student’s American experience.
-##### We Serve
+Students who attend WHCP get to experience life in one of the world’s most exciting, diverse cities. West Hollywood is a welcoming, culturally rich neighborhood and a wonderful home base for an international student’s American experience.
+#### We Serve
 Students from any country are welcome.
-##### We Offer
+#### We Offer
 ESL instruction
 SEVP-certified for F-1 students
 I-20 documentation
 Cultural support
 Dedicated coordinator
 Family communication
-##### Apply to WHCP
+#### Apply to WHCP
 We accept international students year-round. Contact us to begin the application process.
 Start Application
 ### Explore Other Programs
 #### Early Childhood
 Play-based pre-school for ages 2–4 and Kindergarten. Learn More
 #### Elementary School
-Grades 1–5 in small, nurturing classes. Learn More
+Grades 1–5 in small classes where every child is known. Learn More
 #### Middle & High School
 College-preparatory Grades 6–12. Learn More
 #### After School Programs
@@ -538,13 +538,13 @@ How do we schedule a tour?
 Call (323) 822-7900 or send us a message through our contact form. Our office is open Monday–Friday, 8:00 AM–6:00 PM, at 1317 N. Crescent Heights Blvd., West Hollywood, CA 90046.
 Apply Now
 ### Begin Your Application
-##### Open Enrollment
+#### Open Enrollment
 We accept students year-round. There is no fixed enrollment deadline — apply whenever you're ready.
-##### International Families
+#### International Families
 International students are warmly welcomed. We provide I-20 documentation and ESL support throughout enrollment.
-##### Campus Tours
+#### Campus Tours
 We encourage all prospective families to visit. Contact us to schedule a personalized tour at a time that works for you.
-##### Questions
+#### Questions
 Call us at (323) 822-7900 . We're happy to answer any questions before you apply.
 
 ## Page: https://www.westhollywoodschool.com/calendar
@@ -589,16 +589,16 @@ Send a Message
 ### Get in Touch
 Visit Us
 ### Our Campus
-##### Address
+#### Address
 1317 N. Crescent Heights Blvd.
 West Hollywood, CA 90046
-##### Telephone
+#### Telephone
 (323) 822-7900
-##### Fax
+#### Fax
 (323) 822-7999
-##### Email
+#### Email
 info@westhollywoodschool.com
-##### Office Hours
+#### Office Hours
 Monday – Friday, 8:00 AM – 6:00 PM
 Google Maps: https://www.google.com/maps/search/?api=1&query=West+Hollywood+College+Preparatory+School
 
@@ -620,12 +620,12 @@ Past activities include a bake sale for Breast Cancer Awareness, the Halloween P
 Giving Back
 ### Community Service
 WHCP requires students in grades 9–12 to complete 100 community service hours prior to graduation. Counselors and staff help identify opportunities suited to each student's interests and abilities, and keep records of participation. Parental support is essential.
-##### Past Projects
+#### Past Projects
 West Hollywood Book Fair · Revlon Walk for Breast Cancer · AIDS Walk Los Angeles · West Hollywood Kids Fair · West Hollywood Russian Culture Festival · West Hollywood Holocaust Remembrance Day · Red Cross Hurricane Katrina Relief Fund.
 Support
 ### Academic Counseling
 In WHCP's small school setting, teachers, counselors, and administrators team up to motivate students and help them be their best — academically, personally, and socially. We promote responsibility, self-discipline, strong ethics, and self-respect alongside rigorous college preparation.
-##### Registration & Planning
+#### Registration & Planning
 Students are registered in classes based on ability and achievement, and assisted in building a long-range academic plan that prepares them for future training and work.
 
 ## Page: https://www.westhollywoodschool.com/parents
@@ -635,17 +635,17 @@ Information and opportunities for parents to stay engaged and involved in the WH
 Get Involved
 ### Parent Involvement
 Parent involvement is essential to the success of students at WHCP. Parents are encouraged to take part in school life in a number of ways:
-##### PTO Meetings
+#### PTO Meetings
 Participate in monthly Parent Teacher Organization meetings. The PTO helps organize school events and projects, leads fundraisers, and coordinates parents and teachers in these activities.
-##### Field Trips
+#### Field Trips
 Assist with school field trips by driving children to destinations and acting as chaperones throughout the year.
-##### Progress Meetings
+#### Progress Meetings
 Request student progress report meetings, available throughout the year, where parents meet with teachers to discuss their child's academic development.
-##### Events & Projects
+#### Events & Projects
 Participate in school projects and events throughout the year — helping organize, supplying resources, and attending are all great ways to be part of student life.
-##### Activity Advisor
+#### Activity Advisor
 Become an advisor for after-school student activities such as Student Government, the Student Art Show, and school fundraisers, based on student interest.
-##### Career Day
+#### Career Day
 Come share what you do for work with our students at Career Day, helping them learn about different careers and pathways.
 PTO
 ### Parent Teacher Organization
@@ -655,7 +655,7 @@ Contact the School Office
 Communication
 ### Parent & Teacher Meetings
 We encourage parents and teachers to communicate about their child's progress throughout the school year. Healthy parent–teacher partnerships are key to every student's success.
-##### Meetings by Request
+#### Meetings by Request
 Parents may request a meeting with a teacher at any time through the Director. Teachers may also request meetings with parents, and families will be notified by the Director.
 
 ## Page: https://www.westhollywoodschool.com/giving

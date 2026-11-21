@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-8IPjQ6uCDbhgOw8GrgtzMMtruUx7iV+PI/By8pBC7YM=' 'sha256-FdiDKzD3MBhlixZRVFsmy3LwUQpxFNEtYlhoUju48Gg='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>WHCP Front Desk</title>
 <meta name="robots" content="noindex, nofollow">
@@ -127,6 +128,15 @@ textarea.input{padding:12px 16px;min-height:120px;line-height:1.4}
 .tick{flex:none;width:30px;height:30px;border-radius:8px;border:2px solid var(--line);display:flex;align-items:center;justify-content:center}
 .kid[aria-pressed="true"] .tick{background:var(--blue);border-color:var(--blue);color:#fff}
 .confirm{display:flex;flex-direction:column;gap:16px}
+/* Landscape tablets: keep the Sign in / Sign out button on screen without scrolling */
+@media (min-width:861px) and (max-height:860px){
+  .confirm{gap:10px;padding-top:18px;padding-bottom:18px}
+  .confirm h2{font-size:26px!important}
+  .confirm .adult{min-height:54px}
+  .confirm .sigwrap{height:118px}
+  .confirm .err:empty{min-height:0}
+  .confirm .field label[for="other"]{position:absolute;left:-9999px}
+}
 .adults{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
 .adult{display:flex;align-items:center;gap:12px;min-height:62px;padding:8px 14px;border:1.5px solid var(--line);border-radius:14px;background:var(--card);text-align:left}
 .adult[aria-pressed="true"]{border:2px solid var(--blue);background:#F6FAFE}
@@ -194,7 +204,8 @@ td.num,th.num{text-align:right}
 tr.today td{color:var(--blue);font-weight:500}
 
 /* office */
-.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.officebar{gap:10px}
 .tabs button{min-height:48px;padding:0 18px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);font-weight:500}
 .tabs button[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 .grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px}
@@ -282,7 +293,11 @@ function loadConn(){
   if (m){
     try {
       const j = JSON.parse(atob(m[1].replace(/-/g, '+').replace(/_/g, '/')));
-      if (j.u && j.k){ saveConn({ u: j.u, k: j.k }); S.justConnected = true; }
+      let have = null; try { have = JSON.parse(localStorage.getItem(CONN_KEY) || 'null'); } catch (e) {}
+      // Only the school's own Google script, and never silently replace a working connection.
+      if (!j.u || !j.k || !/^https:\/\/script\.google\.com\/(?:a\/macros\/[\w.-]+|macros)\/s\/[\w-]+\/exec$/.test(j.u)) S.connErr = 'That connection link isn’t from the school’s records, so it was ignored.';
+      else if (have && have.u && (have.u !== j.u || have.k !== j.k)) S.connErr = 'This device is already connected. To switch, disconnect it first in Office, Settings, then open the link again.';
+      else { saveConn({ u: j.u, k: j.k }); S.justConnected = true; }
     } catch (e) { S.connErr = 'That connection link didn’t work. Run connectionLink again and open the new link.'; }
     history.replaceState(null, '', location.pathname + location.search);
   }
@@ -396,12 +411,12 @@ function clockHTML(){
   const t = (p.h % 12 || 12) + ':' + String(p.mi).padStart(2, '0');
   return '<div class="clock" id="clk">' + t + '<em>' + (p.h < 12 ? 'AM' : 'PM') + '</em><small>' + esc(fmtKey(S.today, { weekday: 'long', month: 'long', day: 'numeric' })) + '</small></div>';
 }
-function header(title, side){
+function header(title, side, main){   // main: the title is this screen's main heading
   const home = S.view === 'home' || !!side;
   const brand = '<div class="brand' + (home ? '' : ' sm') + '"><img src="' + SEAL + '" alt=""><div><b>West Hollywood</b><span>College Preparatory School</span><small>Accredited by the Western Association of Schools and Colleges</small></div></div>';
   const left = home ? brand : '<div class="lead"><button class="back" data-act="home">' + ICON.back + 'Home</button>' + brand + '</div>';
   const mid = side ? '<div class="seg sideseg" role="group" aria-label="Who is signing in"><button data-act="side" data-v="p" aria-pressed="' + (side === 'p') + '">Parents</button><button data-act="side" data-v="s" aria-pressed="' + (side === 's') + '">Staff</button></div>'
-    : (title ? '<h2 class="ttl">' + esc(title) + '</h2>' : '');
+    : (title ? (main ? '<h1 class="ttl">' : '<h2 class="ttl">') + esc(title) + (main ? '</h1>' : '</h2>') : '');
   return '<header class="top' + (side ? ' hasside' : '') + '">' + left + mid + clockHTML() + '</header>';
 }
 function dbBanner(){
@@ -495,7 +510,7 @@ function confirmPanel(){
   const verb = v.mode === 'in' ? 'Who is dropping off?' : 'Who is picking up?';
   const opts = adults.map((a, i) => '<button class="adult" data-act="adult" data-i="' + i + '" aria-pressed="' + (v.adult === i) + '"><span class="dot" aria-hidden="true"></span><span><b>' + esc(a.name) + '</b><span>' + esc(a.relation || 'Approved adult') + '</span></span></button>').join('') +
     '<button class="adult" data-act="adult" data-i="other" aria-pressed="' + (v.adult === 'other') + '"><span class="dot" aria-hidden="true"></span><span><b>Someone else</b><span>' + (v.mode === 'out' ? 'The front desk will check ID' : 'Type your name') + '</span></span></button>';
-  const other = v.adult === 'other' ? '<div class="field"><label for="other">Your full name</label><input id="other" class="input" autocomplete="off" value="' + esc(v.other) + '"></div>' : '';
+  const other = v.adult === 'other' ? '<div class="field"><label for="other">Your full name</label><input id="other" class="input" autocomplete="off" placeholder="Your full name" value="' + esc(v.other) + '"></div>' : '';
   const count = v.sel.length;
   const label = (v.mode === 'in' ? 'Sign in ' : 'Sign out ') + (count === 1 ? esc(names[0].split(' ')[0]) : count + ' children');
   return '<div><div class="hint">' + (v.mode === 'in' ? 'Signing in' : 'Signing out') + '</div><h2 style="font-size:32px">' + esc(names.join(', ')) + '</h2></div>' + warn +
@@ -593,7 +608,7 @@ function vStaff(){
     const h = dayHours(evs, k); total += h.work; tutTotal += h.tut;
     return '<tr class="' + (k === S.today ? 'today' : '') + '"><td>' + esc(fmtKey(k, { weekday: 'short', month: 'short', day: 'numeric' })) + '</td><td>' + (h.first ? timeOf(h.first) : '—') + '</td><td>' + (h.lastOut && !h.open ? timeOf(h.lastOut) : h.open ? 'now' : '—') + '</td><td class="num">' + (evs.length ? hm(h.work) : '—') + (h.tut >= 1 ? '<div class="tutnote">' + hm(h.tut) + ' tutoring</div>' : '') + (h.missing ? ' <span class="pill warn">no clock-out</span>' : '') + '</td></tr>';
   }).join('');
-  return header('Staff time clock') + '<main>' + dbBanner() + '<div class="stf" style="grid-template-columns:1fr"><section class="col" style="gap:18px">' +
+  return header('Staff time clock', null, true) + '<main>' + dbBanner() + '<div class="stf" style="grid-template-columns:1fr"><section class="col" style="gap:18px">' +
     '<div class="who"><div class="row" style="gap:16px"><span class="av" aria-hidden="true">' + esc(initials(s.name)) + '</span><div><h2>Hi, ' + esc(s.name.split(' ')[0]) + '</h2><div class="meta">' + esc(s.role || '') + '</div></div></div>' +
     '<div style="text-align:right"><span class="st">' + esc(stTxt) + '</span><div class="meta" style="margin-top:6px">' + hm(d.work) + ' worked today</div></div></div>' +
     '<div class="err" id="serr">' + esc(v.err || '') + '</div>' +
@@ -669,7 +684,7 @@ function jobOf(k){ return k === 'tut' ? { k: 'in', j: 'tut' } : { k };
 function vOffice(){
   const o = S.office;
   if (!S.conn || S.dbState === 'badkey') return header('Office') + '<main>' + pairBox() + connectForm() + '</main>';
-  if (!S.settingsLoaded) return header('Office') + '<main>' + dbBanner() + '<p class="hint">Loading…</p></main>';
+  if (!S.settingsLoaded) return header('Office', null, true) + '<main>' + dbBanner() + '<p class="hint">Loading…</p></main>';
   if (!S.settings || !S.settings.hasPass){
     return header('Office') + '<main><form class="lockbox card" data-form="setup"><h1 style="font-size:30px">Set up the office passcode</h1>' +
       '<p class="hint" style="margin:0">The office area shows children’s records and staff timesheets, so it’s locked with a passcode. Use at least 6 characters (letters, numbers or both) and keep it to office staff.</p>' +
@@ -684,8 +699,8 @@ function vOffice(){
   }
   const tabs = [['today', 'Today'], ['times', 'Timesheets'], ['log', 'Family log'], ['roster', 'Roster'], ['settings', 'Settings']];
   const body = { today: oToday, times: oTimes, log: oLog, roster: oRoster, settings: oSettings }[o.tab]();
-  return header('Office') + '<main>' + dbBanner() +
-    '<div class="row" style="justify-content:space-between"><div class="tabs" role="tablist">' + tabs.map(([k, l]) => '<button role="tab" data-act="otab" data-v="' + k + '" aria-selected="' + (o.tab === k) + '">' + l + '</button>').join('') + '</div>' +
+  return header('Office', null, true) + '<main>' + dbBanner() +
+    '<div class="row officebar" style="justify-content:space-between;align-items:flex-start;margin-bottom:18px"><div class="tabs" role="tablist">' + tabs.map(([k, l]) => '<button role="tab" data-act="otab" data-v="' + k + '" aria-selected="' + (o.tab === k) + '">' + l + '</button>').join('') + '</div>' +
     '<button class="btn small ghost" data-act="lock">Lock</button></div>' + body + '</main>';
 }
 function connectForm(){

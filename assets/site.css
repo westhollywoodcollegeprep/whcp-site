@@ -194,7 +194,7 @@ button{font-family:inherit}
 /* ----- Detail rows / definition lists ----- */
 .rows{border-bottom:1px solid var(--line)}
 .row{display:grid;grid-template-columns:220px 1fr;gap:36px;padding:26px 0;border-top:1px solid var(--line)}
-.row h4{font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--navy);padding-top:3px}
+.row h3{font-size:12px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--navy);padding-top:3px}
 .row p{font-size:15px;line-height:1.8}
 .row a{color:var(--navy);text-decoration:none;border-bottom:1px solid var(--brass-line)}
 .row a:hover{color:var(--brass)}
@@ -231,12 +231,12 @@ button{font-family:inherit}
 .detail-grid{display:grid;grid-template-columns:7.2fr 4fr;gap:72px;align-items:start}
 .aside{position:sticky;top:118px;display:flex;flex-direction:column;gap:24px}
 .aside-card{background:var(--paper);border:1px solid var(--line);padding:30px}
-.aside-card h4{font-size:10.5px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--brass);margin-bottom:18px}
+.aside-card h3{font-size:10.5px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--brass);margin-bottom:18px}
 .aside-card p{font-size:14px;line-height:1.75;margin-bottom:16px}
 .aside-card p:last-child{margin-bottom:0}
 .aside-card .btn{width:100%}
 .aside-card--navy{background:var(--navy);border-color:var(--navy);color:rgba(255,255,255,.75)}
-.aside-card--navy h4{color:var(--brass-bright)}
+.aside-card--navy h3{color:var(--brass-bright)}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{font-size:10.5px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--navy);border:1px solid var(--line);padding:7px 13px;background:var(--stone)}
 .ticks{display:flex;flex-direction:column}
@@ -253,6 +253,7 @@ button{font-family:inherit}
 
 /* ----- Tables ----- */
 .table-scroll{overflow-x:auto;margin-top:28px;border:1px solid var(--line);background:#fff}
+.table-scroll:focus-visible{outline:3px solid var(--blue, #0757A7);outline-offset:3px}
 table.tuition{width:100%;border-collapse:collapse;min-width:640px}
 .tuition th{font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--navy);text-align:left;padding:16px 20px;border-bottom:2px solid var(--navy);background:#fff;white-space:nowrap}
 .tuition td{font-size:14.5px;padding:16px 20px;border-bottom:1px solid var(--line);color:var(--body);vertical-align:top}
@@ -371,7 +372,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
 .foot-brand address{font-style:normal;font-size:14px;line-height:1.9}
 .foot-brand address a{color:rgba(255,255,255,.55);text-decoration:none}
 .foot-brand address a:hover{color:#fff}
-.foot-col h4{font-size:10.5px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--brass-bright);margin-bottom:20px}
+.foot-col h2{font-size:10.5px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;color:var(--brass-bright);margin-bottom:20px}
 .foot-col ul{list-style:none;display:flex;flex-direction:column;gap:11px}
 .foot-col a{font-size:13.5px;color:rgba(255,255,255,.55);text-decoration:none;transition:color .2s;cursor:pointer}
 .foot-col a:hover{color:#fff}
@@ -384,8 +385,8 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
 .skip-link{position:absolute;left:-9999px;top:0;z-index:2000;background:var(--navy-deep);color:#fff;padding:12px 20px;font-size:13px;letter-spacing:.04em;text-decoration:none}
 .skip-link:focus{left:0}
 .legal{max-width:780px}
-.legal h3{font-family:'Cormorant Garamond',serif;font-size:25px;font-weight:600;color:var(--navy);margin:42px 0 14px}
-.legal h3:first-of-type{margin-top:0}
+.legal h2{font-family:'Cormorant Garamond',serif;font-size:25px;font-weight:600;color:var(--navy);margin:42px 0 14px}
+.legal h2:first-of-type{margin-top:0}
 .legal p{margin-bottom:16px;color:var(--body)}
 .legal ul{margin:0 0 16px;padding-left:22px}
 .legal li{margin-bottom:9px;color:var(--body)}

@@ -28,3 +28,4 @@ Page titles, descriptions, school schema and redirects are set at the top of `bu
 `<div class="page" id="page-NAME">` block to `source.html` **and** an entry in `PAGES`.
 
 Not touched by the build: `board/`, `frontdesk-q7m4x2/`, `favicon.png`, `CNAME`.
+After editing `board/index.html` or either front desk page, run `python3 _build/csp_apps.py` to refresh their security policy (it fingerprints each page's script), or the page won't run.
