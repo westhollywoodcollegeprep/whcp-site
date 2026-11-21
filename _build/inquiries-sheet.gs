@@ -13,7 +13,16 @@
  * Questions the website chat could not answer go to the "Chat questions" tab
  * (question text only: no names, emails, phone numbers or IP addresses).
  * Visit the /exec URL in a browser to check it is running.
+ *
+ * Flood protection: the sheet keeps at most 10 form rows per 10 minutes (100 a day) and
+ * 15 chat questions per 10 minutes (150 a day), and skips a chat question it already logged
+ * in the last hour. Real inquiries still arrive by email through the form service either way.
  */
+
+var LIMITS = {
+  form: { per10min: 10, perDay: 100 },
+  chat: { per10min: 15, perDay: 150 }
+};
 
 var SHEET_NAME = 'Inquiries';
 
@@ -43,6 +52,7 @@ function doPost(e) {
   if (p.form === 'chat_unanswered') return logChat_(p);
   var email = String(p.email || '').trim();
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return reply_('ignored');
+  if (overLimit_('form')) return reply_('busy');
 
   var lock = LockService.getScriptLock();
   lock.waitLock(10000);
@@ -64,6 +74,11 @@ function doPost(e) {
 function logChat_(p) {
   var q = clean_(p.question).slice(0, 500);
   if (!q) return reply_('ignored');
+  var cache = CacheService.getScriptCache();
+  var seen = 'q_' + Utilities.base64EncodeWebSafe(Utilities.computeDigest(Utilities.DigestAlgorithm.MD5, q.toLowerCase()));
+  if (cache.get(seen)) return reply_('ok');                 // same question in the last hour
+  if (overLimit_('chat')) return reply_('busy');
+  cache.put(seen, '1', 3600);
   var lock = LockService.getScriptLock();
   lock.waitLock(10000);
   try {
@@ -81,6 +96,23 @@ function logChat_(p) {
     lock.releaseLock();
   }
   return reply_('ok');
+}
+
+// Counts submissions in the current 10-minute window and the current day; true once either is full.
+function overLimit_(kind) {
+  var cache = CacheService.getScriptCache(), now = Date.now(), lim = LIMITS[kind];
+  var lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    var k10 = kind + '_10_' + Math.floor(now / 600000), kDay = kind + '_d_' + Utilities.formatDate(new Date(), 'America/Los_Angeles', 'yyyyMMdd');
+    var n10 = Number(cache.get(k10) || 0), nDay = Number(cache.get(kDay) || 0);
+    if (n10 >= lim.per10min || nDay >= lim.perDay) return true;
+    cache.put(k10, String(n10 + 1), 660);
+    cache.put(kDay, String(nDay + 1), 21600);
+    return false;
+  } finally {
+    lock.releaseLock();
+  }
 }
 
 function doGet() {

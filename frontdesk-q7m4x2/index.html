@@ -295,10 +295,13 @@ async function api(action, body, conn){
   const c = conn || S.conn; if (!c) throw new ApiError('no_connection');
   let r;
   try {
-    r = await fetch(c.u, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(Object.assign({ key: c.k, action }, body || {})), redirect: 'follow' });
+    r = await fetch(c.u, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(Object.assign({ key: c.k, action }, S.office && S.office.session && !conn ? { session: S.office.session } : {}, body || {})), redirect: 'follow' });
   } catch (e) { throw new ApiError('offline'); }
   let j; try { j = await r.json(); } catch (e) { throw new ApiError('bad_response'); }
-  if (!j.ok) throw new ApiError(j.error || 'server', j.message);
+  if (!j.ok){
+    if (j.error === 'office_locked' && S.office && S.office.unlocked){ S.office.unlocked = false; S.office.session = null; setTimeout(() => { render(); toast('The office locked itself. Type the passcode again.', true); }, 0); }
+    throw new ApiError(j.error || 'server', j.message);
+  }
   return j;
 }
 let pollTimer = 0, loading = false;
@@ -307,7 +310,7 @@ async function refresh(){
   loading = true;
   try {
     const j = await api('today');
-    S.children = j.children || {}; S.staff = j.staff || {}; S.settings = j.settings && j.settings.salt ? j.settings : null; S.settingsLoaded = true;
+    S.children = j.children || {}; S.staff = j.staff || {}; S.settings = j.settings || null; S.settingsLoaded = true;
     S.famIn = j.famIn || {}; S.famOut = j.famOut || {}; S.clock = j.clock || {};
     S.dbState = 'ready'; S.lastSync = Date.now();
   } catch (e){
@@ -328,6 +331,9 @@ window.addEventListener('hashchange', () => { if (/connect=/.test(location.hash)
 function failMsg(e){
   if (e && e.code === 'bad_key') return 'This device’s access key is no longer valid. The office needs to reconnect it.';
   if (e && e.code === 'offline') return 'Couldn’t reach the school’s records. Check the Wi-Fi and try again.';
+  if (e && e.code === 'need_pin') return 'That took a while, so please go back and type your PIN again.';
+  if (e && e.code === 'office_locked') return 'The office locked itself. Type the passcode again.';
+  if (e && e.code === 'unknown_action') return 'The school’s records need an update. Let us know.';
   return 'Couldn’t save. Try again in a moment.';
 }
 
@@ -363,11 +369,7 @@ const staffToday = id => dayHours(live(S.clock).filter(e => e.s === id), S.today
 // After saving, show the change straight away; the next refresh confirms it from the sheet.
 function localAdd(map, id, ev){ map[id] = ev; }
 
-/* ---------- hashing (PINs and the office passcode are never stored as typed) ---------- */
-async function hash(text){
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode('whcp:' + ((S.settings && S.settings.salt) || '') + ':' + text));
-  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
-}
+/* PINs and the office passcode are checked by the school's records, never on this device. */
 
 /* ---------- toast ---------- */
 let toastT = 0;
@@ -603,17 +605,27 @@ function vStaff(){
     '</section></div></main>';
 }
 async function pinEntered(){
-  const v = S.v;
-  const h = await hash(v.pin);
-  const hit = activeStaff().find(s => s.pin === h);
-  if (!hit){ v.pin = ''; v.err = 'That PIN isn’t recognised. Try again.'; v.shake = true; render(); v.shake = false; return; }
-  v.id = hit.id; v.pin = ''; v.err = ''; v.week = {};
+  const v = S.v, pin = v.pin;
+  v.checking = true; render();
+  let j;
+  try { j = await api('pinCheck', { pin }); }
+  catch (e){
+    v.checking = false; v.pin = ''; v.shake = true;
+    v.err = e.code === 'bad_pin' ? 'That PIN isn’t recognised. Try again.'
+      : e.code === 'pin_paused' ? 'Too many wrong PINs. Wait 2 minutes, then try again.'
+      : failMsg(e);
+    render(); v.shake = false; return;
+  }
+  const hit = S.staff[j.staffId] ? Object.assign({ id: j.staffId }, S.staff[j.staffId]) : null;
+  v.checking = false;
+  if (!hit){ v.pin = ''; v.err = 'Couldn’t load your details. Try again.'; render(); return; }
+  v.id = hit.id; v.pinToken = j.pinToken; v.pin = ''; v.err = ''; v.week = {};
   render();
   // load the rest of this week for the table
   try {
     const mon = mondayOf(S.today), wk = {};
     if (mon < S.today){
-      const j = await api('week', { from: mon, to: shiftKey(S.today, -1) });
+      const j = await api('week', { from: mon, to: shiftKey(S.today, -1), pinToken: v.pinToken });
       Object.keys(j.days || {}).forEach(k => { wk[k] = (j.days[k] || []).filter(e => e.s === hit.id && !e.v); });
     }
     if (S.view === 'staff' && S.v.id === hit.id){ S.v.week = wk; softRender(); }
@@ -638,12 +650,17 @@ async function clockAction(k){
   punches.push(Object.assign({ id: uid(), s: v.id, n: s.name, t, sig: sigPath(v.strokes || []) }, jb));
   document.querySelectorAll('[data-act="clkgo"],[data-act="clkcancel"]').forEach(b => { b.disabled = true; });
   try {
-    await api('punch', { punches });
+    await api('punch', { punches, pinToken: v.pinToken });
     punches.forEach(p => localAdd(S.clock, p.id, p));
   } catch (e){ console.warn(e); v.err = failMsg(e); render(); return; }
   const first = s.name.split(' ')[0];
   const msg = { tut: ['Clocked in for tutoring, ' + first + '.', 'These hours count as tutoring.'], in: ['Clocked in, ' + first + '.', 'Have a great day.'], bs: ['Enjoy your lunch, ' + first + '.', 'Tap End lunch when you’re back.'], be: ['Welcome back, ' + first + '.', 'Lunch is over.'], out: ['Clocked out, ' + first + '.', 'See you next time.'] }[kind];
   go('done', { title: msg[0], sub: timeOf(t) + '. ' + msg[1] });
+}
+// Locking the office also ends its session on the server, so it can't be reused.
+function endOffice(){
+  const t = S.office.session; S.office.unlocked = false; S.office.session = null;
+  if (t && S.conn) api('lockOffice', { session: t }).catch(() => {});
 }
 function jobOf(k){ return k === 'tut' ? { k: 'in', j: 'tut' } : { k };
 }
@@ -653,7 +670,7 @@ function vOffice(){
   const o = S.office;
   if (!S.conn || S.dbState === 'badkey') return header('Office') + '<main>' + pairBox() + connectForm() + '</main>';
   if (!S.settingsLoaded) return header('Office') + '<main>' + dbBanner() + '<p class="hint">Loading…</p></main>';
-  if (!S.settings || !S.settings.pass){
+  if (!S.settings || !S.settings.hasPass){
     return header('Office') + '<main><form class="lockbox card" data-form="setup"><h1 style="font-size:30px">Set up the office passcode</h1>' +
       '<p class="hint" style="margin:0">The office area shows children’s records and staff timesheets, so it’s locked with a passcode. Use at least 6 characters (letters, numbers or both) and keep it to office staff.</p>' +
       '<div class="field"><label for="p1">New passcode</label><input id="p1" class="input" type="password" autocomplete="new-password"></div>' +
@@ -864,7 +881,7 @@ document.addEventListener('click', async e => {
   if (a === 'adult'){ const other = $('#other'); if (other) v.other = other.value; v.adult = b.dataset.i === 'other' ? 'other' : +b.dataset.i; v.err = ''; render(); if (v.adult === 'other' && $('#other')) $('#other').focus(); return; }
   if (a === 'clearsig'){ v.strokes = []; return setupSig(); }
   if (a === 'famsubmit') return famSubmit();
-  if (a === 'digit'){ if (v.pin.length < 4){ v.pin += b.dataset.v; v.err = ''; render(); if (v.pin.length === 4) pinEntered(); } return; }
+  if (a === 'digit'){ if (!v.checking && v.pin.length < 4){ v.pin += b.dataset.v; v.err = ''; render(); if (v.pin.length === 4) pinEntered(); } return; }
   if (a === 'pindel'){ v.pin = v.pin.slice(0, -1); return render(); }
   if (a === 'pinclear'){ v.pin = ''; return render(); }
   if (a === 'clk'){ v.pend = b.dataset.k; v.strokes = []; v.err = ''; return render(); }
@@ -875,7 +892,7 @@ document.addEventListener('click', async e => {
   }
   if (a === 'staffout') return goneHome();
   if (a === 'otab'){ o.tab = b.dataset.v; o.detail = null; return render(); }
-  if (a === 'lock'){ o.unlocked = false; o.pair = null; o.phoneCode = null; return goneHome(); }
+  if (a === 'lock'){ endOffice(); o.pair = null; o.phoneCode = null; return goneHome(); }
   if (a === 'phonecode'){
     try { const j = await api('phoneCode', { staffId: b.dataset.id }); o.phoneCode = { id: b.dataset.id, code: j.code }; } catch (err){ return toast(err.code === 'offline' ? failMsg(err) : 'Couldn\u2019t get a code. Make sure the phone clock-in update is added to the Sheet script.', true); }
     clearTimeout(pairTimer); pairTimer = setTimeout(() => { o.phoneCode = null; render(); }, 600000);
@@ -900,7 +917,7 @@ document.addEventListener('click', async e => {
   }
   if (a === 'csvtimes') return csvTimes();
   if (a === 'csvlog') return csvLog();
-  if (a === 'disconnect'){ if (b.dataset.sure !== '1'){ b.dataset.sure = '1'; b.textContent = 'Tap again to disconnect'; return; } forgetConn(); o.unlocked = false; S.dbState = 'none'; clearInterval(pollTimer); toast('This device is disconnected.'); return goneHome(); }
+  if (a === 'disconnect'){ if (b.dataset.sure !== '1'){ b.dataset.sure = '1'; b.textContent = 'Tap again to disconnect'; return; } endOffice(); forgetConn(); S.dbState = 'none'; clearInterval(pollTimer); toast('This device is disconnected.'); return goneHome(); }
   if (a === 'editchild'){ o.editChild = b.dataset.id || null; render(); if (o.editChild) $('#cn').focus(); return; }
   if (a === 'editstaff'){ o.editStaff = b.dataset.id || null; render(); if (o.editStaff) $('#sn').focus(); return; }
   if (a === 'archchild' || a === 'archstaff'){
@@ -944,19 +961,17 @@ document.addEventListener('submit', async e => {
     const p1 = val('p1'), p2 = val('p2');
     if (p1.length < 6) return fail('oerr', 'Use at least 6 characters.');
     if (p1 !== p2) return fail('oerr', 'The two passcodes don’t match.');
-    const salt = uid() + uid();
-    S.settings = { salt };                                 // so hash() uses the new salt
-    try { const j = await api('settings', { salt, pass: await hash(p1) }); S.settings = j.settings; } catch (err){ S.settings = null; return fail('oerr', failMsg(err)); }
+    try { const j = await api('setupPass', { pass: p1 }); S.office.session = j.session; S.settings = { hasPass: true }; } catch (err){ return fail('oerr', err.code === 'has_pass' ? 'A passcode is already set. Reload this page.' : failMsg(err)); }
     S.office.unlocked = true; S.office.tab = 'roster'; toast('Passcode saved. Start by adding children and staff.'); return render();
   }
   if (f === 'unlock'){
-    if ((await hash(val('pc'))) === S.settings.pass){ S.office.unlocked = true; S.office.tab = 'today'; S.office.detail = null; S.office.pair = null; return render(); }
-    $('#pc').value = ''; return fail('oerr', 'That passcode isn’t right.');
+    try { const j = await api('unlock', { pass: val('pc') }); S.office.session = j.session; }
+    catch (err){ $('#pc').value = ''; return fail('oerr', err.code === 'bad_pass' ? 'That passcode isn’t right.' : err.code === 'pass_paused' ? 'Too many wrong tries. Wait 5 minutes, then try again.' : failMsg(err)); }
+    S.office.unlocked = true; S.office.tab = 'today'; S.office.detail = null; S.office.pair = null; return render();
   }
   if (f === 'chpass'){
-    if ((await hash(val('cp0'))) !== S.settings.pass) return fail('cperr', 'The current passcode isn’t right.');
     const p1 = val('cp1'); if (p1.length < 6) return fail('cperr', 'Use at least 6 characters.'); if (p1 !== val('cp2')) return fail('cperr', 'The new passcodes don’t match.');
-    try { const j = await api('settings', { pass: await hash(p1) }); S.settings = j.settings; } catch (err){ return fail('cperr', failMsg(err)); }
+    try { await api('settings', { current: val('cp0'), pass: p1 }); } catch (err){ return fail('cperr', err.code === 'bad_pass' ? 'The current passcode isn’t right.' : failMsg(err)); }
     toast('Passcode changed.'); return render();
   }
   if (f === 'child'){
@@ -974,9 +989,9 @@ document.addEventListener('submit', async e => {
     if (!editing && !/^\d{4}$/.test(pin)) return fail('serr2', 'Set a 4-digit PIN.');
     if (pin && !/^\d{4}$/.test(pin)) return fail('serr2', 'The PIN must be exactly 4 digits.');
     const obj = { name, role, archived: false };
-    if (pin){ const h = await hash(pin); if (activeStaff().some(s => s.pin === h && s.id !== editing)) return fail('serr2', 'Someone else already uses that PIN. Choose another.'); obj.pin = h; }
     const id = editing || uid();
-    try { await api('saveStaff', Object.assign({ id }, obj)); S.staff[id] = Object.assign({}, S.staff[id] || {}, obj); } catch (err){ return fail('serr2', failMsg(err)); }
+    try { await api('saveStaff', Object.assign({ id }, obj, pin ? { pin } : {})); S.staff[id] = Object.assign({}, S.staff[id] || {}, obj); }
+    catch (err){ return fail('serr2', err.code === 'pin_taken' ? 'Someone else already uses that PIN. Choose another.' : failMsg(err)); }
     toast((editing ? 'Saved ' : 'Added ') + name + '.'); S.office.editStaff = null; return render();
   }
   if (f === 'addpunch'){
@@ -1001,7 +1016,7 @@ setInterval(() => {
   if (p.mi !== lastMinute){ lastMinute = p.mi; const c = $('#clk'); if (c){ const t = document.createElement('div'); t.innerHTML = clockHTML(); c.replaceWith(t.firstChild); } }
   const idle = (now - S.lastAct) / 1000;
   if (S.justConnected){ S.justConnected = false; toast('This device is connected to the school\u2019s records.'); }
-  if (S.view === 'office' && S.office.unlocked && idle > OFFICE_IDLE){ S.office.unlocked = false; S.office.pair = null; goneHome(); }
+  if (S.view === 'office' && S.office.unlocked && idle > OFFICE_IDLE){ endOffice(); S.office.pair = null; goneHome(); }
   else if ((S.view === 'family' || S.view === 'staff') && idle > KIOSK_IDLE && !S.v.signing) goneHome();
   else if (S.view === 'office' && !S.office.unlocked && idle > KIOSK_IDLE) goneHome();
 }, 1000);
