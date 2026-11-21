@@ -34,16 +34,49 @@
   }
 
   /* Hero slideshow (home page only) */
-  // Seasonal slides (data-from / data-until as "MM-DD", Los Angeles time) are removed outside their dates.
+  // Which slides show today (Los Angeles date):
+  //   data-from / data-until or data-when="MM-DD:MM-DD,MM-DD:MM-DD" limit a slide to those dates;
+  //   data-group="program" slides take turns: only the first one in season shows, else the data-fallback one;
+  //   dots are made for whatever is left.
   (function () {
+    var box = document.getElementById('heroSlides');
+    if (!box) return;
     var la = new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' }));
-    var md = ('0' + (la.getMonth() + 1)).slice(-2) + '-' + ('0' + la.getDate()).slice(-2);
-    var all = document.querySelectorAll('#heroSlides .hero-slide'), allDots = document.querySelectorAll('#heroInd button');
-    Array.prototype.forEach.call(all, function (s, i) {
-      var from = s.getAttribute('data-from'), until = s.getAttribute('data-until');
-      if (from && until && !(md >= from && md <= until)) { s.parentNode.removeChild(s); if (allDots[i]) allDots[i].parentNode.removeChild(allDots[i]); }
+    var pad = function (n) { return ('0' + n).slice(-2); };
+    var md = pad(la.getMonth() + 1) + '-' + pad(la.getDate());
+    var today = la.getFullYear() + '-' + md;
+    var inSeason = function (s) {
+      var when = s.getAttribute('data-when');
+      if (!when && s.getAttribute('data-from')) when = s.getAttribute('data-from') + ':' + s.getAttribute('data-until');
+      if (!when) return true;
+      return when.split(',').some(function (r) { var x = r.split(':'); return md >= x[0] && md <= x[1]; });
+    };
+    var drop = function (s) { s.parentNode.removeChild(s); };
+    var slides = Array.prototype.slice.call(box.querySelectorAll('.hero-slide'));
+    var programs = [], fallback = null;
+    slides.forEach(function (s) {
+      if (s.getAttribute('data-group') === 'program') {
+        if (s.hasAttribute('data-fallback')) fallback = s;
+        else if (inSeason(s)) programs.push(s); else drop(s);
+      } else if (!inSeason(s)) drop(s);
     });
-    Array.prototype.forEach.call(document.querySelectorAll('#heroInd button'), function (b, i) { b.setAttribute('aria-label', 'Slide ' + (i + 1)); });
+    // When several program slides are in season, they take turns week by week.
+    if (programs.length) {
+      var week = Math.floor(Date.UTC(la.getFullYear(), la.getMonth(), la.getDate()) / 6048e5);
+      var keep = programs[week % programs.length];
+      programs.forEach(function (s) { if (s !== keep) drop(s); });
+      if (fallback) drop(fallback);
+    }
+    Array.prototype.forEach.call(box.querySelectorAll('[data-year]'), function (el) { el.textContent = la.getFullYear(); });
+    var ind = document.getElementById('heroInd');
+    if (ind) {
+      ind.innerHTML = '';
+      Array.prototype.forEach.call(box.querySelectorAll('.hero-slide'), function (s, i) {
+        var bt = document.createElement('button'); bt.type = 'button'; bt.setAttribute('aria-label', 'Slide ' + (i + 1));
+        if (i === 0) bt.className = 'active';
+        ind.appendChild(bt);
+      });
+    }
   })();
   var slides = document.querySelectorAll('#heroSlides .hero-slide');
   var dots = document.querySelectorAll('#heroInd button');
@@ -59,6 +92,7 @@
     // A slide with its own words (like the toy drive) hides the usual welcome text while it shows.
     var own = slides[current].classList.contains('hero-slide--own');
     if (hero) hero.classList.toggle('hero--own', own);
+    if (hero) hero.classList.toggle('hero--dark', own && slides[current].classList.contains('is-dark'));
     Array.prototype.forEach.call(slides, function (s, i) { if (s.classList.contains('hero-slide--own')) { s.setAttribute('aria-hidden', i === current ? 'false' : 'true'); if (i === current) s.removeAttribute('inert'); else s.setAttribute('inert', ''); } });
     restart();
   }
