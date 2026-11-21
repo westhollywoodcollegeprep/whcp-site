@@ -35,7 +35,7 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
-body{font-family:'Jost',sans-serif;font-weight:300;font-size:16px;line-height:1.75;color:var(--body);background:var(--paper)}
+body{font-family:'Jost',sans-serif;font-weight:400;font-size:16px;line-height:1.75;color:var(--body);background:var(--paper)}
 img{max-width:100%;display:block}
 a{color:inherit}
 button{font-family:inherit}
@@ -158,6 +158,20 @@ button{font-family:inherit}
 .intro-grid{display:grid;grid-template-columns:5fr 7fr;gap:88px;align-items:start}
 .intro-grid .h2{max-width:420px}
 .intro-copy p{margin-bottom:22px;font-size:16.5px;line-height:1.9}
+.home-sub{margin-top:14px;color:var(--body)}
+.home-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+.home-list a{display:grid;grid-template-columns:230px 1fr auto;gap:24px;align-items:baseline;padding:22px 0;border-bottom:1px solid var(--line);text-decoration:none;color:var(--body)}
+.home-list a::after{content:'\2192';color:var(--navy);font-size:18px}
+.home-list b{font-family:'Cormorant Garamond',serif;font-size:23px;font-weight:600;color:var(--navy)}
+.home-list a:hover b{text-decoration:underline;text-underline-offset:4px}
+@media (max-width:860px){.home-list a{grid-template-columns:1fr auto;gap:6px 16px}.home-list span{grid-column:1}}
+.home-principal .wrap{max-width:820px;text-align:center}
+.home-principal blockquote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:clamp(24px,2.4vw,32px);line-height:1.35;color:var(--navy);margin:0 0 18px}
+.home-sign{font-weight:500;color:var(--navy);margin-bottom:18px}
+@media (max-width:860px){.home-principal{background:#fff}}
+.home-why{display:flex;flex-direction:column;gap:30px}
+.home-why h3{font-family:'Cormorant Garamond',serif;font-size:25px;font-weight:600;color:var(--navy);margin-bottom:8px}
+.home-why p{line-height:1.8}
 .intro-copy p:last-of-type{margin-bottom:36px}
 
 /* ----- Division cards ----- */
@@ -167,7 +181,7 @@ button{font-family:inherit}
 .pcard img{width:100%;height:100%;object-fit:cover;transition:transform .7s ease}
 .pcard:hover img{transform:scale(1.045)}
 .pcard-body{padding:30px 30px 34px}
-.pcard-body small{display:block;font-size:10px;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:var(--brass);margin-bottom:12px}
+.pcard-body small{display:block;font-size:13.5px;font-weight:500;color:var(--brass);margin-bottom:8px}
 .pcard-body h3{font-family:'Cormorant Garamond',serif;font-size:25px;font-weight:600;color:var(--navy);line-height:1.15;margin-bottom:12px}
 .pcard-body p{font-size:14.5px;line-height:1.7;color:var(--body);margin-bottom:24px}
 .pcard:hover .tlink{color:var(--brass);border-color:var(--navy)}
@@ -720,7 +734,6 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
     <div class="hero-scrim"></div>
     <div class="hero-content">
       <div class="wrap">
-        <span class="eyebrow">Preparing Young Minds for the Future</span>
         <h1>Private Pre&#8209;K&ndash;12 School in West Hollywood</h1>
         <p>Now enrolling for 2026&ndash;2027. A nonprofit school with small classes, an exceptional curriculum, and a community that knows every student by name, from pre&#8209;school to college acceptance.</p>
         <div class="hero-actions">
@@ -750,7 +763,6 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
     <div class="wrap">
       <div class="intro-grid">
         <div>
-          <span class="eyebrow">Welcome to WHCP</span>
           <h2 class="h2">A School Where Every Student Is Known</h2>
         </div>
         <div class="intro-copy">
@@ -766,7 +778,6 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
     <div class="wrap">
       <div class="sec-head split">
         <div>
-          <span class="eyebrow">Academic Divisions</span>
           <h2 class="h2">Pre&#8209;K Through Grade 12</h2>
         </div>
         <a class="tlink" href="/programs">View All Programs</a>
@@ -778,7 +789,6 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
             <small>Pre&#8209;school &amp; Kindergarten</small>
             <h3>Early Childhood Education</h3>
             <p>Play-based, developmentally rich programs that spark a lifelong love of discovery in our youngest learners.</p>
-            <span class="tlink">Explore</span>
           </div>
         </a>
         <a class="pcard" href="/elementary">
@@ -787,7 +797,6 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
             <small>Grades 1&ndash;5</small>
             <h3>Elementary School</h3>
             <p>Foundational skills in a warm, engaging environment where curiosity and creativity drive every lesson.</p>
-            <span class="tlink">Explore</span>
           </div>
         </a>
         <a class="pcard" href="/middle-high">
@@ -796,7 +805,6 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
             <small>Grades 6&ndash;12</small>
             <h3>Middle &amp; High School</h3>
             <p>A rigorous college-preparatory curriculum with a distinctive emphasis on math, language arts, and science.</p>
-            <span class="tlink">Explore</span>
           </div>
         </a>
       </div>
@@ -805,82 +813,42 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
 
   <section class="sec m-hide">
     <div class="wrap">
-      <div class="sec-head split">
+      <div class="intro-grid">
         <div>
-          <span class="eyebrow">Beyond the Classroom</span>
-          <h2 class="h2">Programs for Every Family</h2>
+          <h2 class="h2">After School, Tutoring and More</h2>
+          <p class="home-sub">Open to our students and to families from other schools.</p>
         </div>
-      </div>
-      <div class="sup-grid">
-        <a class="pcard" href="/after-school">
-          <figure><img data-img="after" alt="After school community gathering" loading="lazy"></figure>
-          <div class="pcard-body">
-            <small>Enrichment &amp; Care</small>
-            <h3>After School Programs</h3>
-            <p>Supervised study, enrichment, and childcare to round out the school day.</p>
-            <span class="tlink">Explore</span>
-          </div>
-        </a>
-        <a class="pcard" href="/individual">
-          <figure><img data-img="indiv" alt="Student working independently" loading="lazy"></figure>
-          <div class="pcard-body">
-            <small>One-on-One</small>
-            <h3>Individual Programs</h3>
-            <p>Fully customized learning plans built around each student&rsquo;s needs and pace.</p>
-            <span class="tlink">Explore</span>
-          </div>
-        </a>
-        <a class="pcard" href="/tutoring">
-          <figure><img data-img="tutor" alt="Teacher tutoring a student" loading="lazy"></figure>
-          <div class="pcard-body">
-            <small>All Subjects</small>
-            <h3>Tutoring Center</h3>
-            <p>Expert subject tutoring for students of all ages, with flexible scheduling.</p>
-            <span class="tlink">Explore</span>
-          </div>
-        </a>
-        <a class="pcard" href="/international">
-          <figure><img data-img="intl" alt="International students on campus" loading="lazy"></figure>
-          <div class="pcard-body">
-            <small>Worldwide Welcome</small>
-            <h3>International Students</h3>
-            <p>Dedicated support and a warm community for students from around the world.</p>
-            <span class="tlink">Explore</span>
-          </div>
-        </a>
+        <ul class="home-list">
+          <li><a href="/after-school"><b>After School Programs</b><span>Supervised study, enrichment and childcare until 5:00&nbsp;PM.</span></a></li>
+          <li><a href="/individual"><b>Individual Programs</b><span>One-on-one learning plans built around each student&rsquo;s needs and pace.</span></a></li>
+          <li><a href="/tutoring"><b>Tutoring Center</b><span>Math through calculus, sciences, English, languages and SAT/ACT prep.</span></a></li>
+          <li><a href="/international"><b>International Students</b><span>F&#8209;1 and I&#8209;20 support with a dedicated coordinator.</span></a></li>
+        </ul>
       </div>
     </div>
   </section>
 
-  <section class="sec sec--deep quoteband m-hide">
+  <section class="sec sec--stone home-principal">
     <div class="wrap">
-      <div class="rule"></div>
-      <blockquote>Students learn in a nurturing environment with small classes, enjoy a superb curriculum and faculty, and are encouraged to participate in civic and community life.</blockquote>
-      <cite>Our Philosophy</cite>
+      <div>
+        <blockquote>&ldquo;Our small class sizes are intentional. They allow our faculty to build genuine relationships with every student and tailor instruction to meet each learner where they are.&rdquo;</blockquote>
+        <p class="home-sign">Dr. Elina Dvorskaya, Principal</p>
+        <a class="tlink" href="/principals-message">Read her welcome</a>
+      </div>
     </div>
   </section>
 
   <section class="sec">
     <div class="wrap">
-      <div class="sec-head split">
+      <div class="intro-grid">
         <div>
-          <span class="eyebrow">Why Families Choose WHCP</span>
-          <h2 class="h2">The Difference Is Personal</h2>
+          <h2 class="h2">Why Families Choose WHCP</h2>
+          <a class="tlink" href="/mission" style="margin-top:22px;display:inline-block">Our Mission &amp; Goals</a>
         </div>
-        <a class="tlink" href="/mission">Our Mission &amp; Goals</a>
-      </div>
-      <div class="pillar-grid">
-        <div class="pillar-col">
-          <h3>College-Ready Curriculum</h3>
-          <p>Rigorous academics aligned with university entrance expectations, from elementary school through 12th grade, with integrated SAT/ACT preparation and college counseling.</p>
-        </div>
-        <div class="pillar-col">
-          <h3>Small Class Sizes</h3>
-          <p>Intentionally small classrooms mean more one-on-one attention, instruction tailored to each learner, and a genuine relationship with every teacher.</p>
-        </div>
-        <div class="pillar-col">
-          <h3>Civic Engagement</h3>
-          <p>Students connect with the West Hollywood community through service projects, civic participation, and partnerships with local institutions.</p>
+        <div class="home-why">
+          <div><h3>College-ready from the start</h3><p>Rigorous academics aligned with university entrance expectations from elementary school through 12th grade, with SAT/ACT preparation and college counseling.</p></div>
+          <div><h3>Small classes</h3><p>More one-on-one attention, instruction tailored to each learner, and a real relationship with every teacher.</p></div>
+          <div><h3>Part of the neighborhood</h3><p>Students connect with West Hollywood through service projects, civic participation and partnerships with local institutions.</p></div>
         </div>
       </div>
     </div>
@@ -889,7 +857,6 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
   <section class="sec sec--navy ctaband">
     <div class="wrap">
       <div>
-        <span class="eyebrow">Admissions</span>
         <h2 class="h2">Enrollment Is Open Year-Round</h2>
         <p>In addition to the regular school year, WHCP offers Summer School, Summer Camp, and Saturday School. Spaces fill quickly &mdash; we encourage families to begin the conversation early.</p>
       </div>
@@ -904,7 +871,6 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
     <div class="wrap">
       <div class="visit-grid">
         <div>
-          <span class="eyebrow">Plan Your Visit</span>
           <h2 class="h2" style="margin-bottom:36px">Visit Us</h2>
           <div class="rows">
             <div class="row"><h3>Address</h3><p>1317 N. Crescent Heights Blvd.<br>West Hollywood, CA 90046</p></div>
