@@ -36,7 +36,7 @@
   /* Hero slideshow (home page only) */
   // Which slides show today (Los Angeles date):
   //   data-from / data-until or data-when="MM-DD:MM-DD,MM-DD:MM-DD" limit a slide to those dates;
-  //   data-group="program" slides take turns: only the first one in season shows, else the data-fallback one;
+  //   data-group="program" slides take turns: one in-season program slide shows at a time;
   //   dots are made for whatever is left.
   (function () {
     var box = document.getElementById('heroSlides');

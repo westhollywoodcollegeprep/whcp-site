@@ -164,8 +164,6 @@ button{font-family:inherit}
 @keyframes confall{0%{transform:translate(0,0) rotate(0)}50%{transform:translate(24px,420px) rotate(320deg)}100%{transform:translate(-10px,860px) rotate(640deg)}}
 .feat--midyear{background:linear-gradient(120deg,#0B2A52 0%,#10233F 60%,#0A1729 100%);color:#fff}
 .feat--midyear .feat-lab{color:var(--brass-bright)}.feat--midyear h2{color:#fff}.feat--midyear p{color:rgba(255,255,255,.8)}
-.feat--saturday{background:linear-gradient(180deg,#DCEAFB 0%,#F2F7FD 100%);color:var(--navy)}
-.feat--saturday .feat-lab{color:var(--blue,#0757A7)}
 .feat--tutor{background-color:#FBFCFE;background-image:linear-gradient(rgba(7,87,167,.09) 1px,transparent 1px),linear-gradient(90deg,rgba(7,87,167,.09) 1px,transparent 1px);background-size:28px 28px;color:var(--navy)}
 .feat--tutor .feat-lab{color:#B45309}
 .feat--intl{background:linear-gradient(160deg,#F4F2ED 0%,#E9F1FB 100%);color:var(--navy)}
