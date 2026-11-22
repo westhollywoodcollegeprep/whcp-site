@@ -6,7 +6,7 @@
   var URL_ = "https://whcp-chat.westhollywoodcollegeprep.workers.dev/";
   if (!URL_) return;
   var PHONE = '(323) 822-7900';
-  var GREETING = 'Hi! I’m Athena, WHCP’s AI assistant. I can answer questions about programs, grades, tuition, hours and how to visit. What would you like to know?';
+  var GREETING = 'Hi! I’m Athena, WHCP’s AI assistant. I can answer questions about programs, grades, tuition, hours, and how to visit. What would you like to know?';
   var history = [];
   var busy = false;
   var open = false;
@@ -75,7 +75,7 @@
   peek.hidden = true;
   var say = el('button', 'wc-say');
   say.type = 'button';
-  say.innerHTML = '<b>Hi, I’m Athena!</b> Wondering about tuition, grades or a tour? Ask me anything.';
+  say.innerHTML = '<b>Hi, I’m Athena!</b> Wondering about tuition, grades, or a tour? Ask me anything.';
   var px = el('button', 'wc-px');
   px.type = 'button';
   px.setAttribute('aria-label', 'Dismiss');

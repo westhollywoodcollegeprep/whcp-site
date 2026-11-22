@@ -8,32 +8,32 @@
   "hash": "d99e9ee749a41e3b80182dc23bacc42ef71719ee"
  },
  "admissions": {
-  "date": "2026-11-21",
-  "hash": "81bb6b554a5709655341d9369d2c301401fe1433"
+  "date": "2026-11-22",
+  "hash": "6af96ce1c08f4c78b48cba8f38b6d55f53aa4b3e"
  },
  "after-school": {
-  "date": "2026-11-21",
-  "hash": "8b3f57a0d1e315a2d91cfa349593e31824a43156"
+  "date": "2026-11-22",
+  "hash": "c712687a668a60399aff297e15116fa43092efdd"
  },
  "calendar": {
-  "date": "2026-11-18",
-  "hash": "fd41a3606f56766fe3ab7f3174161baebc25096b"
+  "date": "2026-11-22",
+  "hash": "e0f93614ebc2bf95b5e3a52f5032c4a1e7fa9889"
  },
  "careers": {
   "date": "2026-11-18",
   "hash": "e2d7759269a3118575faf1c23dba027972ffd0d7"
  },
  "contact": {
-  "date": "2026-11-21",
-  "hash": "ec660e346c7a6a93ab2a06bdbb6aeb2647317b11"
+  "date": "2026-11-22",
+  "hash": "f0886d2d2f31cc52c25770e1f8fd4f00df5bc557"
  },
  "early-childhood": {
-  "date": "2026-11-21",
-  "hash": "e67becca4d0a36f00f8c806c5c4b70a6d749f4aa"
+  "date": "2026-11-22",
+  "hash": "c2091515583f2e18244ba702703eb8c71e02b43a"
  },
  "elementary": {
-  "date": "2026-11-21",
-  "hash": "43081d9a9f83cdaef3a74124f70e5fb01b9e8c13"
+  "date": "2026-11-22",
+  "hash": "ecf02a4d0c6c6f256bda22813905716a0779069d"
  },
  "giving": {
   "date": "2026-11-18",
@@ -41,54 +41,54 @@
  },
  "home": {
   "date": "2026-11-22",
-  "hash": "0a6222664a842f7755fb7ff16dc3b3e3457bb3f9"
+  "hash": "8ecc4ef8ed20ca539c0693688a5336b74495f93c"
  },
  "individual": {
-  "date": "2026-11-21",
-  "hash": "b53516f5e57864419d04a674bf8995151f3ac662"
+  "date": "2026-11-22",
+  "hash": "f482e9106de1f7adc5192ea4300dcceb815f2b50"
  },
  "international": {
-  "date": "2026-11-21",
-  "hash": "f818d67032d72fa86c067e5574986c6969bed31d"
+  "date": "2026-11-22",
+  "hash": "e9e3c8189c433188615d9c8d0a6f539ee874b733"
  },
  "middle-high": {
   "date": "2026-11-22",
-  "hash": "928f43d16065f7d3b4d4ff5ca6cba0c370b096c1"
+  "hash": "2942d130549945269003371c4261ec7067aad504"
  },
  "mission": {
-  "date": "2026-11-18",
-  "hash": "0414b70c4609717b9065c24eeeebf606ad2cdaf3"
+  "date": "2026-11-22",
+  "hash": "c027d96e2a68cffe79881ffe9d71956841e4b9c4"
  },
  "parents": {
-  "date": "2026-11-21",
-  "hash": "e24885a72353a3270c5be9eb669b6853e365dc87"
+  "date": "2026-11-22",
+  "hash": "c2966a54b29c14fd6402c7977713b41121fa9047"
  },
  "principals-message": {
   "date": "2026-11-21",
   "hash": "6dafaba2139bb797b8d2ec1087aa2f70cf0a1e96"
  },
  "privacy": {
-  "date": "2026-11-21",
-  "hash": "69c95723c3c2e0246a9172bc235dc0e084ad44c2"
+  "date": "2026-11-22",
+  "hash": "2b52fb06ac84a4e9413aa5e25e93f2b96655fdba"
  },
  "programs": {
-  "date": "2026-11-21",
-  "hash": "a05cad4a540286fa395be942060da83003ccf4b2"
+  "date": "2026-11-22",
+  "hash": "fb4966b7c198658044a585e5a0b6042bd4d82ffe"
  },
  "students": {
-  "date": "2026-11-21",
-  "hash": "86429aa48c4aa90ed2dcb3ec85d266b43a8e9fbb"
+  "date": "2026-11-22",
+  "hash": "08d745418b065277577b701970725171eaa2b37d"
  },
  "terms": {
-  "date": "2026-11-21",
-  "hash": "74de9415975d92ebc7422a7055289ccdcabd51b8"
+  "date": "2026-11-22",
+  "hash": "3240fa61b78d5003eb9fc05f39df8e9da6addf5d"
  },
  "transcripts": {
   "date": "2026-11-22",
-  "hash": "706ca4cacfad7cb26a1125fb77fda50235c09cde"
+  "hash": "8399cde663a34c78cfd28b01b9dedfd2e2ee3e1f"
  },
  "tutoring": {
-  "date": "2026-11-21",
-  "hash": "0a5133fe4fcb3ba01007dc175158a887f7b7992b"
+  "date": "2026-11-22",
+  "hash": "9eb3b80ae243c6600f9d249928c27625733b4d6e"
  }
 }
