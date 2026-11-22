@@ -72,7 +72,7 @@ button{font-family:inherit}
 .topbar .wrap{display:flex;justify-content:space-between;align-items:center;min-height:40px;gap:24px}
 .topbar a{color:rgba(255,255,255,.6);text-decoration:none;transition:color .2s}
 .topbar a:hover{color:var(--brass-bright)}
-.topbar-links{display:flex;gap:26px;flex-wrap:wrap}
+.topbar-links{display:flex;gap:26px;flex-wrap:nowrap;white-space:nowrap}
 
 /* ----- Masthead ----- */
 .masthead{position:sticky;top:0;z-index:400;background:var(--paper);border-bottom:1px solid var(--line);transition:box-shadow .25s}
@@ -155,6 +155,19 @@ footer .foot-top{border-bottom:0}
 .foot-seal::before,.foot-seal::after{content:'';flex:1;height:1px;background:var(--line-dark)}
 .foot-seal span{width:46px;aspect-ratio:880/990;background:var(--brass-bright);opacity:.75;-webkit-mask:url(/img/owl-lines.svg) center/contain no-repeat;mask:url(/img/owl-lines.svg) center/contain no-repeat;transition:transform .4s,opacity .4s}
 .foot-seal:hover span{opacity:1;transform:translateY(-3px)}
+/* Transcripts & Diplomas */
+.rec-sub{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:26px;color:var(--navy);margin:0 0 6px}
+.rec-notice{margin:26px 0 36px;padding:22px 26px;border-left:4px solid var(--navy);background:#fff}
+.rec-notice p{margin:0;font-size:16px;line-height:1.7}
+.rec-notice p+p{margin-top:10px}
+.rec-addr{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+.rec-addr p{font-size:16px;line-height:1.8}
+.rec-addr a{color:var(--navy)}
+.rec-addr a[href^="tel"]{white-space:nowrap}
+.rec-addr-lines{font-family:'Cormorant Garamond',serif;font-size:24px!important;line-height:1.4!important;color:var(--navy)}
+#page-transcripts .row{grid-template-columns:60px 1fr;align-items:baseline}
+#page-transcripts .val a{color:var(--navy)}
+@media (max-width:700px){.rec-addr{grid-template-columns:1fr;gap:28px}}
 /* Where our graduates go */
 .grads .wrap{text-align:center}
 .grads-list{list-style:none;margin:30px 0 0;padding:0;display:flex;flex-wrap:wrap;justify-content:center}

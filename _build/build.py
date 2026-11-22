@@ -63,6 +63,8 @@ PAGES = {
                  'Clubs, activities, community service and school-break programs for students at West Hollywood College Preparatory School.'),
     'parents': ('Parent Resources | West Hollywood College Preparatory School',
                 'How parents get involved at West Hollywood College Preparatory School: monthly PTO meetings, field trips, progress meetings, school events and Career Day.'),
+    'transcripts': ('Transcripts & Diplomas for Former Students | WHCP',
+                    'How former students of West Hollywood College Preparatory School request an official transcript or their diploma, with fees and mailing instructions.'),
     'giving': ('Support WHCP | West Hollywood College Preparatory School',
                'Ways to support West Hollywood College Preparatory School, a private, nonprofit Pre-K–12 school in West Hollywood.'),
     'privacy': ('Privacy Policy | West Hollywood College Preparatory School',
