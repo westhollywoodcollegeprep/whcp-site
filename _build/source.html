@@ -77,6 +77,8 @@ button{font-family:inherit}
 .topbar .wrap{display:flex;justify-content:space-between;align-items:center;min-height:40px;gap:24px}
 .topbar a{color:rgba(255,255,255,.6);text-decoration:none;transition:color .2s}
 .topbar a:hover{color:var(--brass-bright)}
+.topbar a.topbar-give{font-weight:600;background:linear-gradient(100deg,#B8860B 0%,#F2C94C 35%,#FFF1B8 50%,#F2C94C 65%,#B8860B 100%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;transition:background-position .6s}
+.topbar a.topbar-give:hover{background-position:100% 0}
 .topbar-links{display:flex;gap:26px;flex-wrap:nowrap;white-space:nowrap}
 
 /* ----- Masthead ----- */
@@ -809,7 +811,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
     <nav class="topbar-links" aria-label="Audience">
       <a href="/transcripts">Transcripts &amp; Diplomas</a>
       <a href="/careers">Careers</a>
-      <a href="/giving">Give</a>
+      <a class="topbar-give" href="/giving">Give</a>
     </nav>
   </div>
 </div>
