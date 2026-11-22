@@ -135,7 +135,7 @@ button{font-family:inherit}
 .hero-ind button{width:30px;height:14px;background:none;border:none;cursor:pointer;position:relative;padding:0}
 .hero-ind button::after{content:'';position:absolute;left:0;right:0;top:6px;height:1.5px;background:rgba(255,255,255,.4);transition:background .3s}
 .hero-ind button.active::after{background:var(--brass-bright)}
-/* The owl: 404 page */
+/* The owl: 404 page and footer */
 .nf{padding-top:70px}
 .nf-wrap{display:grid;grid-template-columns:1fr minmax(0,380px);gap:64px;align-items:center}
 .nf-code{display:block;font-family:'Chakra Petch','Jost',sans-serif;font-weight:700;font-size:18px;color:var(--blue,#0757A7);margin-bottom:14px}
@@ -149,6 +149,12 @@ button{font-family:inherit}
 @keyframes nfbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 @media (max-width:760px){.nf{padding-top:40px}.nf-wrap{grid-template-columns:1fr;gap:10px}.nf-art{order:-1;width:46%;max-width:200px;justify-self:center}}
 @media (prefers-reduced-motion:reduce){.nf-art img,.nf-q{animation:none}}
+/* Footer owl seal on the divider */
+footer .foot-top{border-bottom:0}
+.foot-seal{display:flex;align-items:center;gap:22px}
+.foot-seal::before,.foot-seal::after{content:'';flex:1;height:1px;background:var(--line-dark)}
+.foot-seal span{width:46px;aspect-ratio:880/990;background:var(--brass-bright);opacity:.75;-webkit-mask:url(/img/owl-lines.svg) center/contain no-repeat;mask:url(/img/owl-lines.svg) center/contain no-repeat;transition:transform .4s,opacity .4s}
+.foot-seal:hover span{opacity:1;transform:translateY(-3px)}
 /* Where our graduates go */
 .grads .wrap{text-align:center}
 .grads-list{list-style:none;margin:30px 0 0;padding:0;display:flex;flex-wrap:wrap;justify-content:center}
