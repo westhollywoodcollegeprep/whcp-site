@@ -721,6 +721,10 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
 @media(max-width:600px){
   .hero-slide--brand{background-image:linear-gradient(180deg,rgba(10,23,41,.9) 0%,rgba(10,23,41,.82) 55%,rgba(10,23,41,.35) 100%),var(--seal);background-size:100% 100%,auto 44%;background-position:0 0,center 90%}
 }
+/* Laptops: show the whole seal instead of cropping it off the right edge */
+@media(min-width:1200px) and (orientation:landscape){
+  .hero-slide--brand{background-image:var(--seal);background-size:auto min(62%,calc(min(1200px,92vw) - 820px));background-position:right max(4vw,calc((100vw - 1200px)/2)) center}
+}
 /* iPhone Duo open and held upright, and other tall tablet-width screens: seal sits below the text */
 @media(min-width:601px) and (max-width:1023px) and (orientation:portrait){
   .hero-slide--brand{background-image:linear-gradient(180deg,rgba(10,23,41,.9) 0%,rgba(10,23,41,.82) 55%,rgba(10,23,41,.35) 100%),var(--seal);background-size:100% 100%,auto 40%;background-position:0 0,center 92%}
