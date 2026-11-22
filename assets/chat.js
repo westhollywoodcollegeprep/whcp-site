@@ -66,7 +66,7 @@
   btn.setAttribute('aria-expanded', 'false');
   btn.setAttribute('aria-controls', 'wc-panel');
   btn.setAttribute('aria-label', 'Ask WHCP a question');
-  btn.innerHTML = '<span class="wc-lbl" aria-hidden="true">Ask us</span><span class="wc-owl" aria-hidden="true"><span class="wc-dot"></span></span>';
+  btn.innerHTML = '<span class="wc-owl" aria-hidden="true"><span class="wc-owl-art"></span><svg class="wc-spk" viewBox="0 0 40 40"><path class="s1" d="M26 2c.9 6.2 3.3 8.6 9.5 9.5-6.2.9-8.6 3.3-9.5 9.5-.9-6.2-3.3-8.6-9.5-9.5C22.7 10.6 25.1 8.2 26 2z"/><path class="s2" d="M11 14c.5 3.4 1.8 4.7 5.2 5.2-3.4.5-4.7 1.8-5.2 5.2-.5-3.4-1.8-4.7-5.2-5.2 3.4-.5 4.7-1.8 5.2-5.2z"/><path class="s3" d="M34 24c.4 2.6 1.4 3.6 4 4-2.6.4-3.6 1.4-4 4-.4-2.6-1.4-3.6-4-4 2.6-.4 3.6-1.4 4-4z"/></svg></span>';
 
   // Welcome bubble: the owl "says hi" once per visit, with tap-to-ask topics.
   var TOPICS = [['Tuition', 'How much is tuition?'], ['Grades', 'What grades do you have?'], ['Book a tour', 'How do I schedule a tour?']];
