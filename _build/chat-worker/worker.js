@@ -41,9 +41,10 @@ function json(body, status, origin) {
 }
 
 async function getFacts() {
-  if (factsCache.text && Date.now() - factsCache.at < 60 * 60 * 1000) return factsCache.text;
+  if (factsCache.text && Date.now() - factsCache.at < 10 * 60 * 1000) return factsCache.text;   // re-read the site every 10 minutes
   try {
-    const r = await fetch(FACTS_URL, { cf: { cacheTtl: 3600 } });
+    // A new address every 10 minutes, so an older cached copy of the facts is never reused.
+    const r = await fetch(FACTS_URL + '?r=' + Math.floor(Date.now() / 600000), { cf: { cacheTtl: 600 } });
     if (r.ok) factsCache = { text: (await r.text()).slice(0, 40000), at: Date.now() };
   } catch (e) { /* keep the old copy */ }
   return factsCache.text;
