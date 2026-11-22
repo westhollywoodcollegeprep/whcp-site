@@ -143,10 +143,10 @@ button{font-family:inherit}
 /* Where our graduates go */
 .grads .wrap{text-align:center}
 .grads-list{list-style:none;margin:30px 0 0;padding:0;display:flex;flex-wrap:wrap;justify-content:center}
-.grads-list{row-gap:10px;column-gap:56px}
-.grads-list li{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(24px,2.3vw,34px);color:var(--navy);padding:0}
+.grads-list{flex-wrap:nowrap;column-gap:clamp(16px,2.6vw,44px)}
+.grads-list li{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(17px,2.05vw,30px);color:var(--navy);padding:0;white-space:nowrap}
 .grads-more{margin-top:18px;color:var(--body)}
-@media (max-width:700px){.grads-list{flex-direction:column;gap:6px}.grads-list li{border-left:0;padding:2px 0}}
+@media (max-width:700px){.grads-list{flex-direction:column;gap:6px}.grads-list li{border-left:0;padding:2px 0;font-size:24px}}
 /* Feature slides (calendar and seasonal owl slides) */
 .feat{display:flex;align-items:center}
 .feat-wrap{position:relative;z-index:2;width:100%;display:grid;grid-template-columns:1fr minmax(0,400px);gap:56px;align-items:center}
@@ -1096,12 +1096,14 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
     <div class="wrap">
       <h2 class="h2">Where Our Graduates Go</h2>
       <ul class="grads-list">
+        <li>USC</li>
         <li>UCLA</li>
         <li>UC Santa Barbara</li>
+        <li>UC San Diego</li>
         <li>UC Riverside</li>
         <li>Cal State Northridge</li>
       </ul>
-      <p class="grads-more">and other universities across the United States.</p>
+      <p class="grads-more">and other universities around the world.</p>
     </div>
   </section>
 
@@ -1556,7 +1558,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
           <h2>College Preparatory Excellence</h2>
           <p>WHCP&rsquo;s Middle and High School program is designed to challenge and inspire students in grades 6 through 12. Our college-preparatory curriculum is built on high academic standards, small class sizes, and a faculty that genuinely cares about every student&rsquo;s success.</p>
           <p>We place a particular emphasis on math, language arts, and science. Our students regularly advance well beyond grade level, giving them a significant advantage when applying to top universities.</p>
-          <p>Recent graduates have gone on to UCLA, UC Santa Barbara, UC Riverside, Cal State Northridge, and other universities across the United States.</p>
+          <p>Recent graduates have gone on to USC, UCLA, UC Santa Barbara, UC San Diego, UC Riverside, Cal State Northridge, and other universities around the world.</p>
           <h2>Curriculum Highlights</h2>
           <ul>
             <li>Advanced mathematics through Calculus and beyond</li>
