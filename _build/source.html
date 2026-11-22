@@ -161,18 +161,13 @@ footer .foot-top{border-bottom:0}
 .foot-seal span{width:46px;aspect-ratio:880/990;background:var(--brass-bright);opacity:.75;-webkit-mask:url(/img/owl-lines.svg) center/contain no-repeat;mask:url(/img/owl-lines.svg) center/contain no-repeat;transition:transform .4s,opacity .4s}
 .foot-seal:hover span{opacity:1;transform:translateY(-3px)}
 /* Transcripts & Diplomas */
-.rec-sub{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:26px;color:var(--navy);margin:0 0 6px}
-.rec-notice{margin:26px 0 36px;padding:22px 26px;border-left:4px solid var(--navy);background:#fff}
-.rec-notice p{margin:0;font-size:16px;line-height:1.7}
-.rec-notice p+p{margin-top:10px}
-.rec-addr{display:grid;grid-template-columns:1fr 1fr;gap:48px}
-.rec-addr p{font-size:16px;line-height:1.8}
-.rec-addr a{color:var(--navy)}
-.rec-addr a[href^="tel"]{white-space:nowrap}
-.rec-addr-lines{font-family:'Cormorant Garamond',serif;font-size:24px!important;line-height:1.4!important;color:var(--navy)}
-#page-transcripts .row{grid-template-columns:60px 1fr;align-items:baseline}
-#page-transcripts .val a{color:var(--navy)}
-@media (max-width:700px){.rec-addr{grid-template-columns:1fr;gap:28px}}
+.rd-two{margin:36px 0 48px}
+.rd-two a,.rd-q a{color:var(--navy)}
+.panel.rd-panel{margin:36px 0 44px;padding:30px 36px}
+.rd-panel p{margin:0;font-size:16px;line-height:1.7;color:rgba(255,255,255,.8)}
+.rd-panel p+p{margin-top:10px}
+.rd-panel strong{color:#fff}
+.rd-q{margin-top:36px;font-size:15px}
 /* Where our graduates go */
 .grads .wrap{text-align:center}
 .grads-list{list-style:none;margin:30px 0 0;padding:0;display:flex;flex-wrap:wrap;justify-content:center}
@@ -2304,18 +2299,15 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
     <div class="wrap" style="max-width:980px">
       <span class="eyebrow">Transcripts</span>
       <h2 class="h2">Requesting a Transcript</h2>
-      <p class="lead" style="margin-top:18px;margin-bottom:40px">There are two ways to get a transcript, depending on who needs it.</p>
-      <div class="val-grid" style="margin-bottom:56px">
-        <div class="val"><h3>For a School or Employer</h3><p>If a college, university, trade school, other school or an employer needs your transcript, they email the official transcript request to <a href="mailto:info@westhollywoodschool.com">info@westhollywoodschool.com</a>. There is no cost to you.</p></div>
-        <div class="val"><h3>For Personal Use</h3><p>If you need a copy for yourself, request it by mail. The fee is $50, paid by money order or cashier&rsquo;s check only. See the steps below.</p></div>
+      <div class="val-grid rd-two">
+        <div class="val"><h3>For a School or Employer</h3><p>The college, university, trade school or employer emails the official transcript request to <a href="mailto:info@westhollywoodschool.com">info@westhollywoodschool.com</a>. There is no cost to you.</p></div>
+        <div class="val"><h3>For Personal Use</h3><p>Request your own copy by mail for $50, following the steps below.</p></div>
       </div>
-
-      <h3 class="rec-sub">Personal copy: how to request it</h3>
-      <div class="rows" style="margin-bottom:24px">
-        <div class="row"><span class="num">1</span><p>Mail a signed and dated letter to 1317 N. Crescent Heights Blvd., West Hollywood, CA 90046 asking for a copy of your transcript.</p></div>
-        <div class="row"><span class="num">2</span><p>In the letter, include your full name, date of birth, mailing address and phone number.</p></div>
-        <div class="row"><span class="num">3</span><p>Also, include a <strong>$50 money order or cashier&rsquo;s check</strong> made payable to <strong>&ldquo;West Hollywood College Preparatory School&rdquo;</strong>. We only accept money orders and cashier&rsquo;s checks: no personal checks, cash or other payment.</p></div>
-        <div class="row"><span class="num">4</span><p>Once we receive your request, it takes up to 5 business days to mail your transcript in a sealed envelope.</p></div>
+      <div class="rows">
+        <div class="row"><h3>Send</h3><p>A signed and dated letter asking for a copy of your transcript, mailed to 1317 N. Crescent Heights Blvd., West Hollywood, CA 90046.</p></div>
+        <div class="row"><h3>Include</h3><p>Your full name, date of birth, mailing address and phone number.</p></div>
+        <div class="row"><h3>Fee</h3><p>Also, include a <strong>$50 money order or cashier&rsquo;s check</strong> made payable to <strong>&ldquo;West Hollywood College Preparatory School&rdquo;</strong>. No personal checks, cash or other payment.</p></div>
+        <div class="row"><h3>Turnaround</h3><p>Up to 5 business days after we receive your request. Your transcript is mailed in a sealed envelope.</p></div>
       </div>
     </div>
   </section>
@@ -2324,25 +2316,17 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
     <div class="wrap" style="max-width:980px">
       <span class="eyebrow">Diplomas</span>
       <h2 class="h2">Requesting Your Diploma</h2>
-      <div class="rec-notice" role="note">
+      <div class="panel rd-panel">
         <p><strong>Diplomas are mailed only.</strong> They cannot be picked up in person and are only sent to the graduate&rsquo;s mailing address.</p>
-        <p><strong>Only the graduate can request their diploma.</strong> Friends, relatives, parents, schools and employers cannot request it on the graduate&rsquo;s behalf.</p>
+        <p><strong>Only the graduate can request it.</strong> Friends, relatives, parents, schools and employers cannot request a diploma on the graduate&rsquo;s behalf.</p>
       </div>
       <div class="rows">
-        <div class="row"><span class="num">1</span><p>Mail a signed and dated letter to 1317 N. Crescent Heights Blvd., West Hollywood, CA 90046 asking for your diploma.</p></div>
-        <div class="row"><span class="num">2</span><p>In the letter, include your full name, date of birth, mailing address and phone number.</p></div>
-        <div class="row"><span class="num">3</span><p>Also, include a <strong>$100 money order or cashier&rsquo;s check</strong> made payable to <strong>&ldquo;West Hollywood College Preparatory School&rdquo;</strong>. We only accept money orders and cashier&rsquo;s checks: no personal checks, cash or other payment.</p></div>
-        <div class="row"><span class="num">4</span><p>Once we receive your request, it takes up to 5 business days to mail your diploma to the address in your letter.</p></div>
+        <div class="row"><h3>Send</h3><p>A signed and dated letter asking for your diploma, mailed to 1317 N. Crescent Heights Blvd., West Hollywood, CA 90046.</p></div>
+        <div class="row"><h3>Include</h3><p>Your full name, date of birth, mailing address and phone number.</p></div>
+        <div class="row"><h3>Fee</h3><p>Also, include a <strong>$100 money order or cashier&rsquo;s check</strong> made payable to <strong>&ldquo;West Hollywood College Preparatory School&rdquo;</strong>. No personal checks, cash or other payment.</p></div>
+        <div class="row"><h3>Turnaround</h3><p>Up to 5 business days after we receive your request. Your diploma is mailed to the address in your letter.</p></div>
       </div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="wrap" style="max-width:980px">
-      <div class="rec-addr">
-        <div><span class="eyebrow">Mail Requests To</span><p class="rec-addr-lines">West Hollywood College Preparatory School<br>1317 N. Crescent Heights Blvd.<br>West Hollywood, CA 90046</p></div>
-        <div><span class="eyebrow">Questions</span><p>Email <a href="mailto:info@westhollywoodschool.com">info@westhollywoodschool.com</a> or call <a href="tel:+13238227900">(323) 822-7900</a>.</p></div>
-      </div>
+      <p class="rd-q">Questions? Email <a href="mailto:info@westhollywoodschool.com">info@westhollywoodschool.com</a> or call <a href="tel:+13238227900">(323)&nbsp;822-7900</a>.</p>
     </div>
   </section>
 </div>
