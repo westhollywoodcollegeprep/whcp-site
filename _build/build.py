@@ -375,22 +375,21 @@ def main():
 
     # ---- 404 page (real 404 status from GitHub Pages; noindex)
     nf = '''<div class="page active" id="page-404">
-  <div class="phero">
-    <div class="wrap">
-      <h1>Page Not Found</h1>
-      <p>Sorry, we couldn&rsquo;t find that page. It may have moved when we updated our website.</p>
-    </div>
-  </div>
-  <section class="sec">
-    <div class="wrap" style="max-width:860px">
-      <p style="margin-bottom:24px">Try one of these instead:</p>
-      <div class="rows">
-        <div class="row" style="grid-template-columns:1fr auto"><p>Home</p><a class="tlink" href="/">Go</a></div>
-        <div class="row" style="grid-template-columns:1fr auto"><p>Programs, Preschool to Grade 12</p><a class="tlink" href="/programs">Go</a></div>
-        <div class="row" style="grid-template-columns:1fr auto"><p>Admissions &amp; Tuition</p><a class="tlink" href="/admissions">Go</a></div>
-        <div class="row" style="grid-template-columns:1fr auto"><p>School Calendar</p><a class="tlink" href="/calendar">Go</a></div>
-        <div class="row" style="grid-template-columns:1fr auto"><p>Contact Us</p><a class="tlink" href="/contact">Go</a></div>
+  <section class="sec nf">
+    <div class="wrap nf-wrap">
+      <div>
+        <span class="nf-code">Error 404</span>
+        <h1>Owl be honest, we can&rsquo;t find this page.</h1>
+        <p>It may have moved when we updated our website. Try one of these instead.</p>
+        <div class="rows nf-links">
+          <div class="row" style="grid-template-columns:1fr auto"><p>Home</p><a class="tlink" href="/">Go</a></div>
+          <div class="row" style="grid-template-columns:1fr auto"><p>Programs, Preschool to Grade 12</p><a class="tlink" href="/programs">Go</a></div>
+          <div class="row" style="grid-template-columns:1fr auto"><p>Admissions &amp; Tuition</p><a class="tlink" href="/admissions">Go</a></div>
+          <div class="row" style="grid-template-columns:1fr auto"><p>School Calendar</p><a class="tlink" href="/calendar">Go</a></div>
+          <div class="row" style="grid-template-columns:1fr auto"><p>Contact Us</p><a class="tlink" href="/contact">Go</a></div>
+        </div>
       </div>
+      <div class="nf-art" aria-hidden="true"><img src="/img/owl-plain.svg" width="880" height="990" alt=""><svg viewBox="-40 -120 880 990"><g class="nf-q"><circle cx="548" cy="30" r="10" fill="#fff" stroke="#000" stroke-width="8"/><circle cx="590" cy="0" r="17" fill="#fff" stroke="#000" stroke-width="8"/><circle cx="730" cy="-40" r="125" fill="#fff" stroke="#000" stroke-width="8"/><path d="M680 -78 a50 50 0 1 1 68 46 c-13 7 -18 16 -18 32 v12" fill="none" stroke="#0757A7" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/><circle cx="730" cy="42" r="14" fill="#0757A7"/></g></svg></div>
     </div>
   </section>
 </div>'''
