@@ -9,11 +9,11 @@
  },
  "admissions": {
   "date": "2026-11-22",
-  "hash": "6af96ce1c08f4c78b48cba8f38b6d55f53aa4b3e"
+  "hash": "31e6d83d576532fbbb99a3b74e8464dbc69140ea"
  },
  "after-school": {
   "date": "2026-11-22",
-  "hash": "c712687a668a60399aff297e15116fa43092efdd"
+  "hash": "ea6914383434578abfd3c4e39f832978fef5af32"
  },
  "calendar": {
   "date": "2026-11-22",
@@ -41,7 +41,7 @@
  },
  "home": {
   "date": "2026-11-22",
-  "hash": "8ecc4ef8ed20ca539c0693688a5336b74495f93c"
+  "hash": "771c96700254ac2c103a257942a3727135921c05"
  },
  "individual": {
   "date": "2026-11-22",
@@ -61,15 +61,15 @@
  },
  "parents": {
   "date": "2026-11-22",
-  "hash": "c2966a54b29c14fd6402c7977713b41121fa9047"
+  "hash": "a659aa85eeef638303a40570998448ad926878e2"
  },
  "principals-message": {
-  "date": "2026-11-21",
+  "date": "2026-11-22",
   "hash": "6dafaba2139bb797b8d2ec1087aa2f70cf0a1e96"
  },
  "privacy": {
   "date": "2026-11-22",
-  "hash": "2b52fb06ac84a4e9413aa5e25e93f2b96655fdba"
+  "hash": "605fb54cc0728e2638f65964cafd36b44da3decd"
  },
  "programs": {
   "date": "2026-11-22",
@@ -77,11 +77,11 @@
  },
  "students": {
   "date": "2026-11-22",
-  "hash": "08d745418b065277577b701970725171eaa2b37d"
+  "hash": "8b079663db1c8e33f1abc3413c1a4877dc386497"
  },
  "terms": {
   "date": "2026-11-22",
-  "hash": "3240fa61b78d5003eb9fc05f39df8e9da6addf5d"
+  "hash": "3fb2cfe63d744a4a37e9bf4989128d4157b456dd"
  },
  "transcripts": {
   "date": "2026-11-22",
