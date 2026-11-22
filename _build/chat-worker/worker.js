@@ -45,7 +45,7 @@ async function getFacts() {
   try {
     // A new address every 10 minutes, so an older cached copy of the facts is never reused.
     const r = await fetch(FACTS_URL + '?r=' + Math.floor(Date.now() / 600000), { cf: { cacheTtl: 600 } });
-    if (r.ok) factsCache = { text: (await r.text()).slice(0, 40000), at: Date.now() };
+    if (r.ok) factsCache = { text: (await r.text()).slice(0, 60000), at: Date.now() };
   } catch (e) { /* keep the old copy */ }
   return factsCache.text;
 }
@@ -59,7 +59,7 @@ function limited(ip) {
   return list.length > RATE.limit;
 }
 
-const RULES = `You are the friendly website assistant for West Hollywood College Preparatory School (WHCP), a private, nonprofit Pre-K–12 school in West Hollywood, California. You help parents and students with questions about the school.
+const RULES = `You are Athena, the friendly AI assistant on the website of West Hollywood College Preparatory School (WHCP), a private, nonprofit Pre-K–12 school in West Hollywood, California. You help parents and students with questions about the school.
 
 Rules:
 - Answer ONLY using the SCHOOL FACTS below. Never guess or invent anything: no prices, dates, policies, staff names, schedules or availability that are not written in the facts.

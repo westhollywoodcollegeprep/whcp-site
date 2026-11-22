@@ -6,7 +6,7 @@
   var URL_ = __CHAT_URL__;
   if (!URL_) return;
   var PHONE = '(323) 822-7900';
-  var GREETING = 'Hi! I can answer questions about WHCP: programs, grades, tuition, hours and how to visit. What would you like to know?';
+  var GREETING = 'Hi! I’m Athena, WHCP’s AI assistant. I can answer questions about programs, grades, tuition, hours and how to visit. What would you like to know?';
   var history = [];
   var busy = false;
   var open = false;
@@ -61,11 +61,12 @@
     if (last < text.length) node.appendChild(document.createTextNode(text.slice(last)));
   }
 
+  var SPK = '<svg class="wc-spk" viewBox="0 0 40 40"><path class="s1" d="M26 2c.9 6.2 3.3 8.6 9.5 9.5-6.2.9-8.6 3.3-9.5 9.5-.9-6.2-3.3-8.6-9.5-9.5C22.7 10.6 25.1 8.2 26 2z"/><path class="s2" d="M11 14c.5 3.4 1.8 4.7 5.2 5.2-3.4.5-4.7 1.8-5.2 5.2-.5-3.4-1.8-4.7-5.2-5.2 3.4-.5 4.7-1.8 5.2-5.2z"/><path class="s3" d="M34 24c.4 2.6 1.4 3.6 4 4-2.6.4-3.6 1.4-4 4-.4-2.6-1.4-3.6-4-4 2.6-.4 3.6-1.4 4-4z"/></svg>';
   var btn = el('button', 'wc-launch');
   btn.type = 'button';
   btn.setAttribute('aria-expanded', 'false');
   btn.setAttribute('aria-controls', 'wc-panel');
-  btn.setAttribute('aria-label', 'Ask WHCP a question');
+  btn.setAttribute('aria-label', 'Chat with Athena, WHCP’s AI assistant');
   btn.innerHTML = '<span class="wc-owl" aria-hidden="true"><span class="wc-owl-art"></span><svg class="wc-spk" viewBox="0 0 40 40"><path class="s1" d="M26 2c.9 6.2 3.3 8.6 9.5 9.5-6.2.9-8.6 3.3-9.5 9.5-.9-6.2-3.3-8.6-9.5-9.5C22.7 10.6 25.1 8.2 26 2z"/><path class="s2" d="M11 14c.5 3.4 1.8 4.7 5.2 5.2-3.4.5-4.7 1.8-5.2 5.2-.5-3.4-1.8-4.7-5.2-5.2 3.4-.5 4.7-1.8 5.2-5.2z"/><path class="s3" d="M34 24c.4 2.6 1.4 3.6 4 4-2.6.4-3.6 1.4-4 4-.4-2.6-1.4-3.6-4-4 2.6-.4 3.6-1.4 4-4z"/></svg></span>';
 
   // Welcome bubble: the owl "says hi" once per visit, with tap-to-ask topics.
@@ -74,7 +75,7 @@
   peek.hidden = true;
   var say = el('button', 'wc-say');
   say.type = 'button';
-  say.innerHTML = '<b>Hi, welcome to WHCP!</b> Wondering about tuition, grades or a tour? Ask me anything.';
+  say.innerHTML = '<b>Hi, I’m Athena!</b> Wondering about tuition, grades or a tour? Ask me anything.';
   var px = el('button', 'wc-px');
   px.type = 'button';
   px.setAttribute('aria-label', 'Dismiss');
@@ -114,15 +115,16 @@
   panel.id = 'wc-panel';
   panel.setAttribute('role', 'dialog');
   panel.setAttribute('aria-modal', 'true');
-  panel.setAttribute('aria-label', 'Ask WHCP');
+  panel.setAttribute('aria-label', 'Chat with Athena, WHCP’s AI assistant');
   panel.hidden = true;
 
   var head = el('div', 'wc-head');
   var hav = el('span', 'wc-hav');
   hav.setAttribute('aria-hidden', 'true');
+  hav.innerHTML = '<span class="wc-owl-art"></span>' + SPK;
   var title = el('div', 'wc-title');
-  title.appendChild(el('b', null, 'Ask WHCP'));
-  title.appendChild(el('small', null, 'Automated answers about our school'));
+  title.appendChild(el('b', null, 'Athena'));
+  title.appendChild(el('small', null, 'Powered by AI'));
   var close = el('button', 'wc-close');
   close.type = 'button';
   close.setAttribute('aria-label', 'Close chat');
@@ -149,8 +151,10 @@
   input.placeholder = 'Type a question…';
   input.setAttribute('aria-label', 'Your question');
   input.autocomplete = 'off';
-  var go = el('button', 'wc-send', 'Send');
+  var go = el('button', 'wc-send');
   go.type = 'submit';
+  go.setAttribute('aria-label', 'Send');
+  go.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   form.appendChild(input);
   form.appendChild(go);
 
@@ -167,7 +171,11 @@
   panel.appendChild(form);
   panel.appendChild(note);
 
+  var lastWho = '';
   function bubble(role, text) {
+    var who = role.split(' ')[0];
+    if (who !== lastWho) log.appendChild(el('div', 'wc-name wc-name-' + who, who === 'user' ? 'You' : 'Athena'));
+    lastWho = who;
     var b = el('div', 'wc-msg wc-' + role);
     addText(b, text);
     log.appendChild(b);
@@ -230,7 +238,8 @@
     history.push({ role: 'user', content: text });
     save();
     input.value = '';
-    var wait = bubble('bot wc-wait', 'Typing…');
+    var wait = bubble('bot wc-wait', '');
+    wait.innerHTML = '<span class="wc-dots"><i></i><i></i><i></i></span><span class="wc-sr">Typing…</span>';
     fetch(URL_, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
