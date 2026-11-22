@@ -135,6 +135,13 @@ button{font-family:inherit}
 .hero-ind button{width:30px;height:14px;background:none;border:none;cursor:pointer;position:relative;padding:0}
 .hero-ind button::after{content:'';position:absolute;left:0;right:0;top:6px;height:1.5px;background:rgba(255,255,255,.4);transition:background .3s}
 .hero-ind button.active::after{background:var(--brass-bright)}
+/* Where our graduates go */
+.grads .wrap{text-align:center}
+.grads-list{list-style:none;margin:30px 0 0;padding:0;display:flex;flex-wrap:wrap;justify-content:center}
+.grads-list{row-gap:10px;column-gap:56px}
+.grads-list li{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(24px,2.3vw,34px);color:var(--navy);padding:0}
+.grads-more{margin-top:18px;color:var(--body)}
+@media (max-width:700px){.grads-list{flex-direction:column;gap:6px}.grads-list li{border-left:0;padding:2px 0}}
 /* Feature slides (calendar and seasonal owl slides) */
 .feat{display:flex;align-items:center}
 .feat-wrap{position:relative;z-index:2;width:100%;display:grid;grid-template-columns:1fr minmax(0,400px);gap:56px;align-items:center}
@@ -363,7 +370,7 @@ button{font-family:inherit}
 .prose ul li{position:relative;padding:7px 0 7px 34px;font-size:15px;line-height:1.7;border-bottom:1px solid var(--line)}
 .prose ul li:last-child{border-bottom:none}
 .prose ul li::before{content:'—';position:absolute;left:2px;color:var(--brass)}
-.prose img{border:1px solid var(--line);margin:32px 0}
+.prose img{border:1px solid var(--line);margin:32px 0;height:auto}
 .detail-grid{display:grid;grid-template-columns:7.2fr 4fr;gap:72px;align-items:start}
 .aside{position:sticky;top:118px;display:flex;flex-direction:column;gap:24px}
 .aside-card{background:var(--paper);border:1px solid var(--line);padding:30px}
@@ -496,7 +503,7 @@ table.tuition{width:100%;border-collapse:collapse;min-width:640px}
 .about-grid figure img{width:100%;object-fit:cover}
 .about-grid figure.about-brand{border:none;background:var(--navy-deep);display:grid;place-items:center;padding:28px;aspect-ratio:1/1}
 .about-grid figure.about-brand img{width:92%;max-width:none;height:auto;object-fit:contain}
-.principal-portrait{float:right;width:230px;border:1px solid var(--line);margin:6px 0 28px 40px}
+.principal-portrait{float:right;width:230px;height:auto;border:1px solid var(--line);margin:6px 0 28px 40px}
 
 /* ----- Footer ----- */
 footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
