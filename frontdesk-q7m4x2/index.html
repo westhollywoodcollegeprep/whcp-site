@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-8IPjQ6uCDbhgOw8GrgtzMMtruUx7iV+PI/By8pBC7YM=' 'sha256-FdiDKzD3MBhlixZRVFsmy3LwUQpxFNEtYlhoUju48Gg='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'sha256-8IPjQ6uCDbhgOw8GrgtzMMtruUx7iV+PI/By8pBC7YM=' 'sha256-r5giC5jg+67kASh6r7X96kYphWwROGOm+fHaVnEuimc='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://script.google.com https://script.googleusercontent.com; base-uri 'none'; form-action 'none'; object-src 'none'; manifest-src 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>WHCP Front Desk</title>
 <meta name="robots" content="noindex, nofollow">
@@ -597,7 +597,7 @@ function vStaff(){
   }
   const s = S.staff[v.id] || { name: 'Unknown' }, d = staffToday(v.id);
   const stTxt = d.st === 'in' ? (d.job === 'tut' ? 'Tutoring since ' : 'Clocked in since ') + timeOf(d.since) : d.st === 'break' ? 'At lunch since ' + timeOf(d.since) : d.lastOut ? 'Clocked out at ' + timeOf(d.lastOut) : 'Not clocked in today';
-  const acts = d.st === 'out' ? '<button class="btn" data-act="clk" data-k="in">Clock in</button><button class="btn tutbtn" data-act="clk" data-k="tut">Clock in for tutoring</button>'
+  const acts = d.st === 'out' ? '<button class="btn" data-act="clk" data-k="in">Clock in</button>'
     : '<button class="btn" data-act="clk" data-k="out">Clock out</button>';
   const wk = v.week || [];
   const mon = mondayOf(S.today);
@@ -766,7 +766,7 @@ function timesDetail(id, show, wd){
   return '<div class="card" style="margin-top:18px"><div class="row" style="justify-content:space-between"><h2 style="font-size:24px">' + esc(p.name) + '</h2><button class="linkbtn" data-act="tdetail" data-id="">Close</button></div>' +
     '<div class="list">' + (items || '<p class="hint">No punches this week.</p>') + '</div>' +
     '<form class="row" data-form="addpunch" style="margin-top:14px;align-items:flex-end"><div class="field"><label for="apd">Day</label><select id="apd" class="input">' + show.map(k => '<option value="' + k + '">' + esc(fmtKey(k, { weekday: 'short', month: 'short', day: 'numeric' })) + '</option>').join('') + '</select></div>' +
-    '<div class="field"><label for="apk">Punch</label><select id="apk" class="input"><option value="in">Clock in</option><option value="tut">Clock in for tutoring</option><option value="out" selected>Clock out</option></select></div>' +
+    '<div class="field"><label for="apk">Punch</label><select id="apk" class="input"><option value="in">Clock in</option><option value="out" selected>Clock out</option></select></div>' +
     '<div class="field"><label for="apt">Time</label><input id="apt" class="input" type="time" value="15:30"></div><button class="btn small" type="submit">Add punch</button></form></div>';
 }
 async function loadWeek(mon){
