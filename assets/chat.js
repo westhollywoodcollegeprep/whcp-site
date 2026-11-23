@@ -130,8 +130,15 @@
   close.type = 'button';
   close.setAttribute('aria-label', 'Close chat');
   close.innerHTML = '&times;';
+  var fresh = el('button', 'wc-new');
+  fresh.type = 'button';
+  fresh.setAttribute('aria-label', 'Start a new chat');
+  fresh.title = 'New chat';
+  fresh.hidden = true;
+  fresh.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4.5v3.7h3.7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   head.appendChild(hav);
   head.appendChild(title);
+  head.appendChild(fresh);
   head.appendChild(close);
 
   var log = el('div', 'wc-log');
@@ -206,7 +213,21 @@
 
   function save() {
     store('wc-hist', JSON.stringify(history.slice(-24)));
+    fresh.hidden = !history.length;
   }
+
+  // Start over: clear the conversation and show the greeting again.
+  fresh.addEventListener('click', function () {
+    history = [];
+    save();
+    store('wc-next', '');
+    log.innerHTML = '';
+    lastWho = '';
+    bubble('bot', GREETING);
+    chips.hidden = false;
+    input.value = '';
+    input.focus();
+  });
 
   function setOpen(v, fromBack) {
     open = v;
@@ -306,6 +327,7 @@
     bubble('bot', GREETING);
     history.forEach(function (m) { bubble(m.role === 'user' ? 'user' : 'bot', m.content); });
     chips.hidden = true;
+    fresh.hidden = false;
     if (history[history.length - 1].role === 'assistant') { try { addActions(JSON.parse(load('wc-next') || '{}')); } catch (e) {} }
     // Reopen it on wider screens; on phones it would cover the page they just went to.
     if (load('wc-isopen') === '1' && window.innerWidth >= 600) setOpen(true);
