@@ -32,6 +32,7 @@
     ['Calendar', '/calendar'], ['Careers', '/careers'], ['Giving', '/giving'], ['Parents', '/parents'],
     ['Students', '/students'], ['Mission', '/mission'], ['Principal’s Message', '/principals-message'],
     ["Principal's Message", '/principals-message'], ['Privacy Policy', '/privacy'],
+    ['Transcripts & Diplomas', '/transcripts'], ['Transcripts and Diplomas', '/transcripts'],
   ];
   var pageIndex = {};
   PAGES.forEach(function (p) { pageIndex[p[0].toLowerCase()] = p[1]; });
@@ -184,16 +185,21 @@
   }
 
   // "Talk to a person" buttons under the latest real answer.
-  function addActions() {
+  function addActions(opt) {
     var old = log.querySelector('.wc-acts');
     if (old) old.remove();
+    opt = opt || {};
+    var a = opt.actions || {}, next = opt.next || [];
+    if (!a.call && !a.tour && !next.length) return;
     var acts = el('div', 'wc-acts');
-    var call = el('a', 'wc-act', 'Call us');
-    call.href = 'tel:+13238227900';
-    var tour = el('a', 'wc-act', 'Schedule a tour');
-    tour.href = '/contact';
-    acts.appendChild(call);
-    acts.appendChild(tour);
+    next.forEach(function (q) {
+      var c = el('button', 'wc-chip', q);
+      c.type = 'button';
+      c.addEventListener('click', function () { send(q); });
+      acts.appendChild(c);
+    });
+    if (a.call) { var call = el('a', 'wc-act wc-act--solid', 'Call us'); call.href = 'tel:+13238227900'; acts.appendChild(call); }
+    if (a.tour) { var tour = el('a', 'wc-act wc-act--solid', 'Schedule a tour'); tour.href = '/contact'; acts.appendChild(tour); }
     log.appendChild(acts);
     log.scrollTop = log.scrollHeight;
   }
@@ -252,7 +258,8 @@
         bubble('bot', res.d.reply);
         history.push({ role: 'assistant', content: res.d.reply });
         save();
-        if (res.d.kind !== 'offtopic' && res.d.kind !== 'smalltalk') addActions();
+        addActions({ actions: res.d.actions, next: res.d.next });
+        store('wc-next', JSON.stringify({ actions: res.d.actions || {}, next: res.d.next || [] }));
       } else {
         history.pop();
         save();
@@ -299,7 +306,7 @@
     bubble('bot', GREETING);
     history.forEach(function (m) { bubble(m.role === 'user' ? 'user' : 'bot', m.content); });
     chips.hidden = true;
-    if (history[history.length - 1].role === 'assistant') addActions();
+    if (history[history.length - 1].role === 'assistant') { try { addActions(JSON.parse(load('wc-next') || '{}')); } catch (e) {} }
     // Reopen it on wider screens; on phones it would cover the page they just went to.
     if (load('wc-isopen') === '1' && window.innerWidth >= 600) setOpen(true);
   }
