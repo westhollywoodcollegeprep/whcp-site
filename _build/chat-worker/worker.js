@@ -237,6 +237,24 @@ export default {
         const form = new URLSearchParams({ form: 'chat_unanswered', question: clean(last.content).slice(0, 500), reply: text.slice(0, 800), page: String(body.page || '').slice(0, 200) });
         ctx.waitUntil(fetch(LOG_URL, { method: 'POST', body: form }).catch(() => {}));
       }
+      if (ctx && LOG_URL) {
+        // Every exchange goes to the "Chat log" tab (see the privacy policy).
+        const cf = request.cf || {};
+        const ua = request.headers.get('User-Agent') || '';
+        const device = /iPad|Tablet/i.test(ua) ? 'Tablet' : /Mobi|Android|iPhone/i.test(ua) ? 'Phone' : 'Computer';
+        const emails = (last.content.match(/[^\s@]+@[^\s@]+\.[^\s@]+/g) || []).join(', ');
+        const phones = (last.content.match(/\+?\d[\d\s().-]{6,}\d/g) || []).map(x => x.trim()).join(', ');
+        const log = new URLSearchParams({
+          form: 'chat_log',
+          chat_id: String(body.chatId || '').replace(/[^\w-]/g, '').slice(0, 40),
+          question: last.content.slice(0, 1000), reply: text.slice(0, 1500), kind,
+          email: emails.slice(0, 200), phone: phones.slice(0, 120),
+          page: String(body.page || '').slice(0, 200), referrer: String(body.ref || '').slice(0, 300),
+          ip, city: cf.city || '', region: cf.region || '', country: cf.country || '',
+          device, language: String(request.headers.get('Accept-Language') || '').split(',')[0].slice(0, 20),
+        });
+        ctx.waitUntil(fetch(LOG_URL, { method: 'POST', body: log }).catch(() => {}));
+      }
       return json({ reply: text, kind, actions, next }, 200, origin);
     } catch (e) {
       // Free daily allowance used up, or the model is unavailable.

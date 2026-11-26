@@ -167,11 +167,10 @@
   form.appendChild(go);
 
   var note = el('p', 'wc-note');
-  note.appendChild(document.createTextNode('AI answers can be wrong. Please don’t share private information. For anything important, call '));
-  var tel = el('a', null, PHONE);
-  tel.href = 'tel:+13238227900';
-  note.appendChild(tel);
-  note.appendChild(document.createTextNode('.'));
+  note.appendChild(document.createTextNode('For adults. Don’t share private info. Chats are saved to improve answers. '));
+  var pol = el('a', null, 'Privacy Policy');
+  pol.href = '/privacy';
+  note.appendChild(pol);
 
   panel.appendChild(head);
   panel.appendChild(log);
@@ -211,6 +210,14 @@
     log.scrollTop = log.scrollHeight;
   }
 
+  // A random id per conversation, so the chat log can show each conversation in order.
+  function chatId() {
+    var id = load('wc-id');
+    if (!id) { id = Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8); store('wc-id', id); }
+    return id;
+  }
+  if (!load('wc-ref')) store('wc-ref', (document.referrer && document.referrer.indexOf(location.host) === -1 ? document.referrer : 'direct').slice(0, 300));
+
   function save() {
     store('wc-hist', JSON.stringify(history.slice(-24)));
     fresh.hidden = !history.length;
@@ -221,6 +228,7 @@
     history = [];
     save();
     store('wc-next', '');
+    store('wc-id', '');
     log.innerHTML = '';
     lastWho = '';
     bubble('bot', GREETING);
@@ -270,7 +278,7 @@
     fetch(URL_, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages: history.slice(-12), page: location.pathname }),
+      body: JSON.stringify({ messages: history.slice(-12), page: location.pathname, chatId: chatId(), ref: load('wc-ref') || '' }),
     }).then(function (r) {
       return r.json().catch(function () { return {}; }).then(function (d) { return { status: r.status, d: d }; });
     }).then(function (res) {

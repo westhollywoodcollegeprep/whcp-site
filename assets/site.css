@@ -742,7 +742,7 @@ footer{background:var(--navy-deep);color:rgba(255,255,255,.55)}
 .wc-send:hover{transform:scale(1.07)}
 .wc-send:disabled{opacity:.45;cursor:default;transform:none}
 .wc-note{margin:0;padding:2px 18px 12px;font-size:11px;line-height:1.4;color:#7A8294;text-align:center}
-.wc-note a{color:#0757A7}
+.wc-note a{color:#0757A7;white-space:nowrap}
 @media(max-width:480px){
   .wc-launch{right:14px;bottom:14px}
   .wc-peek{right:12px;bottom:14px}

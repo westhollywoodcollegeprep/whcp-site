@@ -10,8 +10,9 @@
  *   4. Send that URL to Claude (it goes into SHEET_URL in _build/build.py).
  *
  * Each website form submission adds one row to the "Inquiries" tab.
- * Questions the website chat could not answer go to the "Chat questions" tab
- * (question text only: no names, emails, phone numbers or IP addresses).
+ * Questions the website chat could not answer go to the "Chat questions" tab.
+ * Every chat exchange goes to the "Chat log" tab: question, answer, any email or phone
+ * typed, page, how they found the site, approximate location, device, language and IP.
  * Visit the /exec URL in a browser to check it is running.
  *
  * Flood protection: the sheet keeps at most 10 form rows per 10 minutes (100 a day) and
@@ -21,8 +22,13 @@
 
 var LIMITS = {
   form: { per10min: 10, perDay: 100 },
-  chat: { per10min: 15, perDay: 150 }
+  chat: { per10min: 15, perDay: 150 },
+  chatlog: { per10min: 80, perDay: 800 }
 };
+
+var CHAT_LOG_SHEET = 'Chat log';
+var CHAT_LOG_COLUMNS = ['Time', 'Chat ID', 'Question', 'Athena\'s answer', 'Email typed', 'Phone typed', 'Page',
+  'How they found us', 'City', 'Region', 'Country', 'Device', 'Language', 'IP address', 'Answer type'];
 
 var SHEET_NAME = 'Inquiries';
 
@@ -50,6 +56,7 @@ function doPost(e) {
   var p = (e && e.parameter) || {};
   if (p._gotcha) return reply_('ok');                       // spam trap filled: ignore
   if (p.form === 'chat_unanswered') return logChat_(p);
+  if (p.form === 'chat_log') return logChatAll_(p);
   var email = String(p.email || '').trim();
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return reply_('ignored');
   if (overLimit_('form')) return reply_('busy');
@@ -99,6 +106,33 @@ function logChat_(p) {
 }
 
 // Counts submissions in the current 10-minute window and the current day; true once either is full.
+function logChatAll_(p) {
+  var q = clean_(p.question).slice(0, 1000);
+  if (!q) return reply_('ignored');
+  if (overLimit_('chatlog')) return reply_('busy');
+  var lock = LockService.getScriptLock();
+  lock.waitLock(10000);
+  try {
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getSheetByName(CHAT_LOG_SHEET) || ss.insertSheet(CHAT_LOG_SHEET);
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(CHAT_LOG_COLUMNS);
+      sheet.getRange(1, 1, 1, CHAT_LOG_COLUMNS.length).setFontWeight('bold');
+      sheet.setFrozenRows(1);
+      sheet.setColumnWidth(3, 360);
+      sheet.setColumnWidth(4, 420);
+    }
+    sheet.appendRow([new Date(), clean_(p.chat_id).slice(0, 40), q, clean_(p.reply).slice(0, 1500),
+      clean_(p.email).slice(0, 200), clean_(p.phone).slice(0, 120), clean_(p.page).slice(0, 200),
+      clean_(p.referrer).slice(0, 300), clean_(p.city).slice(0, 80), clean_(p.region).slice(0, 80),
+      clean_(p.country).slice(0, 10), clean_(p.device).slice(0, 20), clean_(p.language).slice(0, 20),
+      clean_(p.ip).slice(0, 60), clean_(p.kind).slice(0, 20)]);
+  } finally {
+    lock.releaseLock();
+  }
+  return reply_('ok');
+}
+
 function overLimit_(kind) {
   var cache = CacheService.getScriptCache(), now = Date.now(), lim = LIMITS[kind];
   var lock = LockService.getScriptLock();
